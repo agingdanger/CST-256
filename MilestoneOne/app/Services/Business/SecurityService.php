@@ -10,9 +10,9 @@ class SecurityService
         $userData = new UserDataService();
         $result = $userData->findbyId($request);
         
-        if ($result)
+        if (mysqli_num_rows($result))
         {
-            $row = mysqli_fetch_assoc($result);
+//             $row = mysqli_fetch_assoc($result);
             
             /* $_SESSION['firstName'] = $row['FIRSTNAME'];
             $_SESSION['lastName'] = $row['LASTNAME'];
