@@ -25,7 +25,7 @@
 				
 				<tr>
 					<td>Password: </td>
-					<td><input type = "text" name = "password" /></td>
+					<td><input type = "password" name = "password" /></td>
 				</tr>
 				
 				<tr>
@@ -50,5 +50,6 @@
 				</tr>
 			</table>
 		</form>
+		<a href="login">Click here for the Login Page.</a>
 	</body>
 </html>

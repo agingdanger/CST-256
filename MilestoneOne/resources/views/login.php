@@ -15,7 +15,7 @@
 				
 				<tr>
 					<td>Password: </td>
-					<td><input type = "text" name = "password" /></td>
+					<td><input type = "password" name = "password" /></td>
 				</tr>
 				
 				<tr>
@@ -25,6 +25,11 @@
 				</tr>
 			</table>
 		</form>
+		
+		<p><?php 
+// 		if ($message == null)
+//		echo $message;?></p>
+		
 		<a href="registration">Register Here</a>
 	</body>
 </html>

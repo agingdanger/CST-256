@@ -23,10 +23,12 @@ class SecurityService
             $_SESSION['role'] = $row['ROLE']; */
             
             echo "Login Successful";
+            return true;
         }
         else
         {
             echo "Login unsuccessful";
+            return false;
         }
     }
 }

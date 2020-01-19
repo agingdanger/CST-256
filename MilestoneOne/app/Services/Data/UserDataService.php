@@ -15,6 +15,8 @@ class UserDataService
         $username = $request->input('username');
         $password = $request->input('password');
         
+        
+        
         if($connection)
         {
             $sql = "SELECT * FROM `USERS` WHERE `USERNAME` = '$username' AND `PASSWORD` = '$password' LIMIT 1";
@@ -41,17 +43,23 @@ class UserDataService
         $email = $request->input('email');
         $phone = $request->input('phone');
         $role = $request->input('role');
-
+        
+        if($firstName == "")
+        {
+            return false;
+        }
         $sql = "INSERT INTO `USERS` (`ID`, `FIRST_NAME`, `LAST_NAME`, `USERNAME`, `PASSWORD`, `EMAIL`, `PHONE`, `ROLE`) VALUES('', '$firstName', '$lastName', '$username', '$password', '$email', '$phone', '$role')";
 
         if (mysqli_query($connection, $sql))
         {
-            echo "New User Account created!";
+            return true; 
         }
         else
         {
             echo "User not added";
             echo " Error: " . $sql . "<br>" . mysqli_error($connection);
         }
+        
+        return false; 
     }
 }

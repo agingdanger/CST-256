@@ -25,6 +25,11 @@ Route::get('/registration', function()
    return view('registration'); 
 });
 
+Route::get('/registerstatus', function()
+{
+    return view('registerstatus');
+});
+
 // 
 Route::post('/login', 'UserController@onLogin');
 

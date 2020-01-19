@@ -8,6 +8,12 @@ class UserBusinessService
     public function register(Request $request)
     {
         $userData = new UserDataService();
-        $userData->create($request);
+        $isRegistered = $userData->create($request);
+        
+        if($isRegistered)
+        {
+            return true;
+        }
+        return false; 
     }
 }
