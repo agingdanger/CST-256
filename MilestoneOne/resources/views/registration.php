@@ -50,6 +50,6 @@
 				</tr>
 			</table>
 		</form>
-		<a href="login">Click here for the Login Page.</a>
+		<a href="welcome">Click here for the Login Page.</a>
 	</body>
 </html>

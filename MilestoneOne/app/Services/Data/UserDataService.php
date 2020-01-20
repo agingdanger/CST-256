@@ -2,20 +2,24 @@
 namespace App\Services\Data;
 
 use Illuminate\Http\Request;
+use App\Model\User;
 use App\Services\Utility\db_connector;
+use App\Model\userAttempt;
 
 class UserDataService
 {
-
-    public function findbyId(Request $request)
+    /**
+     * findByID data service method to find the data in the database.  
+     * @param userAttempt $userAttempt
+     * @return $result from the executed SQL Statement. 
+     */
+    public function findbyId(userAttempt $userAttempt)
     {
         $conn = new db_connector();
         $connection = $conn->getConnection();
         
-        $username = $request->input('username');
-        $password = $request->input('password');
-        
-        
+        $username = $userAttempt->getUsername();
+        $password = $userAttempt->getPassword();
         
         if($connection)
         {
@@ -31,18 +35,23 @@ class UserDataService
         return $result; 
     }
 
-    public function create(Request $request)
+    /**
+     * create data service method: Creating a new user in the database. 
+     * @param Request $request
+     * @return boolean
+     */
+    public function create(User $user)
     {
         $conn = new db_connector();
         $connection = $conn->getConnection();
-
-        $firstName = $request->input('firstname');
-        $lastName = $request->input('lastname');
-        $username = $request->input('username');
-        $password = $request->input('password');
-        $email = $request->input('email');
-        $phone = $request->input('phone');
-        $role = $request->input('role');
+        
+        $firstName = $user->getFirstName();
+        $lastName = $user->getLastName();
+        $username = $user->getUsername();
+        $password = $user->getPassword();
+        $email = $user->getEmail();
+        $phone = $user->getPhone();
+        $role = $user->getRole();
         
         if($firstName == "")
         {
@@ -58,8 +67,7 @@ class UserDataService
         {
             echo "User not added";
             echo " Error: " . $sql . "<br>" . mysqli_error($connection);
-        }
-        
+        }        
         return false; 
     }
 }

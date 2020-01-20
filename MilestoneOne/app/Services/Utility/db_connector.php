@@ -12,7 +12,10 @@ class db_connector
     private $password = "root";
     private $dbname = "cst-256_ms";
     
-    // Create connection
+    /**
+     * getConnection method connecting to the database. 
+     * @return $connection after executing the mysqli_connect.
+     */
     function getConnection()
     {
         $connection = mysqli_connect($this->servername, $this->username, $this->password, $this->dbname, 3308);

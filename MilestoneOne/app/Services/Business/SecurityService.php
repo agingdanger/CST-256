@@ -1,19 +1,26 @@
 <?php
 namespace App\Services\Business;
 use Illuminate\Http\Request;
+use App\Model\User;
 use App\Services\Data\UserDataService;
+use App\Model\userAttempt;
 
 class SecurityService
 {
-    public function authenticate(Request $request)
+    /**
+     * Authenticate function to authenticate entered login credentials. 
+     * @param userAttempt $userAttempt
+     * @return boolean
+     */
+    public function authenticate(userAttempt $userAttempt)
     {        
         $userData = new UserDataService();
-        $result = $userData->findbyId($request);
+        $result = $userData->findbyId($userAttempt);
         
         if (mysqli_num_rows($result))
         {
-//             $row = mysqli_fetch_assoc($result);
-            
+
+            //Will be used later to set Session variables for the current user
             /* $_SESSION['firstName'] = $row['FIRSTNAME'];
             $_SESSION['lastName'] = $row['LASTNAME'];
             $_SESSION['username'] = $row['USERNAME'];
@@ -22,12 +29,10 @@ class SecurityService
             $_SESSION['phone'] = $row['PHONE'];
             $_SESSION['role'] = $row['ROLE']; */
             
-            echo "Login Successful";
             return true;
         }
         else
         {
-            echo "Login unsuccessful";
             return false;
         }
     }
