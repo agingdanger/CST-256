@@ -22,19 +22,7 @@ class User
         $this->email = $email;
         $this->phone = $phone; 
         $this->role = $role; 
-    }
-    
-   /*  // Creating another parameterized constructor to handle logins: 
-    public function __construct($username, $password)
-    {
-        $this->firstName = "";
-        $this->lastName = ""; 
-        $this->username = $username;
-        $this->password = $password;
-        $this->email = "";
-        $this->phone = "";
-        $this->role = ""; 
-    } */
+    }    
     
     // GETTERS AND SETTERS: 
 
