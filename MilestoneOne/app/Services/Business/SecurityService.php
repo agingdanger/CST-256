@@ -18,17 +18,7 @@ class SecurityService
         $result = $userData->findbyId($userAttempt);
         
         if (mysqli_num_rows($result))
-        {
-
-            //Will be used later to set Session variables for the current user
-            /* $_SESSION['firstName'] = $row['FIRSTNAME'];
-            $_SESSION['lastName'] = $row['LASTNAME'];
-            $_SESSION['username'] = $row['USERNAME'];
-            $_SESSION['password'] = $row['PASSWORD'];
-            $_SESSION['email'] = $row['EMAIL'];
-            $_SESSION['phone'] = $row['PHONE'];
-            $_SESSION['role'] = $row['ROLE']; */
-            
+        {            
             return true;
         }
         else
