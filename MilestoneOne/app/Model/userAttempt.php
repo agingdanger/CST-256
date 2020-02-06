@@ -21,15 +21,7 @@ class userAttempt
     {
         return $this->username;
     }
-    
-    /**
-     * @param mixed $username
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-    }
-    
+
     /**
      * @return mixed
      */
@@ -37,13 +29,5 @@ class userAttempt
     {
         return $this->password;
     }
-    
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-    
+
 }

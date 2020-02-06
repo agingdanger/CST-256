@@ -18,20 +18,27 @@ Route::get('/', function ()
 // Routes to the login page view. 
 Route::get('/welcome', function()
 {
-   return view('login');         
+   return view('login.login');         
 });
 
 // Routes to the registration page view. 
 Route::get('/registration', function()
 {
-   return view('registration'); 
+   return view('registration.registration'); 
 });
 
 // Routes to the registerstatus page view. 
 Route::get('/registerstatus', function()
 {
-    return view('registerstatus');
+    return view('registration.registerstatus');
 });
+
+Route::get('/home', function()
+{
+    return view('home.home');
+});
+
+Route::post('/users', 'UserController@onUsersPull');
 
 // Routes to the controller method onLogin from login page after entering credentials. 
 Route::post('/login', 'UserController@onLogin');
