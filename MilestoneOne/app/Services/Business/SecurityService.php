@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use App\Model\User;
 use App\Services\Data\UserDataService;
 use App\Model\userAttempt;
+use App\Services\Utility\db_connector;
+
 
 class SecurityService
 {
@@ -14,10 +16,18 @@ class SecurityService
      */
     public function authenticate(userAttempt $userAttempt)
     {        
-        $userData = new UserDataService();
-        $result = $userData->findbyId($userAttempt);
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        $userData = new UserDataService($conn);
         
-        if (mysqli_num_rows($result))
+        $result = $userData->findbyUser($userAttempt);
+        
+        // Close the PDO connection
+        $conn = null;
+        
+        
+        
+        if (($result))
         {
 
             //Will be used later to set Session variables for the current user
@@ -29,7 +39,7 @@ class SecurityService
             $_SESSION['phone'] = $row['PHONE'];
             $_SESSION['role'] = $row['ROLE']; */
             
-            return true;
+            return $result;
         }
         else
         {

@@ -27,17 +27,19 @@ class UserController extends Controller
 
         // $userAttempt = new userAttempt($username, $password);
 
-        $user = new SecurityService();
-        $isLoggedIn = $user->authenticate($userAttempt);
+        $service = new SecurityService();
+        $userData = $service->authenticate($userAttempt);
         
-        if ($isLoggedIn)
+        $userData = get_object_vars($userData);
+        
+        if ($userData)
         {
             $message = "Login Success";
         } else
         {
             $message = "Login Failure";
         }
-        return view('layouts.login.loginStatus')->with('message', $message);
+        return view('home.account')->with('user', $userData);
     }
 
     /**
@@ -64,9 +66,9 @@ class UserController extends Controller
         if ($isRegisterAttempt)
         {
             $SESSION['role'] = $request->input('role');
-            return view('layouts.registration.registerstatus')->with('message', $message = "Registered Successfully!");
+            return view('registration.registerstatus')->with('message', $message = "Registered Successfully!");
         }
-        return view('layouts.registration.registerstatus')->with('message', $message = "Did not register. Try again.");
+        return view('registration.registerstatus')->with('message', $message = "Did not register. Try again.");
     }
     
     public function onEdit(Request $request)
@@ -89,13 +91,13 @@ class UserController extends Controller
             
             if($isEditAttempt)
             {
-                return view('layouts.users.users')->with('message', $message = "User edited succesfully.");
+                return view('users.users')->with('message', $message = "User edited succesfully.");
             }
-                return view('layouts.users.users')->with('message', $message = "Error on user edit.");
+                return view('users.users')->with('message', $message = "Error on user edit.");
         }
         else
         {
-            return view('layouts.error.privilege');
+            return view('error.privilege');
         }
         
     }

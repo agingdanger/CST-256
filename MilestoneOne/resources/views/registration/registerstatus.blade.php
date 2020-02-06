@@ -1,8 +1,15 @@
+@extends('layouts.master')
+@section('title', 'Login Page')
+
+@section('content')
+
 <?php
 echo $message;
 
 ?>
 <br>
-<a href="layouts.registration.registration">Register Here</a>
+<a href="registration">Register Here</a>
 <br>
-<a href="layouts.welcome">Login Here</a>
+<a href="welcome">Login Here</a>
+
+@endsection

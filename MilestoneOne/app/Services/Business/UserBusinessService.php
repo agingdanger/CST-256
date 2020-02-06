@@ -3,6 +3,7 @@ namespace App\Services\Business;
 use Illuminate\Http\Request;
 use App\Services\Data\UserDataService;
 use App\Model\User;
+use App\Services\Utility\db_connector;
 
 class UserBusinessService
 {
@@ -13,13 +14,16 @@ class UserBusinessService
      */
     public function register(User $user)
     {
-        $userData = new UserDataService();
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        $userData = new UserDataService($conn);
+        
         $isRegistered = $userData->create($user);
         
         if($isRegistered)
         {
             return true;
         }
-        return false; 
+            return false; 
     }
 }

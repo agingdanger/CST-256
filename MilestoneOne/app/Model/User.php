@@ -24,7 +24,7 @@ class User
         $this->role = $role;
         
         //Encapsulating the User Login credentials into the user model
-        $this->credential = new userAttempt($username,$password);
+        $this->credentials = new userAttempt($username,$password);
     }    
     
     // GETTERS AND SETTERS: 

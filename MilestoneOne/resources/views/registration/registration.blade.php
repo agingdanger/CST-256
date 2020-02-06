@@ -1,9 +1,7 @@
-<html lang="en">
-	<head>
-		<title>Registration</title>
-	</head>
-	
-	<body>
+@extends('layouts.master')
+@section('title', 'Registration Page')
+
+@section('content')
 		<form action = "register" method = "POST">
 			<input type = "hidden" name = "_token" value = "<?php echo csrf_token()?>"/>
 			<h2>Registration</h2>
@@ -51,5 +49,4 @@
 			</table>
 		</form>
 		<a href="welcome">Click here for the Login Page.</a>
-	</body>
-</html>
+@endsection

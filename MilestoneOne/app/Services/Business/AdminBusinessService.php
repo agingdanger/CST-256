@@ -4,20 +4,25 @@ namespace App\Services\Business;
 use Illuminate\Http\Request;
 use App\Services\Data\AdminDataService;
 use App\Model\User;
+use App\Services\Utility\db_connector;
 
 class AdminBusinessService
 {
     
     public function populate()
     {
-        $adminData = new AdminDataService();
+        
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        $adminData = new AdminDataService($conn);
+        
         $isRegistered = $adminData->findAll();
         
         if($isRegistered)
         {
             return true;
         }
-        return false;
+            return false;
     }
     
     public function modify(User $user)

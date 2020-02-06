@@ -8,13 +8,23 @@ use App\Model\userAttempt;
 
 class AdminDataService
 {
+    
+    private $db;
+    private $conn;
+    
+    public function __construct($conn)
+    {
+        $this->conn = $conn;
+        
+    }
+    
     public function findAll()
     {
-        $conn = new db_connector();
-        $connection = $conn->getConnection();
-        
         $users = array();
         
+        $result = $this->conn->prepare("SELECT * FROM `USERS`");
+        $result->execute();
+            
         if($connection)
         {
             $sql = "SELECT * FROM `USERS`";
