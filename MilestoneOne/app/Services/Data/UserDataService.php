@@ -26,6 +26,7 @@ class UserDataService
             $sql = "SELECT * FROM `USERS` WHERE `USERNAME` = '$username' AND `PASSWORD` = '$password' LIMIT 1";
             
             $result = mysqli_query($connection, $sql);
+            
         }
         else 
         {

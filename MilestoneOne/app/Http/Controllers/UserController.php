@@ -29,7 +29,7 @@ class UserController extends Controller
 
         $user = new SecurityService();
         $isLoggedIn = $user->authenticate($userAttempt);
-
+        
         if ($isLoggedIn)
         {
             $message = "Login Success";
@@ -37,7 +37,7 @@ class UserController extends Controller
         {
             $message = "Login Failure";
         }
-        return view('loginStatus')->with('message', $message);
+        return view('layouts.login.loginStatus')->with('message', $message);
     }
 
     /**
@@ -63,8 +63,40 @@ class UserController extends Controller
         // if Registration process is true. 
         if ($isRegisterAttempt)
         {
-            return view('registerstatus')->with('message', $message = "Registered Successfully!");
+            $SESSION['role'] = $request->input('role');
+            return view('layouts.registration.registerstatus')->with('message', $message = "Registered Successfully!");
         }
-        return view('registerstatus')->with('message', $message = "Did not register. Try again.");
+        return view('layouts.registration.registerstatus')->with('message', $message = "Did not register. Try again.");
+    }
+    
+    public function onEdit(Request $request)
+    {
+        if($SESSION['role'] == "admin")
+        {
+            $firstName = $request->input('firstname');
+            $lastName = $request->input('lastname');
+            $username = $request->input('username');
+            $password = $request->input('password');
+            $email = $request->input('email');
+            $phone = $request->input('phone');
+            $role = $request->input('role');
+            
+            $user = new User($firstName, $lastName, $username, $password, $email, $phone, $role);
+            
+            $userBusiness = new UserBusinessService();
+            
+            $isEditAttempt = $userBusiness->modify($user);
+            
+            if($isEditAttempt)
+            {
+                return view('layouts.users.users')->with('message', $message = "User edited succesfully.");
+            }
+                return view('layouts.users.users')->with('message', $message = "Error on user edit.");
+        }
+        else
+        {
+            return view('layouts.error.privilege');
+        }
+        
     }
 }

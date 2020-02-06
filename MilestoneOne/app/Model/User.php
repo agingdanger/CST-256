@@ -1,27 +1,30 @@
 <?php
 
 namespace App\Model;
+
+
 class User
 {
     // Declaring variables: 
     private $firstName;
     private $lastName; 
-    private $username;
-    private $password;
     private $email;
     private $phone;
-    private $role; 
+    private $role;
+    private $credentials;
+
     
     // Creating a parameterized constructor to handle registrations: 
     public function __construct($firstName, $lastName, $username, $password, $email, $phone, $role) 
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->username = $username;
-        $this->password = $password;
         $this->email = $email;
         $this->phone = $phone; 
-        $this->role = $role; 
+        $this->role = $role;
+        
+        //Encapsulating the User Login credentials into the user model
+        $this->credential = new userAttempt($username,$password);
     }    
     
     // GETTERS AND SETTERS: 
@@ -63,7 +66,7 @@ class User
      */
     public function getUsername()
     {
-        return $this->username;
+        return $this->credentials->getUsername();
     }
 
     /**
@@ -79,7 +82,7 @@ class User
      */
     public function getPassword()
     {
-        return $this->password;
+        return $this->credentials->getPassword();
     }
 
     /**

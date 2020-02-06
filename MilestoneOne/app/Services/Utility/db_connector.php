@@ -18,7 +18,13 @@ class db_connector
      */
     function getConnection()
     {
-        $connection = mysqli_connect($this->servername, $this->username, $this->password, $this->dbname, 3308);
+        $port = config("database.connections.mysql.port");
+        $servername = config("database.connections.mysql.host");
+        $
+        
+        $db = new PDO("mysql:host=$servername;port")
+        
+        $connection = mysqli_connect($this->servername, $this->username, $this->password, $this->dbname);
         
         if($connection->connect_error)
         {
