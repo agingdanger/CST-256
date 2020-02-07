@@ -6,6 +6,7 @@ namespace App\Model;
 class User
 {
     // Declaring variables: 
+    private $id;
     private $firstName;
     private $lastName; 
     private $email;
@@ -15,8 +16,9 @@ class User
 
     
     // Creating a parameterized constructor to handle registrations: 
-    public function __construct($firstName, $lastName, $username, $password, $email, $phone, $role) 
+    public function __construct($id, $firstName, $lastName, $username, $password, $email, $phone, $role) 
     {
+        $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
@@ -28,6 +30,18 @@ class User
     }    
     
     // GETTERS AND SETTERS: 
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * @return mixed
@@ -140,6 +154,11 @@ class User
     {
         $this->role = $role;
     }
+    /**
+     * @return mixed
+     */
+
+
     
     
 }

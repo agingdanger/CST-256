@@ -19,11 +19,18 @@ class UserBusinessService
         $userData = new UserDataService($conn);
         
         $isRegistered = $userData->create($user);
+            
+        $conn = null;
         
         if($isRegistered)
         {
             return true;
         }
             return false; 
+    }
+    
+    public function modify(User $user)
+    {
+        
     }
 }

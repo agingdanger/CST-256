@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\Services\Business\SecurityService;
 use App\Services\Data\UserDataService;
 use App\Services\Business\UserBusinessService;
@@ -22,6 +23,7 @@ class UserController extends Controller
      */
     public function onLogin(Request $request)
     {
+        
         // Calling Business Services -
         $userAttempt = new userAttempt($request->input('username'), $request->input('password'));
 
@@ -32,9 +34,23 @@ class UserController extends Controller
         
         $userData = get_object_vars($userData);
         
+        if($userData['ROLE'] == "suspended")
+        {
+            return view('error.suspended');
+        }
+        
+        
+        
+        
+        
         if ($userData)
         {
+            
             $message = "Login Success";
+            if($userData['ROLE'] == "admin"){
+//                 $_SESSION['role'] = "admin";
+                    Session::put('role', $userData['ROLE']);
+            }
         } else
         {
             $message = "Login Failure";
@@ -49,6 +65,7 @@ class UserController extends Controller
      */
     public function onRegister(Request $request)
     {
+        $id = "";
         $firstName = $request->input('firstname');
         $lastName = $request->input('lastname');
         $username = $request->input('username');
@@ -57,7 +74,7 @@ class UserController extends Controller
         $phone = $request->input('phone');
         $role = $request->input('role');
         
-        $user = new User($firstName, $lastName, $username, $password, $email, $phone, $role);
+        $user = new User($id, $firstName, $lastName, $username, $password, $email, $phone, $role);
         
         $userBusiness = new UserBusinessService();
         $isRegisterAttempt = $userBusiness->register($user);
@@ -65,7 +82,7 @@ class UserController extends Controller
         // if Registration process is true. 
         if ($isRegisterAttempt)
         {
-            $SESSION['role'] = $request->input('role');
+            Session::put('role', $request->input('role'));
             return view('registration.registerstatus')->with('message', $message = "Registered Successfully!");
         }
         return view('registration.registerstatus')->with('message', $message = "Did not register. Try again.");
@@ -73,8 +90,9 @@ class UserController extends Controller
     
     public function onEdit(Request $request)
     {
-        if($SESSION['role'] == "admin")
+        if(Session::get('role') == "admin")
         {
+            $id = $request->input('id');
             $firstName = $request->input('firstname');
             $lastName = $request->input('lastname');
             $username = $request->input('username');
@@ -83,7 +101,7 @@ class UserController extends Controller
             $phone = $request->input('phone');
             $role = $request->input('role');
             
-            $user = new User($firstName, $lastName, $username, $password, $email, $phone, $role);
+            $user = new User($id, $firstName, $lastName, $username, $password, $email, $phone, $role);
             
             $userBusiness = new UserBusinessService();
             

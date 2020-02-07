@@ -46,4 +46,10 @@ Route::post('/login', 'UserController@onLogin');
 // Routes to the controller method onRegister from Registration page after entering credentials. 
 Route::post('/register', 'UserController@onRegister');
 
-Route::post('/displayUsers', 'AdminController@onUsersPull');
+Route::post('/adminEdit', 'AdminController@onEdit');
+
+Route::post('/adminDelete', 'AdminController@onRemoval');
+
+Route::post('/adminSuspend', 'AdminController@onSuspension');
+
+Route::get('/displayUsers', 'AdminController@onUsersPull');

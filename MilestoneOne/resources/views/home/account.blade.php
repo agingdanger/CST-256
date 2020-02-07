@@ -31,7 +31,7 @@
 </table>
 </div>
 <div>
-@if($user['ROLE'] === "hehe")
+@if($user['ROLE'] === "admin")
 	@include('admin.adminButtons')
 @endif
 </div>
