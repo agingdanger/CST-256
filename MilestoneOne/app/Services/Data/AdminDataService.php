@@ -3,6 +3,7 @@ namespace App\Services\Data;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use PDO;
 use PDOException;
 use App\Model\User;
@@ -20,11 +21,20 @@ class AdminDataService
         $this->conn = $conn;
     }
 
+    /**
+     * Get all users to populate the datatable
+     *
+     * @throws DatabaseException
+     * @return 
+     */
     public function findAll()
     {
         try
         {
-            $result = $this->conn->prepare("SELECT * FROM `users`");
+            // Find all the users except for the current userID.
+            $userID = Session::get('userID');
+            $result = $this->conn->prepare("SELECT * FROM `users` WHERE ID != :userid");
+            $result->bindParam('userid', $userID);
             $result->execute();
 
             return $result->fetchAll();
@@ -41,16 +51,31 @@ class AdminDataService
     public function update(User $user)
     {
         $id = $user->getId();
+        $firstName = $user->getFirstName();
+        $lastName = $user->getLastName();
+        $userName = $user->getUsername();
+        $password = $user->getPassword();
+        $email = $user->getEmail();
+        $phone = $user->getPhone();
         $role = $user->getRole();
-        $result = $this->conn->prepare("UPDATE users SET ROLE=:role WHERE ID=:id");
+        
+        $result = $this->conn->prepare("UPDATE users SET FIRST_NAME=:firstname, LAST_NAME=:lastname, USERNAME=:username, PASSWORD=:password, EMAIL=:email, PHONE=:phone, ROLE=:role WHERE ID=:id");
         $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':firstname', $firstName);
+        $result->bindParam(':lastname', $lastName);
+        $result->bindParam(':username', $userName);
+        $result->bindParam(':password', $password);
+        $result->bindParam(':email', $email);
+        $result->bindParam(':phone', $phone);
         $result->bindParam(':role', $role);
         $result->execute();
-        
-        if($result){
+
+        if($result)
+        {
             return true;
         }
-        else{
+        else
+        {
             return false;
         }
     }
@@ -63,8 +88,9 @@ class AdminDataService
             $result = $this->conn->prepare("DELETE FROM users WHERE ID =:id");
             $result->bindParam(':id', $id, PDO::PARAM_INT);
             $result->execute();
-            
-            if($result){
+
+            if($result)
+            {
                 return $id;
             }
             return false;

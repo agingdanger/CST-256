@@ -6,6 +6,15 @@
 <div>
 <table>
 	<tr>
+		<td>First Name:</td>
+		<td>{{$user['FIRST_NAME']}}</td>
+	</tr>
+	
+	<tr>
+		<td>Last Name:</td>
+		<td>{{$user['LAST_NAME']}}</td>
+	</tr>
+	<tr>
 		<td>Username:</td>
 		<td>{{$user['USERNAME']}}</td>
 	</tr>
@@ -24,7 +33,9 @@
 		<td>Role:</td>
 		<td>{{$user['ROLE']}}</td>
 	</tr>
-
+	
+	
+		
 	<tr>
 		<td colspan="2" align="center"><input type="submit" value="Login" /></td>
 	</tr>

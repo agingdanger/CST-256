@@ -20,8 +20,16 @@
         <a class="nav-link" href='users'>Users</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Account Page</a>
+        <a class="nav-link" href="profile">Profile</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="welcome">Logout</a>
+      </li>
+    @if(Session::get('role') === "admin")
+		<li class="nav-item">
+        <a class="nav-link" href='displayUsers'>Admin Users</a>
+      </li>
+    @endif
     </ul>
     <!-- Links -->
 

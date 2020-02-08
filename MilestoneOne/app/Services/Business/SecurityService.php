@@ -24,16 +24,14 @@ class SecurityService
         
         // Close the PDO connection
         $conn = null;
-        
-        
-        
+
         if (($result))
         {   
             return $result;
         }
         else
         {
-            return false;
+            return FALSE;
         }
     }
 }

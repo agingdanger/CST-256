@@ -37,6 +37,12 @@ class AdminBusinessService
         $db = new db_connector();
         $conn = $db->getConnection();
         $adminData = new AdminDataService($conn);
+        
+        $userData = $adminData->update($user);
+        
+        $conn = null;
+        
+        return $userData;
     }
     
     /**

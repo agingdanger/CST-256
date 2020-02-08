@@ -22,7 +22,7 @@ class AdminController extends Controller
         if(Session::get('role') == "admin")
         {
             $adminBusiness = new AdminBusinessService();
-            $userData = $adminBusiness->populate();
+            $userData = $adminBusiness->populate(); 
         }
         else
         {
@@ -38,6 +38,8 @@ class AdminController extends Controller
         {
             $message = "Login Failure";
         }
+        
+        
         return view('admin.displayUsers')->with('users', $userData);
     }
 
@@ -47,13 +49,41 @@ class AdminController extends Controller
      */
     public function onEdit(Request $request)
     {
+        $id = $request->input('id');
+        $firstName = $request->input('firstname');
+        $lastName = $request->input('lastname');
+        $username = $request->input('username');
+        $password = $request->input('password');
+        $email = $request->input('email');
+        $phone = $request->input('phone');
+        $role = $request->input('role');
+        
+        $user = new User($id, $firstName, $lastName, $username, $password, $email, $phone, $role);
+        
+        // Get the role from Session: 
         if(Session::get('role') == "admin")
         {
+            // Call to BusinessService 
             $adminBusiness = new AdminBusinessService();
             $userPull = $adminBusiness->modify($user);
         }
-        $adminBusiness = new AdminBusinessService();
-        $userPull = $adminBusiness->modify($user);
+        else
+        {
+            return view('error.privilege');
+        }
+//         $adminBusiness = new AdminBusinessService();
+//         $userPull = $adminBusiness->modify($user);
+        
+        $userData = $adminBusiness->populate();
+        
+        if($userPull)
+        {
+            return view('admin.displayUsers')->with('users', $userData);
+        }
+        else
+        {
+            return view('error.privilege');
+        }
     }
 
     /**

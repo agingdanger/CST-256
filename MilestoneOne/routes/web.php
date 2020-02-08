@@ -15,36 +15,38 @@ Route::get('/', function ()
     return view('welcome');
 });
 
-// Routes to the login page view. 
-Route::get('/welcome', function()
+// Routes to the login page view.
+Route::get('/welcome', function ()
 {
-   return view('login.login');         
+    return view('login.login');
 });
 
-// Routes to the registration page view. 
-Route::get('/registration', function()
+// Routes to the registration page view.
+Route::get('/registration', function ()
 {
-   return view('registration.registration'); 
+    return view('registration.registration');
 });
 
-// Routes to the registerstatus page view. 
-Route::get('/registerstatus', function()
+// Routes to the registerstatus page view.
+Route::get('/registerstatus', function ()
 {
     return view('registration.registerstatus');
 });
 
-Route::get('/home', function()
+Route::get('/home', function ()
 {
     return view('home.home');
 });
 
 Route::post('/users', 'UserController@onUsersPull');
 
-// Routes to the controller method onLogin from login page after entering credentials. 
+// Routes to the controller method onLogin from login page after entering credentials.
 Route::post('/login', 'UserController@onLogin');
 
-// Routes to the controller method onRegister from Registration page after entering credentials. 
+// Routes to the controller method onRegister from Registration page after entering credentials.
 Route::post('/register', 'UserController@onRegister');
+
+Route::post('/userEdit', 'UserController@onEdit');
 
 Route::post('/adminEdit', 'AdminController@onEdit');
 
@@ -52,4 +54,8 @@ Route::post('/adminDelete', 'AdminController@onRemoval');
 
 Route::post('/adminSuspend', 'AdminController@onSuspension');
 
+Route::post('/viewProfile', 'UserController@onNavigate');
+
 Route::get('/displayUsers', 'AdminController@onUsersPull');
+
+Route::get('/profile', 'UserController@onProfile');
