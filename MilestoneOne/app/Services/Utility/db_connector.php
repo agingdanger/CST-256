@@ -8,14 +8,6 @@ use App\Services\Utility\DatabaseException;
 
 class db_connector
 {
-
-//     private $servername = "localhost";
-
-//     private $username = "root";
-
-//     private $password = "root";
-
-//     private $dbname = "cst-256_ms";
     
     private $db;
     /**
@@ -42,21 +34,7 @@ class db_connector
             ));
             throw new DatabaseException("Database Exception:" . $e->getMessage(), 0, $e);
         }
-//         finally
-//         {
-//             $db = null;
-//         }
 
-        // $connection = mysqli_connect($this->servername, $this->username, $this->password, $this->dbname);
-
-        // if($connection->connect_error)
-        // {
-        // echo "Connection Failed " . $connection->connect_error . "<br>";
-        // }
-        // else
-        // {
-        // return $connection;
-        // }
     }
     
 //     public function getDb() {

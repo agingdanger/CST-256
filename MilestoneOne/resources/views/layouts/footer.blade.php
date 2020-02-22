@@ -3,12 +3,14 @@
 	{
 	
 		text-align: center;
-		position: absolute;
+		position: relative;
 		bottom: 0;
 		width: 100%;
+		clear: both;
+		
 	}
 </style>
 
 <div class="footer">
-	<h5>Copyright @2020 BLoG</h5>
+	<h5>Copyright @2020 Blog</h5>
 </div>

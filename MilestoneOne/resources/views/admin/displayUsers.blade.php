@@ -46,7 +46,7 @@
             		
             		<td>
             	
-            			 <form action="viewProfile" method="POST">
+            			 <form action="adminEdit" method="POST">
                 			<input type = "hidden" name = "_token" value = "{{ csrf_token() }}" />
                 			<input type = "hidden" name = "id" value = "{{$user['ID']}}"/>
                 			<input type = "hidden" name = "firstname" value = "{{$user['FIRST_NAME']}}"/>
@@ -56,7 +56,7 @@
                 			<input type = "hidden" name = "email" value = "{{$user['EMAIL']}}"/>
                 			<input type = "hidden" name = "phone" value = "{{$user['PHONE']}}"/>
                 			<input type = "hidden" name = "role" value = "{{$user['ROLE']}}"/>
-                				<input class = "btn btn-info" type = "submit" value = "Edit" />
+        					<input class = "btn btn-info" type = "submit" value = "Edit" />
             			</form>
         		
             		</td>

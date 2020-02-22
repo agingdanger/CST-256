@@ -2,7 +2,9 @@
 <nav class="navbar navbar-dark bg-dark lighten-4">
 
   <!-- Navbar brand -->
-  <a class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#navbarContent">BLoG</a>
+  <a class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
+  	<img class="img-thumbnail" src="https://logodix.com/logo/1597047.gif" height="100px" width="100px"/>
+  </a>
 
   <!-- Collapse button -->
   <button class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#navbarContent"

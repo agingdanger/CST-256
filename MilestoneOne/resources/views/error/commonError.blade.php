@@ -3,6 +3,7 @@
 @section('title', 'Error Page')
 @section('content')
 	<div>
-		<p>Error sir.</p>
+		<p>Common Error.</p>
+		<a href="welcome">Login</a>
 	</div>
 @endsection

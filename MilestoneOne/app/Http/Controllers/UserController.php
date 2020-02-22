@@ -1,18 +1,27 @@
 <?php
+
+/*
+ * Reuel Maddela and Charles Henderson
+ * CST-256: Database Application Programming-III
+ * 02/08/2020.
+ * Professor Mark Reha
+ * This is our own work. 
+ */
+
 namespace App\Http\Controllers;
 
+use App\Model\User;
+use App\Model\userCredentials;
+use App\Services\Business\SecurityService;
+use App\Services\Business\UserBusinessService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use App\Services\Business\SecurityService;
-use App\Services\Data\UserDataService;
-use App\Services\Business\UserBusinessService;
-use App\Model\User;
-use App\Model\userAttempt;
+use Exception;
 
 /**
  *
- * @author mrabi
- *         User controller will handle all authenticate method
+ * @author mrabi, agingdanger
+ * User controller will handle all authenticate method
  */
 class UserController extends Controller
 {
@@ -25,29 +34,36 @@ class UserController extends Controller
      */
     public function onLogin(Request $request)
     {
-
-        // Calling Business Services -
-        $userAttempt = new userAttempt($request->input('username'), $request->input('password'));
-        
-        $service = new SecurityService();
-        $userData = $service->authenticate($userAttempt);
-
-        if(! $userData)
-            return view('login.loginStatus')->with('message', "Login Failure");
-
-        // translate query array into object
-        $userData = get_object_vars($userData);
-
-        if($userData['ROLE'] == "suspended")
+        try
         {
-            return view('error.suspended');
+            // Calling Business Services -
+            $userAttempt = new userCredentials($request->input('username'), $request->input('password'));
+
+            $service = new SecurityService();
+            $userData = $service->authenticate($userAttempt);
+
+            if(! $userData)
+                return view('login.loginStatus')->with('message', "Login Failure");
+
+            // translate query array into object
+            $userData = get_object_vars($userData);
+
+            if($userData['ROLE'] == "suspended")
+            {
+                return view('error.suspended');
+            }
+
+            // Creating sessions here to get the user's ID & Role.
+            Session::put('userID', $userData['ID']);
+            Session::put('role', $userData['ROLE']);
+
+            return view('home.home')->with('user', $userData);
         }
-
-        // Creating sessions here to get the user's ID & Role.
-        Session::put('userID', $userData['ID']);
-        Session::put('role', $userData['ROLE']);      
-
-        return view('home.home')->with('user', $userData);
+        catch(Exception $e)
+        {
+            // Return the Error Page: 
+            return view('error.commonError');
+        }
     }
 
     /**
@@ -58,32 +74,104 @@ class UserController extends Controller
      */
     public function onRegister(Request $request)
     {
-        $id = "";
-        $firstName = $request->input('firstname');
-        $lastName = $request->input('lastname');
-        $username = $request->input('username');
-        $password = $request->input('password');
-        $email = $request->input('email');
-        $phone = $request->input('phone');
-        $role = $request->input('role');
-
-        $user = new User($id, $firstName, $lastName, $username, $password, $email, $phone, $role);
-
-        $userBusiness = new UserBusinessService();
-        $isRegisterAttempt = $userBusiness->register($user);
-
-        // if Registration process is true.
-        if($isRegisterAttempt)
+        try
         {
-            Session::put('role', $request->input('role'));
-            return view('registration.registerstatus')->with('message', $message = "Registered Successfully!");
+            // Get the request data into variables
+            $id = "";
+            $firstName = $request->input('firstname');
+            $lastName = $request->input('lastname');
+            $username = $request->input('username');
+            $password = $request->input('password');
+            $email = $request->input('email');
+            $phone = $request->input('phone');
+            $role = $request->input('role');
+
+            // Create a User object and populate it with the requested data.
+            $user = new User($id, $firstName, $lastName, $username, $password, $email, $phone, $role);
+
+            // Call the Business Service to register
+            $userBusiness = new UserBusinessService();
+            $isRegisterAttempt = $userBusiness->register($user);
+
+            // if Registration process is true.
+            if($isRegisterAttempt)
+            {
+                Session::put('role', $request->input('role'));
+                return view('registration.registerstatus')->with('message', $message = "Registered Successfully!");
+            }
+            return view('registration.registerstatus')->with('message', $message = "Did not register. Try again.");
         }
-        return view('registration.registerstatus')->with('message', $message = "Did not register. Try again.");
+        catch(Exception $e)
+        {
+            return view('error.commonError');
+        }
     }
 
+    /**
+     * Edit method to be able to make changes to the current User profile data.
+     * 
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onEdit(Request $request)
     {
-        if(Session::get('role') == "admin" || Session::get('userID') == $request->input('id'))
+        try
+        {
+            /*
+             * Check if it's the Admin and if it is the User editing his own profile
+             */
+            if(Session::get('role') == "admin" || Session::get('userID') == $request->input('id'))
+            {
+                $id = $request->input('id');
+                $firstName = $request->input('firstname');
+                $lastName = $request->input('lastname');
+                $username = $request->input('username');
+                $password = $request->input('password');
+                $email = $request->input('email');
+                $phone = $request->input('phone');
+                $role = $request->input('role');
+
+                // Create a User Object and populate the data
+                $user = new User($id, $firstName, $lastName, $username, $password, $email, $phone, $role);
+
+                // Call the Business Service to modify the changes
+                $userBusiness = new UserBusinessService();
+                $userData = $userBusiness->modify($user);
+
+                // Use the Profile Business method to view the new Profile changes. 
+                $userData = $userBusiness->profile($user);
+
+                // translate query array into object
+                $userData = get_object_vars($userData);
+
+                // Check if there is UserData brought from the Business Service.
+                if($userData)
+                {
+                    return view('users.profile')->with('user', $userData);
+                }
+                return view('error.commonError');
+            }
+            // This else is if a non-Admin or another user tries to edit other's accounts.
+            else
+            {
+                return view('error.privilege');
+            }
+        }
+        catch(Exception $e)
+        {
+            // Redirect to the Common Error Page:
+            return view('error.commonError');
+        }
+    }
+
+    /**
+     * Navigate to user profile page from displayUsers page
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function onNavigate(Request $request)
+    {
+        try
         {
             $id = $request->input('id');
             $firstName = $request->input('firstname');
@@ -94,61 +182,48 @@ class UserController extends Controller
             $phone = $request->input('phone');
             $role = $request->input('role');
 
+            // Create a User Object and populate the data
             $user = new User($id, $firstName, $lastName, $username, $password, $email, $phone, $role);
 
-            $userBusiness = new UserBusinessService();
-            $userData = $userBusiness->modify($user);
-
-            if($userData)
-            {
-                return view('users.profile')->with('user', $userData);
-            }
+            return view('home.account')->with('user', $user);
+        }
+        catch(Exception $e)
+        {
             return view('error.commonError');
         }
-        else
-        {
-            return view('error.privilege');
-        }
     }
 
-    public function onNavigate(Request $request)
-    {
-        $id = $request->input('id');
-        $firstName = $request->input('firstname');
-        $lastName = $request->input('lastname');
-        $username = $request->input('username');
-        $password = $request->input('password');
-        $email = $request->input('email');
-        $phone = $request->input('phone');
-        $role = $request->input('role');
-
-        $user = new User($id, $firstName, $lastName, $username, $password, $email, $phone, $role);
-
-        return view('users.profile')->with('user', $user);
-    }
-    
     /**
      * Generate the Profile from Navbar based on the Session ID of the User.
+     *
      * @param Request $request
      */
     public function onProfile(Request $request)
     {
-        // Create a User object
-        $user = new User(Session::get('userID'), "", "", "", "", "", "", "", "");
-        
-        // Call the User Business Service to access the profile:
-        $userBusiness = new UserBusinessService();
-        $userData = $userBusiness->profile($user);
-        
-        // translate query array into object
-        $userData = get_object_vars($userData);
-        
-        // if there is a result, then return the profile View
-        if($userData)
+        try
         {
-            return view('users.profile')->with('user', $userData);
+            // Create a User object
+            $user = new User(Session::get('userID'), "", "", "", "", "", "", "", "");
+
+            // Call the User Business Service to access the profile:
+            $userBusiness = new UserBusinessService();
+            $userData = $userBusiness->profile($user);
+
+            // // translate query array into object
+            if($userData)
+                $userData = get_object_vars($userData);
+
+            // if there is a result, then return the profile View
+            if($userData)
+            {
+                return view('users.profile')->with('user', $userData);
+            }
+            else
+            {
+                return view('error.commonError');
+            }
         }
-        else
+        catch(Exception $e)
         {
             return view('error.commonError');
         }

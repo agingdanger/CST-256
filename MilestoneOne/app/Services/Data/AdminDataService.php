@@ -8,7 +8,6 @@ use PDO;
 use PDOException;
 use App\Model\User;
 use App\Services\Utility\db_connector;
-use App\Model\userAttempt;
 use App\Services\Utility\DatabaseException;
 
 class AdminDataService
@@ -25,7 +24,7 @@ class AdminDataService
      * Get all users to populate the datatable
      *
      * @throws DatabaseException
-     * @return 
+     * @return
      */
     public function findAll()
     {
@@ -48,38 +47,67 @@ class AdminDataService
         }
     }
 
+    /**
+     * This is used to suspend a user from the AdminDataService
+     * @param User $user
+     * @throws DatabaseException
+     * @return boolean
+     */
     public function update(User $user)
     {
-        $id = $user->getId();
-        $firstName = $user->getFirstName();
-        $lastName = $user->getLastName();
-        $userName = $user->getUsername();
-        $password = $user->getPassword();
-        $email = $user->getEmail();
-        $phone = $user->getPhone();
-        $role = $user->getRole();
-        
-        $result = $this->conn->prepare("UPDATE users SET FIRST_NAME=:firstname, LAST_NAME=:lastname, USERNAME=:username, PASSWORD=:password, EMAIL=:email, PHONE=:phone, ROLE=:role WHERE ID=:id");
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        $result->bindParam(':firstname', $firstName);
-        $result->bindParam(':lastname', $lastName);
-        $result->bindParam(':username', $userName);
-        $result->bindParam(':password', $password);
-        $result->bindParam(':email', $email);
-        $result->bindParam(':phone', $phone);
-        $result->bindParam(':role', $role);
-        $result->execute();
+        try
+        {
+            $id = $user->getId();
+            $firstName = $user->getFirstName();
+            $lastName = $user->getLastName();
+            $userName = $user->getUsername();
+            $password = $user->getPassword();
+            $email = $user->getEmail();
+            $phone = $user->getPhone();
+            $role = $user->getRole();
 
-        if($result)
-        {
-            return true;
+            $result = $this->conn->prepare("UPDATE users SET FIRST_NAME=:firstname, LAST_NAME=:lastname, USERNAME=:username, PASSWORD=:password, EMAIL=:email, PHONE=:phone, ROLE=:role WHERE ID=:id");
+            $result->bindParam(':id', $id, PDO::PARAM_INT);
+            $result->bindParam(':firstname', $firstName);
+            $result->bindParam(':lastname', $lastName);
+            $result->bindParam(':username', $userName);
+            $result->bindParam(':password', $password);
+            $result->bindParam(':email', $email);
+            $result->bindParam(':phone', $phone);
+            $result->bindParam(':role', $role);
+            $result->execute();
+
+            if($result)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        else
+        catch(PDOException $e)
         {
+            Log::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+        catch(DatabaseException $e)
+        {
+            Log::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
             return false;
         }
     }
 
+    /**
+     * Delete the User from the Database
+     * @param User $user
+     * @throws DatabaseException
+     * @return unknown|mixed|boolean
+     */
     public function delete(User $user)
     {
         try

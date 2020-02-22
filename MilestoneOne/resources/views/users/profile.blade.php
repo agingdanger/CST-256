@@ -4,7 +4,7 @@
 <h2>Account Page</h2>
 
 <div>
-	<table id="userTable" class = "table table-striped table-bordered" style= "width:100%">
+  <table id="userTable" class = "table table-striped table-bordered" style= "width:100%">
 		<tr>
 			<td>First Name:</td>
 			<td>{{$user['FIRST_NAME']}}</td>
@@ -45,10 +45,12 @@
 	
 </div>
 <!-- Collapse Button -->
+
+
  <a class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#editContent">Edit</a>
 
 <div class="collapse navbar-collapse" id="editContent">
-    <table id="userTable" class="table table-striped table-bordered" style= "width:98%">
+    <table id="userTable" class="table table-striped table-bordered" style= "width:95%">
 <!--             <thead> -->
 <!--                 <tr> -->
 <!--                     <th>First Name</th> -->

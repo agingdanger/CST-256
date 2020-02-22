@@ -5,6 +5,7 @@ namespace App\Model;
 
 class User
 {
+    
     // Declaring variables: 
     private $id;
     private $firstName;
@@ -14,6 +15,7 @@ class User
     private $role;
     private $credentials;
 
+    
     
     // Creating a parameterized constructor to handle registrations: 
     public function __construct($id, $firstName, $lastName, $username, $password, $email, $phone, $role) 
@@ -26,7 +28,7 @@ class User
         $this->role = $role;
         
         //Encapsulating the User Login credentials into the user model
-        $this->credentials = new userAttempt($username,$password);
+        $this->credentials = new userCredentials($username,$password);
     }    
     
     // GETTERS AND SETTERS: 

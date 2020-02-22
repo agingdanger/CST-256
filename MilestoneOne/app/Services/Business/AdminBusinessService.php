@@ -32,6 +32,11 @@ class AdminBusinessService
         return $userData;
     }
     
+    /**
+     * Modify the User's Requested changes
+     * @param User $user
+     * @return boolean
+     */
     public function modify(User $user)
     {
         $db = new db_connector();
@@ -46,7 +51,7 @@ class AdminBusinessService
     }
     
     /**
-     * 
+     * Suspend the User
      * @param User $user
      */
     public function suspend(User $user)
@@ -65,6 +70,11 @@ class AdminBusinessService
         
     }
     
+    /**
+     * Remove/Delete the User from the Database
+     * @param User $user
+     * @return boolean|unknown|mixed
+     */
     public function remove(User $user)
     {
         $db = new db_connector();
