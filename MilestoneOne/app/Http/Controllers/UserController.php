@@ -260,7 +260,7 @@ class UserController extends Controller
             'lastname' => 'Required | Between: 4, 10 | Alpha',
             'email' => 'Required | Between: 3, 20 | E-Mail',
             'phone' => 'Required | Digits: 10', 
-            'role' => 'Required | Digits: 1 | Between: 1, 2'
+            'role' => 'Required | Max: 5 | Alpha'
         ];
         
         // Run Validation Rules:
