@@ -72,37 +72,45 @@
                     	<div class="form-group">
                     		<label for="firstname">First Name</label>
                     		<input type="text" id= "firstname" class="form-control input-normal" name = "firstname" value = "{{$user['FIRST_NAME']}}" />
+                    		{{ $errors->first('firstname') }}
                     	</div>
             			<div class="form-group">
             				<label for="lastname">Last Name</label>
 							<input type="text" class="form-control input-normal" name = "lastname" value = "{{$user['LAST_NAME']}}"/>
+							{{ $errors->first('lastname') }}
 						</div>
         				<div class="form-group">
         					<label for="username">Username</label>
                 				<input type = "text" class="form-control input-normal" name = "username" value = "{{$user['USERNAME']}}"/>
+                				{{ $errors->first('username') }}
             			</div>
                 		@if(Session::get('userID') == $user['ID'] || Session::get('role') == "admin")
                 			<div class="form-group">
                 				<label for="password">Password</label>
             					<input type = "text" class="form-control input-normal" name = "password" value = "{{$user['PASSWORD']}}"/>
+            					{{ $errors->first('password') }}
             				</div>
             			@endif
             			<div class="form-group">
             				<label for="email">Email</label>
             				<input type = "text" class="form-control input-normal" name = "email" value = "{{$user['EMAIL']}}"/>
+            				{{ $errors->first('email') }}
             			</div>
             			<div class="form-group">
             				<label for="phone">Phone</label>
             				<input type = "text" class="form-control input-normal" name = "phone" value = "{{$user['PHONE']}}"/>
+            				{{ $errors->first('phone') }}
             			</div>
             			@if(Session::get('role') == "admin" && Session::get('userID') != $user['ID'])
                 			<div class="form-group">
                 				<label for="role">Role</label>
                 				<input type = "text" class="form-control input-normal" name = "role" value = "{{$user['ROLE']}}"/>
+                				{{ $errors->first('role') }}
                 			</div>
             			@else()
             				<div class="form-group">
             					<input type= "hidden" class="form-control input-normal" name = "role" value= "{{$user['ROLE']}}"/>
+            					{{ $errors->first('role') }}
             				</div>
         				@endif()
         				<div class="form-group">

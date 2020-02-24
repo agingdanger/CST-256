@@ -73,7 +73,7 @@ class AdminBusinessService
     /**
      * Remove/Delete the User from the Database
      * @param User $user
-     * @return boolean|unknown|mixed
+     * @return boolean value
      */
     public function remove(User $user)
     {

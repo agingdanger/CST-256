@@ -17,6 +17,7 @@ use App\Services\Business\UserBusinessService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Exception;
+use Dotenv\Exception\ValidationException;
 
 /**
  *
@@ -34,6 +35,9 @@ class UserController extends Controller
      */
     public function onLogin(Request $request)
     {
+        // Call the ValidateForm:
+        $this->validateForm($request);
+        
         try
         {
             // Calling Business Services -
@@ -49,7 +53,7 @@ class UserController extends Controller
             $userData = get_object_vars($userData);
 
             if($userData['ROLE'] == "suspended")
-            {
+            {   
                 return view('error.suspended');
             }
 
@@ -58,6 +62,10 @@ class UserController extends Controller
             Session::put('role', $userData['ROLE']);
 
             return view('home.home')->with('user', $userData);
+        }
+        catch(ValidationException $el)
+        {
+            throw $el;
         }
         catch(Exception $e)
         {
@@ -74,6 +82,9 @@ class UserController extends Controller
      */
     public function onRegister(Request $request)
     {
+        // Call the ValidateForm:
+        $this->validateForm($request);
+        
         try
         {
             // Get the request data into variables
@@ -115,6 +126,9 @@ class UserController extends Controller
      */
     public function onEdit(Request $request)
     {
+        // Call the ValidateForm:
+        $this->validateForm($request);
+        
         try
         {
             /*
@@ -227,5 +241,29 @@ class UserController extends Controller
         {
             return view('error.commonError');
         }
+    }
+    
+    
+    /**
+     * Validation function that can be reused
+     * @param Request $request
+     */
+    private function validateForm(Request $request)
+    {
+        // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
+        
+        // Setup Data Validation Rules for Login Form.
+        $rules = [
+            'username' => 'Required | Between: 4, 10 | Alpha',
+            'password' => 'Required | Between: 4, 10', 
+            'firstname' => 'Required | Between: 4, 10 | Alpha',
+            'lastname' => 'Required | Between: 4, 10 | Alpha',
+            'email' => 'Required | Between: 3, 20 | E-Mail',
+            'phone' => 'Required | Digits: 10', 
+            'role' => 'Required | Digits: 1 | Between: 1, 2'
+        ];
+        
+        // Run Validation Rules:
+        $this->validate($request, $rules);
     }
 }

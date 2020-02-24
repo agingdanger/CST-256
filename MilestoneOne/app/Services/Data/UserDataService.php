@@ -168,7 +168,7 @@ class UserDataService
      * 
      * @param User $user
      * @throws DatabaseException
-     * @return unknown|boolean
+     * @return boolean
      */
     public function update(User $user)
     {

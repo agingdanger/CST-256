@@ -106,7 +106,7 @@ class AdminDataService
      * Delete the User from the Database
      * @param User $user
      * @throws DatabaseException
-     * @return unknown|mixed|boolean
+     * @return boolean
      */
     public function delete(User $user)
     {
