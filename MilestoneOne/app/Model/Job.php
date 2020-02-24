@@ -1,22 +1,34 @@
 <?php
 namespace App\Model;
 
+use Illuminate\Queue\Jobs\JobName;
+
 class Job
 {
+    private $id;
     private $name;
     private $description;
     private $company;
     private $requirements;
     
-    public function __construct($name, $description, $company, $requirements)
+    public function __construct($id, $name, $description, $company, $requirements)
     {
+        $this->id = $id; 
         $this->name = $name;
         $this->description = $description;
         $this->company = $company; 
         $this->requirements = $requirements;
     }
     /**
-     * @return mixed
+     * @return $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return JobName
      */
     public function getName()
     {
@@ -24,7 +36,7 @@ class Job
     }
 
     /**
-     * @return mixed
+     * @return $description
      */
     public function getDescription()
     {
@@ -32,7 +44,7 @@ class Job
     }
 
     /**
-     * @return mixed
+     * @return $company
      */
     public function getCompany()
     {
@@ -40,7 +52,7 @@ class Job
     }
 
     /**
-     * @return mixed
+     * @return $requirements
      */
     public function getRequirements()
     {
