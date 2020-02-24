@@ -24,12 +24,12 @@
 			</table>
 		</form>
 		
-    	<!-- @if($errors->count() != 0)
+    	@if($errors->count() != 0)
         	<h5>List of Errors</h5>
         	@foreach($errors->all() as $message) 
         		{{ $message }} <br /> 
         	@endforeach 
-    	@endif -->
+    	@endif
 		
 		
 		<p><?php 

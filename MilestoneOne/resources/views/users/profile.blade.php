@@ -82,7 +82,6 @@
         				<div class="form-group">
         					<label for="username">Username</label>
                 				<input type = "text" class="form-control input-normal" name = "username" value = "{{$user['USERNAME']}}"/>
-                				{{ $errors->first('username') }}
             			</div>
                 		@if(Session::get('userID') == $user['ID'] || Session::get('role') == "admin")
                 			<div class="form-group">
@@ -94,7 +93,6 @@
             			<div class="form-group">
             				<label for="email">Email</label>
             				<input type = "text" class="form-control input-normal" name = "email" value = "{{$user['EMAIL']}}"/>
-            				{{ $errors->first('email') }}
             			</div>
             			<div class="form-group">
             				<label for="phone">Phone</label>
@@ -105,12 +103,10 @@
                 			<div class="form-group">
                 				<label for="role">Role</label>
                 				<input type = "text" class="form-control input-normal" name = "role" value = "{{$user['ROLE']}}"/>
-                				{{ $errors->first('role') }}
                 			</div>
             			@else()
             				<div class="form-group">
             					<input type= "hidden" class="form-control input-normal" name = "role" value= "{{$user['ROLE']}}"/>
-            					{{ $errors->first('role') }}
             				</div>
         				@endif()
         				<div class="form-group">

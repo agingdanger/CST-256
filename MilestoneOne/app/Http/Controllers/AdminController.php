@@ -192,4 +192,19 @@ class AdminController extends Controller
             return view('error.commonError');
         }
     }
+    
+    public function onJobAddition($param) 
+    {
+        // Call the Validation Rules: 
+        
+        
+        try 
+        {
+            // Create Job Object: 
+        } 
+        catch (Exception $e) 
+        {
+            throw $e->getMessage();
+        }
+    }
 }

@@ -36,7 +36,7 @@ class UserController extends Controller
     public function onLogin(Request $request)
     {
         // Call the ValidateForm:
-        $this->validateForm($request);
+        $this->validateLoginForm($request);
         
         try
         {
@@ -83,7 +83,7 @@ class UserController extends Controller
     public function onRegister(Request $request)
     {
         // Call the ValidateForm:
-        $this->validateForm($request);
+        $this->validateRegistrationForm($request);
         
         try
         {
@@ -126,8 +126,9 @@ class UserController extends Controller
      */
     public function onEdit(Request $request)
     {
-        // Call the ValidateForm:
-        $this->validateForm($request);
+        // This piece of code needs to be used later for validation in the Edit form. 
+        /* // Call the ValidateForm:
+        $this->validateRegistrationForm($request); */
         
         try
         {
@@ -248,19 +249,57 @@ class UserController extends Controller
      * Validation function that can be reused
      * @param Request $request
      */
-    private function validateForm(Request $request)
+    private function validateLoginForm(Request $request)
     {
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
         
         // Setup Data Validation Rules for Login Form.
         $rules = [
-            'username' => 'Required | Between: 4, 10 | Alpha',
-            'password' => 'Required | Between: 4, 10', 
+            'username' => 'Required | Max: 20 | Alpha',
+            'password' => 'Required | Between: 4, 15'
+        ];
+        
+        // Run Validation Rules:
+        $this->validate($request, $rules);
+    }
+    
+    /**
+     * Validation function that can be reused
+     * @param Request $request
+     */
+    private function validateRegistrationForm(Request $request)
+    {
+        // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
+        
+        // Setup Data Validation Rules for Login Form.
+        $rules = [
+            'username' => 'Required | Max: 20 | Alpha',
+            'password' => 'Required | Between: 4, 15',
             'firstname' => 'Required | Between: 4, 10 | Alpha',
             'lastname' => 'Required | Between: 4, 10 | Alpha',
             'email' => 'Required | Between: 3, 20 | E-Mail',
-            'phone' => 'Required | Digits: 10', 
+            'phone' => 'Required | Digits: 10',
             'role' => 'Required | Max: 5 | Alpha'
+        ];
+        
+        // Run Validation Rules:
+        $this->validate($request, $rules);
+    }
+    
+    /**
+     * Validation function that can be reused
+     * @param Request $request
+     */
+    private function validateEditForm(Request $request)
+    {
+        // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
+        
+        // Setup Data Validation Rules for Login Form.
+        $rules = [
+            'password' => 'Required | Between: 4, 15',
+            'firstname' => 'Required | Between: 4, 10 | Alpha',
+            'lastname' => 'Required | Between: 4, 10 | Alpha',
+            'phone' => 'Required | Digits: 10'
         ];
         
         // Run Validation Rules:
