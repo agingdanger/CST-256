@@ -1,20 +1,27 @@
 @extends('layouts.master')
 @section('title', 'List of Jobs')
 
+@section('heading', 'Jobs Available')
+
 @section('content')
+	
+<form action="jobPost" method="POST">
+    <input type = "hidden" name = "_token" value = "{{ csrf_token() }}"/>
+    <input class = "btn btn-primary" type = "submit" value = "Click Here to Add a Job" />
+</form>
 	
 <div>
     <table id="userTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Job</th>
+                    <th>Job Name</th>
                     <th>Description</th>
                     <th>Company</th>
                     <th>Requirements</th>
+                    <th>Skills</th>
                     <th>Modify</th>
                     <th>Delete</th>
-                    <th>Suspend</th>
                 </tr>
             </thead>
             
@@ -25,69 +32,47 @@
             			<form action="viewJob" method="POST">
                 			<input type = "hidden" name = "_token" value = "{{ csrf_token() }}"/>
                 			<input type = "hidden" name = "id" value = "{{$job['ID']}}"/>
-                			<input type = "hidden" name = "job" value = "{{$job['JOB']}}"/>
+                			<input type = "hidden" name = "job" value = "{{$job['NAME']}}"/>
                 			<input type = "hidden" name = "description" value = "{{$job['DESCRIPTION']}}"/>
                 			<input type = "hidden" name = "company" value = "{{$job['COMPANY']}}"/>
                 			<input type = "hidden" name = "requirements" value = "{{$job['REQUIREMENTS']}}"/>
+                			<input type = "hidden" name = "skills" value = "{{$job['SKILLS']}}"/>
                 			<input class = "btn btn-primary" type = "submit" value = "{{$job['ID']}}" />
             			</form>
             		</td>
-            		<td>{{$job['FIRST_NAME']}}</td>
-            		<td>{{$job['LAST_NAME']}}</td>
-            		<td>{{v$job['USERNAME']}}</td>
-            		<td>{{$user['PASSWORD']}}</td>
-            		<td>{{$user['EMAIL']}}</td>
-            		<td>{{$user['PHONE']}}</td>
-            		<td>{{$user['ROLE']}}</td>
+            		<td>{{$job['NAME']}}</td>
+            		<td>{{$job['DESCRIPTION']}}</td>
+            		<td>{{$job['COMPANY']}}</td>
+            		<td>{{$job['REQUIREMENTS']}}</td>
+            		<td>{{$job['SKILLS']}}</td>
             		
             		<td>
             	
-            			 <form action="adminEdit" method="POST">
+            			 <form action="jobEdit" method="POST">
                 			<input type = "hidden" name = "_token" value = "{{ csrf_token() }}" />
-                			<input type = "hidden" name = "id" value = "{{$user['ID']}}"/>
-                			<input type = "hidden" name = "firstname" value = "{{$user['FIRST_NAME']}}"/>
-                			<input type = "hidden" name = "lastname" value = "{{$user['LAST_NAME']}}"/>
-                			<input type = "hidden" name = "username" value = "{{$user['USERNAME']}}"/>
-                			<input type = "hidden" name = "password" value = "{{$user['PASSWORD']}}"/>
-                			<input type = "hidden" name = "email" value = "{{$user['EMAIL']}}"/>
-                			<input type = "hidden" name = "phone" value = "{{$user['PHONE']}}"/>
-                			<input type = "hidden" name = "role" value = "{{$user['ROLE']}}"/>
+                			<input type = "hidden" name = "id" value = "{{$job['ID']}}"/>
+                			<input type = "hidden" name = "job" value = "{{$job['NAME']}}"/>
+                			<input type = "hidden" name = "description" value = "{{$job['DESCRIPTION']}}"/>
+                			<input type = "hidden" name = "company" value = "{{$job['COMPANY']}}"/>
+                			<input type = "hidden" name = "requirements" value = "{{$job['REQUIREMENTS']}}"/>
+                			<input type = "hidden" name = "skills" value = "{{$job['SKILLS']}}"/>
         					<input class = "btn btn-info" type = "submit" value = "Edit" />
             			</form>
         		
             		</td>
             		
             		<td>
-            			<form action="adminDelete" method="POST">
+            			<form action="jobDelete" method="POST">
                 			<input type = "hidden" name = "_token" value = "{{ csrf_token() }}"/>
-                			<input type = "hidden" name = "id" value = "{{$user['ID']}}"/>
-                			<input type = "hidden" name = "firstname" value = "{{$user['FIRST_NAME']}}"/>
-                			<input type = "hidden" name = "lastname" value = "{{$user['LAST_NAME']}}"/>
-                			<input type = "hidden" name = "username" value = "{{$user['USERNAME']}}"/>
-                			<input type = "hidden" name = "password" value = "{{$user['PASSWORD']}}"/>
-                			<input type = "hidden" name = "email" value = "{{$user['EMAIL']}}"/>
-                			<input type = "hidden" name = "phone" value = "{{$user['PHONE']}}"/>
-                			<input type = "hidden" name = "role" value = "{{$user['ROLE']}}"/>
+                			<input type = "hidden" name = "id" value = "{{$job['ID']}}"/>
+                			<input type = "hidden" name = "job" value = "{{$job['NAME']}}"/>
+                			<input type = "hidden" name = "description" value = "{{$job['DESCRIPTION']}}"/>
+                			<input type = "hidden" name = "company" value = "{{$job['COMPANY']}}"/>
+                			<input type = "hidden" name = "requirements" value = "{{$job['REQUIREMENTS']}}"/>
+                			<input type = "hidden" name = "skills" value = "{{$job['SKILLS']}}"/>
                 			<input class = "btn btn-danger" type = "submit" value = "Delete"  onclick="javascript:return confirm('Are you sure you want to delete this User?')"/>                			
             			</form>
             		</td>
-            		<td>
-            	
-            			 <form action="adminSuspend" method="POST">
-                			<input type = "hidden" name = "_token" value = "{{ csrf_token() }}" />
-                			<input type = "hidden" name = "id" value = "{{$user['ID']}}"/>
-                			<input type = "hidden" name = "firstname" value = "{{$user['FIRST_NAME']}}"/>
-                			<input type = "hidden" name = "lastname" value = "{{$user['LAST_NAME']}}"/>
-                			<input type = "hidden" name = "username" value = "{{$user['USERNAME']}}"/>
-                			<input type = "hidden" name = "password" value = "{{$user['PASSWORD']}}"/>
-                			<input type = "hidden" name = "email" value = "{{$user['EMAIL']}}"/>
-                			<input type = "hidden" name = "phone" value = "{{$user['PHONE']}}"/>
-                			<input type = "hidden" name = "role" value = "{{$user['ROLE']}}"/>
-                				<input class = "btn btn-warning" type = "submit" value = "Suspend" onclick="javascript:return confirm('Are you sure you want to change this user status?')" />
-            			</form>
-        		
-            		</td>
-            		
             		
             	</tr>
         	@endforeach

@@ -38,6 +38,7 @@ Route::get('/home', function ()
     return view('home.home');
 });
 
+/* ------------- Get History Routes -------------- */
 Route::get('/addJobHistory', function ()
 {
     return view('portfolio.addJobHistory');
@@ -52,6 +53,8 @@ Route::get('/addSkillHistory', function ()
 {
     return view('portfolio.addSkill');
 });
+/* ------------------------------------------------ */
+
 
 Route::post('/users', 'UserController@onUsersPull');
 
@@ -71,26 +74,26 @@ Route::post('/adminSuspend', 'AdminController@onSuspension');
 
 Route::post('/viewProfile', 'UserController@onNavigate');
 
+// Certain values had to be passed from the previous view. 
 Route::get('/displayUsers', 'AdminController@onUsersPull');
 
 Route::get('/profile', 'UserController@onProfile');
 
-
-
+/* ------------------- Portfolio Add Routes ---------------------- */
 Route::post('/addJob', 'PortfolioController@onAddWorkExperience');
 
 Route::post('/addEducation', 'PortfolioController@onAddEducation');
 
 Route::post('/addSkill', 'PortfolioController@onAddSkill');
 
+/* ------------------- Portfolio Delete Routes -------------------- */
 Route::post('/userJobDelete', 'PortfolioController@onJobRemoval');
 
 Route::post('/userSkillDelete', 'PortfolioController@onSkillRemoval');
 
 Route::post('/userEducationDelete', 'PortfolioController@onEducationRemoval');
 
-
-
+/* -------------------- Portfolio Edit Routes --------------------- */
 Route::post('/userRouteJobEdit', 'PortfolioController@onRouteJobEdit');
 
 Route::post('/userRouteSkillEdit', 'PortfolioController@onRouteSkillEdit');
@@ -103,5 +106,17 @@ Route::post('/editEducation', 'PortfolioController@onEducationEdit');
 
 Route::post('/editSkill', 'PortfolioController@onSkillEdit');
 
-
+/* ---------------------- Portfolio Personal Routes ----------------------- */
 Route::get('/myportfolio', 'PortfolioController@onPersonalPortfolioRetrieval');
+
+/* ---------------------- Admin Job Posting Routes ------------------------ */
+// Route to view all jobs available: 
+Route::get('/viewJobs', 'AdminController@onViewJobList');
+
+// Route to Add a Job: 
+Route::post('/jobPost', function()
+{
+    return view('job.addJobForm');
+});
+
+Route::post('/addJobPost', 'AdminController@onJobAddition');

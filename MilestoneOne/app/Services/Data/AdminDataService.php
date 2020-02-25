@@ -1,14 +1,13 @@
 <?php
 namespace App\Services\Data;
 
-use Illuminate\Http\Request;
+use App\Model\User;
+use App\Services\Utility\DatabaseException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Exception;
 use PDO;
 use PDOException;
-use App\Model\User;
-use App\Services\Utility\db_connector;
-use App\Services\Utility\DatabaseException;
 
 class AdminDataService
 {
@@ -44,6 +43,36 @@ class AdminDataService
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+    }
+    
+    /**
+     * Get all Jobs to populate the datatable
+     *
+     * @throws DatabaseException
+     * @return
+     */
+    public function findAllJobs()
+    {
+        try
+        {
+            // Find all jobs.
+            // $userID = Session::get('userID');
+            $result = $this->conn->prepare("SELECT * FROM job");
+            $result->execute();
+            
+            return $result->fetchAll();
+        }
+        catch(PDOException $e)
+        {
+            Log::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+        catch(Exception $exc)
+        {
+            throw $exc->getMessage();
         }
     }
     

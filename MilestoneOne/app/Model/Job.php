@@ -10,14 +10,16 @@ class Job
     private $description;
     private $company;
     private $requirements;
+    private $skills;
     
-    public function __construct($id, $name, $description, $company, $requirements)
+    public function __construct($id, $name, $description, $company, $requirements, $skills)
     {
         $this->id = $id; 
         $this->name = $name;
         $this->description = $description;
         $this->company = $company; 
         $this->requirements = $requirements;
+        $this->skills = $skills;
     }
     /**
      * @return $id
@@ -57,5 +59,13 @@ class Job
     public function getRequirements()
     {
         return $this->requirements;
-    }    
+    }
+    /**
+     * @return $skills
+     */
+    public function getSkills()
+    {
+        return $this->skills;
+    }
+    
 }

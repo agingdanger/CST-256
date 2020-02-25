@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Services\Data\AdminDataService;
 use App\Model\User;
 use App\Services\Utility\db_connector;
+use App\Services\Data\JobDataService;
 
 class AdminBusinessService
 {
@@ -30,6 +31,49 @@ class AdminBusinessService
         $conn = null;
         
         return $userData;
+    }
+    
+    /**
+     * Populating Jobs into the datatable
+     *
+     * @return $userData
+     */
+    public function populateJobs()
+    {
+        /*
+         * Creating a Connection to get the PDO from Utilities
+         * and then, send it do DataService.
+         */
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Sending it to Data Service:
+        $adminData = new AdminDataService($conn);
+        $jobsData = $adminData->findAllJobs();
+        
+        // Close the PDO connection
+        $conn = null;
+        
+        return $jobsData;
+    }
+    
+    public function publishJob($job) 
+    {
+        /*
+         * Creating a Connection to get the PDO from Utilities
+         * and then, send it do DataService.
+         */
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Sending job to Data Service:
+        $service = new JobDataService($conn);
+        $jobsData = $service->create($job);
+        
+        // Close the PDO connection
+        $conn = null;
+        
+        return $jobsData;
     }
     
     /**

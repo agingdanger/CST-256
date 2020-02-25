@@ -31,6 +31,10 @@
 		<li class="nav-item">
         <a class="nav-link" href='displayUsers'>Admin Users</a>
       </li>
+      
+      <li class="nav-item">      
+        <a class="nav-link" href='viewJobs'>Jobs</a>        
+      </li>
     @endif
     </ul>
     <!-- Links -->
@@ -40,3 +44,6 @@
 
 </nav>
 <!--/.Navbar-->
+
+<!-- /.Heading -->
+<h2>@yield('heading')</h2>

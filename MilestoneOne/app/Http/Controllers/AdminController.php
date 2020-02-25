@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Session;
 use Exception;
 use App\Services\Business\AdminBusinessService;
 use App\Model\User;
+use App\Model\Job;
 
 class AdminController extends Controller
 {
@@ -193,18 +194,69 @@ class AdminController extends Controller
         }
     }
     
-    public function onJobAddition($param) 
+    public function onJobAddition(Request $request) 
     {
         // Call the Validation Rules: 
         
         
         try 
         {
+            // Store all the Requested info into Variables:
+            $jobId = $request->input('id');
+            $jobName = $request->input('jobname');
+            $jobDesc = $request->input('description');
+            $jobComp = $request->input('company');
+            $jobRequire = $request->input('requirements');
+            $jobSkills = $request->input('skills');
+            
             // Create Job Object: 
+            $job = new Job($jobId, $jobName, $jobDesc, $jobComp, $jobRequire, $jobSkills);
+            
+            // Send it to Business Service to Add the Job: 
+            $service = new AdminBusinessService();
+            $result = $service->publishJob($job);
+            $jobsData = $service->populateJobs();
+            
+            
+            if($result)
+            {
+                return view('job.jobs')->with('jobs', $jobsData);
+            }
+            else
+                return view('common.error');
+            
         } 
         catch (Exception $e) 
         {
             throw $e->getMessage();
         }
+    }
+    
+    
+    public function onViewJobList()
+    {
+        // Call the Validation Rules:
+        
+        
+        /* try
+        { */
+            // Check to see if the Session's Role is an Admin: 
+            if(Session::get('role') == "admin")
+            {
+                // Call a business service and populate with jobs within a table: 
+                $service = new AdminBusinessService();
+                $jobsData = $service->populateJobs();
+            }
+            else
+            {
+                return view('error.privilege');
+            }
+            
+            return view('job.jobs')->with('jobs', $jobsData);
+        /* }
+        catch (Exception $e)
+        {
+            throw $e->getMessage();
+        } */
     }
 }
