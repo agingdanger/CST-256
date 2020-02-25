@@ -22,7 +22,7 @@
         <a class="nav-link" href='users'>Users</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="profile">Profile</a>
+        <a class="nav-link" href="myportfolio">Portfolio</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="welcome">Logout</a>

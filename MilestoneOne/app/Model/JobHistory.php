@@ -1,35 +1,30 @@
 <?php
 
+namespace App\Model;
 class JobHistory
 {
-    private $id; 
-    private $name; 
+    private $id;
+    private $name;
     private $position;
-    private $description; 
-    private $awards; 
-    private $start_date; 
-    private $end_date; 
+    private $description;
+    private $awards;
+    private $startDate;
+    private $endDate;
+    private $userID;
     
-    /**
-     * Default Constructor
-     * @param $id
-     * @param $name
-     * @param $position
-     * @param $description
-     * @param $awards
-     * @param $start_date
-     * @param $end_date
-     */
-    public function __construct($id, $name, $position, $description, $awards, $start_date, $end_date)
+    
+    public function __construct($id, $name, $position, $description, $awards, $startDate, $endDate, $userID)
     {
-        $this->id = $id; 
+        $this->id = $id;
         $this->name = $name;
-        $this->position = $position; 
+        $this->position = $position;
         $this->description = $description;
         $this->awards = $awards;
-        $this->start_date = $start_date;
-        $this->end_date = $end_date;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+        $this->userID = $userID;
     }
+    
     /**
      * @return mixed
      */
@@ -73,16 +68,89 @@ class JobHistory
     /**
      * @return mixed
      */
-    public function getStart_date()
+    public function getStartDate()
     {
-        return $this->start_date;
+        return $this->startDate;
     }
 
     /**
      * @return mixed
      */
-    public function getEnd_date()
+    public function getEndDate()
     {
-        return $this->end_date;
+        return $this->endDate;
     }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param mixed $position
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @param mixed $awards
+     */
+    public function setAwards($awards)
+    {
+        $this->awards = $awards;
+    }
+
+    /**
+     * @param mixed $startDate
+     */
+    public function setStartDate($startDate)
+    {
+        $this->startDate = $startDate;
+    }
+
+    /**
+     * @param mixed $endDate
+     */
+    public function setEndDate($endDate)
+    {
+        $this->endDate = $endDate;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUserID()
+    {
+        return $this->userID;
+    }
+
+    /**
+     * @param mixed $userID
+     */
+    public function setUserID($userID)
+    {
+        $this->userID = $userID;
+    }
+
+
 }
