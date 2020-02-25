@@ -228,4 +228,5 @@ class UserController extends Controller
             return view('error.commonError');
         }
     }
+    
 }

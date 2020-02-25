@@ -32,10 +32,43 @@ class AdminDataService
         {
             // Find all the users except for the current userID.
             $userID = Session::get('userID');
-            $result = $this->conn->prepare("SELECT * FROM `users` WHERE ID != :userid");
+            $result = $this->conn->prepare("SELECT * FROM users WHERE ID != :userid");
             $result->bindParam('userid', $userID);
             $result->execute();
 
+            return $result->fetchAll();
+        }
+        catch(PDOException $e)
+        {
+            Log::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+    }
+    
+    public function findByID()
+    {
+        try
+        {
+            // Find all the users except for the current userID.
+            $userID = Session::get('userID');
+            $result = $this->conn->prepare("SELECT u.*,
+        		p.PID, p.P_ABOUT_USER, p.P_SKILLS, p.P_MESSAGE,
+                j.JOB_NAME, j.JOB_DESCRIPTION, j.JOB_YEARS, j.portfolio_ID,
+                e.ED_NAME, e.ED_DESCRIPTION, e.ED_YEARS, e.ED_START_YEAR, e.ED_END_YEAR, e.portfolio_ID
+                FROM
+                users as u
+                LEFT JOIN portfolio as p
+                ON u.ID = p.users_ID
+        		LEFT JOIN jobs as j
+                on p.PID = j.portfolio_ID
+                LEFT JOIN education as e
+                on p.PID = e.portfolio_ID
+                WHERE ID = :userid");
+            $result->bindParam('userid', $userID);
+            $result->execute();
+            
             return $result->fetchAll();
         }
         catch(PDOException $e)
