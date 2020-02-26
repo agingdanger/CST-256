@@ -212,7 +212,7 @@ class AdminController extends Controller
     {
 
         // Call the Validation Rules:
-        $this->validateJobForm($request);
+//         $this->validateJobForm($request);
 
         try
         {
@@ -244,7 +244,6 @@ class AdminController extends Controller
         {
             throw $el;
         }
-
         catch (Exception $e)
         {
             // Throwing Exception with message:
