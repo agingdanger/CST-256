@@ -11,9 +11,11 @@ use PDOException;
 
 class AdminDataService
 {
+    // Declare class variables: 
     private $db;
     private $conn;
 
+    // Default Constructor: 
     public function __construct($conn)
     {
         $this->conn = $conn;
@@ -31,8 +33,11 @@ class AdminDataService
         {
             // Find all the users except for the current userID.
             $userID = Session::get('userID');
+            // Build the Query to find the User with the right ID:
             $result = $this->conn->prepare("SELECT * FROM users WHERE ID != :userid");
+            // Bind the query variables with method variable: 
             $result->bindParam('userid', $userID);
+            // Execute the Query: 
             $result->execute();
 
             return $result->fetchAll();
@@ -46,42 +51,13 @@ class AdminDataService
         }
     }
     
-    /**
-     * Get all Jobs to populate the datatable
-     *
-     * @throws DatabaseException
-     * @return
-     */
-    public function findAllJobs()
-    {
-        try
-        {
-            // Find all jobs.
-            // $userID = Session::get('userID');
-            $result = $this->conn->prepare("SELECT * FROM job");
-            $result->execute();
-            
-            return $result->fetchAll();
-        }
-        catch(PDOException $e)
-        {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
-            ));
-            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
-        }
-        catch(Exception $exc)
-        {
-            throw $exc->getMessage();
-        }
-    }
-    
     public function findByID()
     {
         try
         {
             // Find all the users except for the current userID.
             $userID = Session::get('userID');
+            // Build the Query to find the User's info by their ID:
             $result = $this->conn->prepare("SELECT u.*,
         		p.PID, p.P_ABOUT_USER, p.P_SKILLS, p.P_MESSAGE,
                 j.JOB_NAME, j.JOB_DESCRIPTION, j.JOB_YEARS, j.portfolio_ID,
@@ -95,9 +71,12 @@ class AdminDataService
                 LEFT JOIN education as e
                 on p.PID = e.portfolio_ID
                 WHERE ID = :userid");
+            // Bind the query variables with method variable:
             $result->bindParam('userid', $userID);
+            // Execute the Query: 
             $result->execute();
             
+            // Return the result with all the User's info: 
             return $result->fetchAll();
         }
         catch(PDOException $e)
@@ -119,6 +98,7 @@ class AdminDataService
     {
         try
         {
+            // Store the User's info from the object param into variables: 
             $id = $user->getId();
             $firstName = $user->getFirstName();
             $lastName = $user->getLastName();
@@ -128,7 +108,9 @@ class AdminDataService
             $phone = $user->getPhone();
             $role = $user->getRole();
 
+            // Build the Query to update the User's info:
             $result = $this->conn->prepare("UPDATE users SET FIRST_NAME=:firstname, LAST_NAME=:lastname, USERNAME=:username, PASSWORD=:password, EMAIL=:email, PHONE=:phone, ROLE=:role WHERE ID=:id");
+            // Bind the query variables with method variable:
             $result->bindParam(':id', $id, PDO::PARAM_INT);
             $result->bindParam(':firstname', $firstName);
             $result->bindParam(':lastname', $lastName);
@@ -137,8 +119,10 @@ class AdminDataService
             $result->bindParam(':email', $email);
             $result->bindParam(':phone', $phone);
             $result->bindParam(':role', $role);
+            // Execute the Query: 
             $result->execute();
 
+            // Check if there is result: 
             if($result)
             {
                 return true;

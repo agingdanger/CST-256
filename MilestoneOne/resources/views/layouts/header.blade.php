@@ -27,15 +27,15 @@
       <li class="nav-item">
         <a class="nav-link" href="welcome">Logout</a>
       </li>
-    @if(Session::get('role') === "admin")
+	@if(Session::get('role') === "admin")
 		<li class="nav-item">
         <a class="nav-link" href='displayUsers'>Admin Users</a>
       </li>
-      
+    @endif
       <li class="nav-item">      
         <a class="nav-link" href='viewJobs'>Jobs</a>        
       </li>
-    @endif
+    
     </ul>
     <!-- Links -->
 

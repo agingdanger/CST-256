@@ -109,6 +109,7 @@ Route::post('/editSkill', 'PortfolioController@onSkillEdit');
 /* ---------------------- Portfolio Personal Routes ----------------------- */
 Route::get('/myportfolio', 'PortfolioController@onPersonalPortfolioRetrieval');
 
+
 /* ---------------------- Admin Job Posting Routes ------------------------ */
 // Route to view all jobs available: 
 Route::get('/viewJobs', 'AdminController@onViewJobList');
@@ -118,5 +119,11 @@ Route::post('/jobPost', function()
 {
     return view('job.addJobForm');
 });
-
+// Route to add a Job after clicking the "Add a Job" from the Job list page:
 Route::post('/addJobPost', 'AdminController@onJobAddition');
+// Routes to view the EditJobForm Page from the Job list page: 
+Route::post('/viewEditJob', 'AdminController@onViewEditJob');
+// Routes to trigger the editJobPost controller method to update the Job's info: 
+Route::post('/editJobPost', 'AdminController@onEditJobPost');
+// Routes to onJobDeletion controller method to delete the Job upon clicking "Delete" from Job list page:
+Route::post('/jobDelete', 'AdminController@onJobDeletion');

@@ -305,4 +305,6 @@ class UserController extends Controller
         // Run Validation Rules:
         $this->validate($request, $rules);
     }
+    
+    
 }

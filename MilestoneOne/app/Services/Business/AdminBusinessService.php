@@ -3,6 +3,7 @@ namespace App\Services\Business;
 
 use Illuminate\Http\Request;
 use App\Services\Data\AdminDataService;
+use App\Model\Job;
 use App\Model\User;
 use App\Services\Utility\db_connector;
 use App\Services\Data\JobDataService;
@@ -48,7 +49,7 @@ class AdminBusinessService
         $conn = $db->getConnection();
         
         // Sending it to Data Service:
-        $adminData = new AdminDataService($conn);
+        $adminData = new JobDataService($conn);
         $jobsData = $adminData->findAllJobs();
         
         // Close the PDO connection
@@ -83,10 +84,15 @@ class AdminBusinessService
      */
     public function modify(User $user)
     {
+        /*
+         * Creating a Connection to get the PDO from Utilities
+         * and then, send it do DataService.
+         */
         $db = new db_connector();
         $conn = $db->getConnection();
-        $adminData = new AdminDataService($conn);
         
+        // Send user and conn to the Data Service to Update: 
+        $adminData = new AdminDataService($conn);        
         $userData = $adminData->update($user);
         
         $conn = null;
@@ -95,16 +101,46 @@ class AdminBusinessService
     }
     
     /**
-     * Suspend the User
+     * Modify the Job's info: 
+     * @param Job $job
+     * @return boolean
+     */
+    public function jobModify(Job $job)
+    {
+        /*
+         * Creating a Connection to get the PDO from Utilities
+         * and then, send it do DataService.
+         */
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Call the Data Service to Update the Jobpost: 
+        $adminData = new JobDataService($conn);        
+        $isJobData = $adminData->update($job);
+        
+        // Close the PDO Connection: 
+        $conn = null;
+        
+        return $isJobData;
+    }
+    
+    /**
+     * Suspend the User by updating the role:
      * @param User $user
      */
     public function suspend(User $user)
     {
         
         // Take the UserID and pass it to dataservice.
+        
+        /*
+         * Creating a Connection to get the PDO from Utilities
+         * and then, send it do DataService.
+         */
         $db = new db_connector();
         $conn = $db->getConnection();
         
+        // Send user and conn to the DataService to Update the role: 
         $service = new AdminDataService($conn);
         $adminData = $service->update($user);
         
@@ -121,11 +157,40 @@ class AdminBusinessService
      */
     public function remove(User $user)
     {
+        /*
+         * Creating a Connection to get the PDO from Utilities
+         * and then, send it do DataService.
+         */
         $db = new db_connector();
         $conn = $db->getConnection();
         
+        // Send user and conn to the DataService to remove a User: 
         $service = new AdminDataService($conn);
         $adminData = $service->delete($user);
+        $conn = null;
+        
+        return $adminData;
+    }
+    
+    /**
+     * Delete the selected Job
+     * @param Job $job
+     * @return boolean $adminData
+     */
+    public function obliterateJob(Job $job)
+    {
+        /*
+         * Creating a Connection to get the PDO from Utilities
+         * and then, send it do DataService.
+         */
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Send the Job's ID mainly to the data service to delete it: 
+        $service = new JobDataService($conn);
+        $adminData = $service->delete($job);
+        
+        // Close the PDO Connection: 
         $conn = null;
         
         return $adminData;
