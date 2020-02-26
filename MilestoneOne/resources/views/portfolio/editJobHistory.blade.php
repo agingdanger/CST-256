@@ -24,7 +24,7 @@
 				
 				<tr>
 					<td>Awards: </td>
-					<td><input type = "text" name = "jobaward" value = "{{$job->getAwards()}}"/></td>
+					<td><input type = "text" name = "jobawards" value = "{{$job->getAwards()}}"/></td>
 				</tr>
 				
 				<tr>

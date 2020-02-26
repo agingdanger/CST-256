@@ -53,7 +53,7 @@ class PortfolioController extends Controller
             $skillName = $request->input('skillname');
             $userID = $request->input('userid');
             
-            //Create an education object to be added
+            //Create a skill object to be added
             $skill = new Skill($id, $skillName, $userID);
             
             $portfolioBusiness = new PortfolioBusinessService();
@@ -143,6 +143,65 @@ class PortfolioController extends Controller
 //             return view('error.commonError');
 //         }
     }
+    
+    public function onEducationRemoval(Request $request)
+    {
+        //         try
+        //         {
+        
+        
+        $userID = Session::get("userID");
+        $id = $request->input('edid');
+        
+        $portfolioBusiness = new PortfolioBusinessService();
+        
+        $portfolioStatus = $portfolioBusiness->removeUserEducation($id);
+        
+        $jobs = $portfolioBusiness->retrieveUserJobs($userID);
+        
+        $skills = $portfolioBusiness->retrieveUserSkills($userID);
+        
+        $education = $portfolioBusiness->retrieveUserEducation($userID);
+        
+        return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
+        
+        //         }
+        //         catch(Exception $e)
+        //         {
+        //             return view('error.commonError');
+        //         }
+        }
+        
+        public function onSkillRemoval(Request $request)
+        {
+            //         try
+            //         {
+            
+            
+                $userID = Session::get("userID");
+                $id = $request->input('skillid');
+                
+                $portfolioBusiness = new PortfolioBusinessService();
+                
+                $portfolioStatus = $portfolioBusiness->removeUserSkill($id);
+                
+                $jobs = $portfolioBusiness->retrieveUserJobs($userID);
+                
+                $skills = $portfolioBusiness->retrieveUserSkills($userID);
+                
+                $education = $portfolioBusiness->retrieveUserEducation($userID);
+                
+                return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
+                
+//                 }
+//                 catch(Exception $e)
+//                 {
+//                     return view('error.commonError');
+//                 }
+            }
+            
+    
+    
     public function onPersonalPortfolioRetrieval(Request $request)
     {
         try
@@ -180,18 +239,9 @@ class PortfolioController extends Controller
             $userID = Session::get('userID');
             
             $job = new JobHistory($id, $name, $position, $description, $awards, $startDate, $endDate, $userID);
-            
-            $portfolioBusiness = new PortfolioBusinessService();
+           
             
             return view('portfolio.editJobHistory')->with('job', $job);
-            
-            $jobs = $portfolioBusiness->retrieveUserJobs($userID);
-            
-            $skills = $portfolioBusiness->retrieveUserSkills($userID);
-            
-            $education = $portfolioBusiness->retrieveUserEducation($userID);
-            
-            
             
         }
         catch(Exception $e)
@@ -202,45 +252,40 @@ class PortfolioController extends Controller
     
     public function onRouteEducationEdit(Request $request)
     {
-        try
-        {
-            
+//         try
+//         {
+            $id = $request->input('edid');
+            $name = $request->input('edname');
+            $years = $request->input('edyears');
+            $major = $request->input('edmajor');
+            $minor = $request->input('edminor');
+            $startYear = $request->input('edstartyear');
+            $endYear = $request->input('edendyear');
             $userID = Session::get('userID');
             
-            $portfolioBusiness = new PortfolioBusinessService();
+            $ed = new Education($id, $name, $years, $major, $minor, $startYear, $endYear,  $userID);
             
-            $jobs = $portfolioBusiness->retrieveUserJobs($userID);
+            return view('portfolio.editEducation')->with('ed', $ed);
             
-            $skills = $portfolioBusiness->retrieveUserSkills($userID);
-            
-            $education = $portfolioBusiness->retrieveUserEducation($userID);
-            
-            return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
-            
-        }
-        catch(Exception $e)
-        {
-            return view('error.commonError');
-        }
+//         }
+//         catch(Exception $e)
+//         {
+//             return view('error.commonError');
+//         }
     }
     
     public function onRouteSkillEdit(Request $request)
     {
         try
         {
+            $id = $request->input('skillid');
+            $skillName = $request->input('skillname');
+            $userID = $request->input('userid');
             
-            $userID = Session::get('userID');
+            //Create a skill object to be added
+            $skill = new Skill($id, $skillName, $userID);
             
-            $portfolioBusiness = new PortfolioBusinessService();
-            
-            $jobs = $portfolioBusiness->retrieveUserJobs($userID);
-            
-            $skills = $portfolioBusiness->retrieveUserSkills($userID);
-            
-            $education = $portfolioBusiness->retrieveUserEducation($userID);
-            
-            return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
-            
+            return view('portfolio.editSkill')->with('skill', $skill);
         }
         catch(Exception $e)
         {
@@ -276,6 +321,71 @@ class PortfolioController extends Controller
             if($portfolioStatus)
             return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
             
+        }
+        catch(Exception $e)
+        {
+            return view('error.commonError');
+        }
+    }
+    
+    public function onEducationEdit(Request $request)
+    {
+        try
+        {
+            $id = $request->input('edid');
+            $name = $request->input('edname');
+            $years = $request->input('edyears');
+            $major = $request->input('edmajor');
+            $minor = $request->input('edminor');
+            $startYear = $request->input('edstartyear');
+            $endYear = $request->input('edendyear');
+            $userID = Session::get('userID');
+            
+            $ed = new Education($id, $name, $years, $major, $minor, $startYear, $endYear,  $userID);
+            
+            $portfolioBusiness = new PortfolioBusinessService();
+            
+            $portfolioStatus = $portfolioBusiness->modifyEducationHistory($ed);
+            
+            $jobs = $portfolioBusiness->retrieveUserJobs($userID);
+            
+            $skills = $portfolioBusiness->retrieveUserSkills($userID);
+            
+            $education = $portfolioBusiness->retrieveUserEducation($userID);
+            
+            if($portfolioStatus)
+                return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
+                
+        }
+        catch(Exception $e)
+        {
+            return view('error.commonError');
+        }
+    }
+    
+    public function onSkillEdit(Request $request)
+    {
+        try
+        {
+            $id = $request->input('skillid');
+            $name = $request->input('skillname');
+            $userID = Session::get('userID');
+            
+            $skill = new Skill($id, $name, $userID);
+            
+            $portfolioBusiness = new PortfolioBusinessService();
+            
+            $portfolioStatus = $portfolioBusiness->modifySkillHistory($skill);
+            
+            $jobs = $portfolioBusiness->retrieveUserJobs($userID);
+            
+            $skills = $portfolioBusiness->retrieveUserSkills($userID);
+            
+            $education = $portfolioBusiness->retrieveUserEducation($userID);
+            
+            if($portfolioStatus)
+                return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
+                
         }
         catch(Exception $e)
         {

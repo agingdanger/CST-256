@@ -2,13 +2,13 @@
 @section('title', 'Edit a Skill Page')
 
 @section('content')
-		<form action = "addSkill" method = "POST">
+		<form action = "editSkill" method = "POST">
 			<input type = "hidden" name = "_token" value = "{{csrf_token()}}"/>
 			<h2>Edit Skill History</h2>
 			<table>
 				<tr>
 					<td>Skill: </td>
-					<td><input type = "text" name = "skillname" /></td>
+					<td><input type = "text" name = "skillname" value = "{{$skill->getName()}}"/></td>
 				</tr>
 	
 				<tr>
@@ -16,8 +16,12 @@
 				</tr>
 				
 				<tr>
+					<td><input type = "hidden" name = "skillid" value = "{{$skill->getId()}}"/></td>
+				</tr>
+				
+				<tr>
 					<td colspan = "2" align = "center">
-						<input type = "submit" value = "Add" />
+						<input type = "submit" value = "Edit" />
 					</td>
 				</tr>
 			</table>

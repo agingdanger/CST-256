@@ -100,6 +100,32 @@ class PortfolioBusinessService
         return $portfolioData;
     }
     
+    public function removeUserEducation($id)
+    {
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        $portfolioService = new PortfolioDataService($conn);
+        
+        $portfolioData = $portfolioService->deleteEducation($id);
+        
+        $conn = null;
+        
+        return $portfolioData;
+    }
+    
+    public function removeUserSkill($id)
+    {
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        $portfolioService = new PortfolioDataService($conn);
+        
+        $portfolioData = $portfolioService->deleteSkill($id);
+        
+        $conn = null;
+        
+        return $portfolioData;
+    }
+    
     public function modifyJobHistory(JobHistory $job)
     {
         $db = new db_connector();
@@ -119,7 +145,7 @@ class PortfolioBusinessService
         $conn = $db->getConnection();
         $portfolioService = new PortfolioDataService($conn);
         
-        $portfolioData = $portfolioService->updateEducation($ed);
+        $portfolioData = $portfolioService->updateEducationHistory($ed);
         
         $conn = null;
         
@@ -132,7 +158,7 @@ class PortfolioBusinessService
         $conn = $db->getConnection();
         $portfolioService = new PortfolioDataService($conn);
         
-        $portfolioData = $portfolioService->updateSkill($skill);
+        $portfolioData = $portfolioService->updateSkillHistory($skill);
         
         $conn = null;
         
