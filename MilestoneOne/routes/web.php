@@ -98,7 +98,7 @@ Route::post('/userRouteJobEdit', 'PortfolioController@onRouteJobEdit');
 
 Route::post('/userRouteSkillEdit', 'PortfolioController@onRouteSkillEdit');
 
-Route::post('/userRouteEducationEdit', 'PortfolioController@onRouteJobEdit');
+Route::post('/userRouteEducationEdit', 'PortfolioController@onRouteEducationEdit');
 
 Route::post('/editJob', 'PortfolioController@onJobEdit');
 
