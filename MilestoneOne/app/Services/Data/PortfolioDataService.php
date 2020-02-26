@@ -14,11 +14,20 @@ class PortfolioDataService
     private $db;
     private $conn;
     
+    // Default Constructor: 
     public function __construct($conn)
     {
         $this->conn = $conn;
     }
     
+    /* ------------------------------- READ Methods ------------------------------ */
+    
+    /**
+     * Find the Job history of a User.
+     * @param unknown $userID
+     * @throws DatabaseException
+     * @return unknown
+     */
     public function findAllUserJobs($userID)
     {
         try
@@ -79,6 +88,7 @@ class PortfolioDataService
         }
     }
     
+    /* ------------------------------- CREATE Methods ------------------------------ */
     public function createJob(JobHistory $job)
     {
         try
@@ -234,6 +244,7 @@ class PortfolioDataService
          } */
     }
     
+    /* ------------------------------- DELETE Methods ------------------------------ */
     public function deleteJob($id)
     {
         try
@@ -336,6 +347,7 @@ class PortfolioDataService
          } */
     }
     
+    /* ------------------------------- UPDATE Methods ------------------------------ */
     public function updateJobHistory(JobHistory $job)
     {
         try
