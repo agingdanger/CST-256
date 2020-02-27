@@ -13,6 +13,13 @@ use Dotenv\Exception\ValidationException;
 
 class PortfolioController extends Controller
 {
+    
+    /**
+     * Add Job History to a User's portfolio: 
+     * @param Request $request
+     * @throws ValidationException
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onAddWorkExperience(Request $request)
     {
         // Call the Validation Rules: 
@@ -20,6 +27,7 @@ class PortfolioController extends Controller
         
         try
         {
+            // Store the Request info into variables:
             $id = "";
             $jobName = $request->input('jobname');
             $jobPosition = $request->input('jobposition');
@@ -32,27 +40,39 @@ class PortfolioController extends Controller
             // Create a Job History Object and populate the data
             $job = new JobHistory($id, $jobName, $jobPosition, $jobDescription, $jobAward, $jobStartDate, $jobEndDate, $userID);
             
+            // Call the Business Service to add Job History: 
             $portfolioBusiness = new PortfolioBusinessService();
             $portfolioStatus = $portfolioBusiness->postJobExperience($job);
             
+            // Store into jobs all the Job History of a User
             $jobs = $portfolioBusiness->retrieveUserJobs($userID);
             
+            // Store into skills all the skill history of the user
             $skills = $portfolioBusiness->retrieveUserSkills($userID);
             
+            // Store into education all the education history of the user.
             $education = $portfolioBusiness->retrieveUserEducation($userID);
             
+            // Return portfolio view with all the updated number of job history, education history, and skill history. 
             return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
         }
         catch (ValidationException $valExc)
         {
+            // throw Valexc
             throw $valExc;
         }
         catch(Exception $e)
         {
+            // throw 
             return view('error.commonError');
         }
     }
     
+    /**
+     * Add Skills to the Portfolio
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onAddSkill(Request $request)
     {
         // Call the Validation Rule: 
@@ -90,6 +110,11 @@ class PortfolioController extends Controller
         }
     }
     
+    /**
+     * Add Education History to the Portfolio
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onAddEducation(Request $request)
     {
         // Call the Validation Form: 
@@ -132,6 +157,11 @@ class PortfolioController extends Controller
         }
     }
     
+    /**
+     * Delete a Job History from the Portfolio
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onJobRemoval(Request $request)
     {
 //         try
@@ -158,6 +188,12 @@ class PortfolioController extends Controller
 //         }
     }
     
+    /**
+     * Delete Education History on the Portfolio
+     * 
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onEducationRemoval(Request $request)
     {
         //         try
@@ -186,6 +222,11 @@ class PortfolioController extends Controller
         //         }
         }
         
+        /**
+         * Delete skill on History on the Portfolio
+         * @param Request $request
+         * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+         */
         public function onSkillRemoval(Request $request)
         {
             //         try
@@ -215,7 +256,11 @@ class PortfolioController extends Controller
             }
             
     
-    
+    /**
+     * Display the Portfolio page
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onPersonalPortfolioRetrieval(Request $request)
     {
         try
@@ -239,6 +284,11 @@ class PortfolioController extends Controller
         }
     }
     
+    /**
+     * Display the EditJobHistory Form by passing the Job's info to the Form. 
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onRouteJobEdit(Request $request)
     {        
         try
@@ -264,6 +314,11 @@ class PortfolioController extends Controller
         }
     }
     
+    /**
+     * Display the EditEducationForm by passing in user's Education's info into the form
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onRouteEducationEdit(Request $request)
     {
 //         try
@@ -288,6 +343,11 @@ class PortfolioController extends Controller
 //         }
     }
     
+    /**
+     * Display the EditSkillForm by passing in the user's Skill info into the form. 
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onRouteSkillEdit(Request $request)
     {
         try
@@ -307,6 +367,11 @@ class PortfolioController extends Controller
         }
     }
     
+    /**
+     * Edit the JobHistory info after clicking in "Edit" button in the EditJobHistory form.
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onJobEdit(Request $request)
     {
         // Call the Validation Rules:
@@ -345,6 +410,11 @@ class PortfolioController extends Controller
         }
     }
     
+    /**
+     * Edit the EducationHistory after clicking on the "Edit" in the Edit form
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onEducationEdit(Request $request)
     {
         // Call the Validation Rule: 
@@ -383,6 +453,11 @@ class PortfolioController extends Controller
         }
     }
     
+    /**
+     * Edit the SkillHistory after clicking on the "Edit" in the Edit form
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onSkillEdit(Request $request)
     {
         // Call the Validation Rule: 
@@ -438,7 +513,11 @@ class PortfolioController extends Controller
         $this->validate($request, $rules);
     }
     
-    
+    /**
+     * Validate function for EducationForms
+     * 
+     * @param Request $request
+     */
     private function validateEducationForm(Request $request)
     {
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
@@ -457,6 +536,11 @@ class PortfolioController extends Controller
         $this->validate($request, $rules);
     }
     
+    /**
+     * Validate functions for Skill forms.
+     * 
+     * @param Request $request
+     */
     private function validateSkillForm(Request $request)
     {
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
