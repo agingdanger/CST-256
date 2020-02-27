@@ -177,12 +177,11 @@ class PortfolioController extends Controller
             $portfolioStatus = $portfolioBusiness->removeUserJob($id);
             
             // Retrieve the User's Portfolio items:
-            $jobs = $portfolioBusiness->retrieveUserJobs($userID);
-            
-            $skills = $portfolioBusiness->retrieveUserSkills($userID);
-            
+            $jobs = $portfolioBusiness->retrieveUserJobs($userID);            
+            $skills = $portfolioBusiness->retrieveUserSkills($userID);            
             $education = $portfolioBusiness->retrieveUserEducation($userID);
             
+            // Return the Portfolio View page: 
             return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
             
 //         }
@@ -213,12 +212,11 @@ class PortfolioController extends Controller
         $portfolioStatus = $portfolioBusiness->removeUserEducation($id);
         
         // Retrieve the User's Portfolio items:
-        $jobs = $portfolioBusiness->retrieveUserJobs($userID);
-        
-        $skills = $portfolioBusiness->retrieveUserSkills($userID);
-        
+        $jobs = $portfolioBusiness->retrieveUserJobs($userID);        
+        $skills = $portfolioBusiness->retrieveUserSkills($userID);        
         $education = $portfolioBusiness->retrieveUserEducation($userID);
         
+        // Return the Portfolio view page:
         return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
         
         //         }
@@ -243,8 +241,8 @@ class PortfolioController extends Controller
                 // Store Request info into variables:
                 $id = $request->input('skillid');
                 
-                $portfolioBusiness = new PortfolioBusinessService();
-                
+                // Call the Business Service to Remove User's Skill
+                $portfolioBusiness = new PortfolioBusinessService();                
                 $portfolioStatus = $portfolioBusiness->removeUserSkill($id);
                 
                 // Retrieve the User's Portfolio items:                
@@ -252,6 +250,7 @@ class PortfolioController extends Controller
                 $skills = $portfolioBusiness->retrieveUserSkills($userID);                
                 $education = $portfolioBusiness->retrieveUserEducation($userID);
                 
+                // Return the Portfolio View Page:
                 return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
                 
 //                 }
@@ -312,7 +311,7 @@ class PortfolioController extends Controller
             // Create a JobHistory Object
             $job = new JobHistory($id, $name, $position, $description, $awards, $startDate, $endDate, $userID);
            
-            
+            // Return the EditJobHistory View
             return view('portfolio.editJobHistory')->with('job', $job);
             
         }
@@ -341,8 +340,10 @@ class PortfolioController extends Controller
             $endYear = $request->input('edendyear');
             $userID = Session::get('userID');
             
+            // Create an Education Object:
             $ed = new Education($id, $name, $years, $major, $minor, $startYear, $endYear,  $userID);
             
+            // Return EditEducationForm view
             return view('portfolio.editEducation')->with('ed', $ed);
             
 //         }
@@ -369,6 +370,7 @@ class PortfolioController extends Controller
             //Create a skill object to be added
             $skill = new Skill($id, $skillName, $userID);
             
+            // Returns the EditSkillForm view
             return view('portfolio.editSkill')->with('skill', $skill);
         }
         catch(Exception $e)
@@ -399,18 +401,19 @@ class PortfolioController extends Controller
             $endDate = $request->input('jobenddate');
             $userID = Session::get('userID');
             
+            // Create a JobHistory Object: 
             $job = new JobHistory($id, $name, $position, $description, $awards, $startDate, $endDate, $userID);
             
-            $portfolioBusiness = new PortfolioBusinessService();
-            
+            // Call the Business Service to Modify JobHistory of a User:
+            $portfolioBusiness = new PortfolioBusinessService();            
             $portfolioStatus = $portfolioBusiness->modifyJobHistory($job);
             
+            // Retrieve the User's Portfolio items:
             $jobs = $portfolioBusiness->retrieveUserJobs($userID);
-            
             $skills = $portfolioBusiness->retrieveUserSkills($userID);
-            
             $education = $portfolioBusiness->retrieveUserEducation($userID);
             
+            // Check if the PortfolioStatus is available:
             if($portfolioStatus)
             return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
             
@@ -443,18 +446,19 @@ class PortfolioController extends Controller
             $endYear = $request->input('edendyear');
             $userID = Session::get('userID');
             
+            // Create an Education Object: 
             $ed = new Education($id, $name, $years, $major, $minor, $startYear, $endYear,  $userID);
             
-            $portfolioBusiness = new PortfolioBusinessService();
-            
+            // Call the PortfolioBusinessService to update EducationHistory: 
+            $portfolioBusiness = new PortfolioBusinessService();            
             $portfolioStatus = $portfolioBusiness->modifyEducationHistory($ed);
             
-            $jobs = $portfolioBusiness->retrieveUserJobs($userID);
-            
-            $skills = $portfolioBusiness->retrieveUserSkills($userID);
-            
+            // Retrieve the User's Portfolio items:
+            $jobs = $portfolioBusiness->retrieveUserJobs($userID);            
+            $skills = $portfolioBusiness->retrieveUserSkills($userID);            
             $education = $portfolioBusiness->retrieveUserEducation($userID);
             
+            // Check if PortfolioStatus
             if($portfolioStatus)
                 return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
                 
@@ -482,18 +486,19 @@ class PortfolioController extends Controller
             $name = $request->input('skillname');
             $userID = Session::get('userID');
             
+            // Create a skill object:
             $skill = new Skill($id, $name, $userID);
             
-            $portfolioBusiness = new PortfolioBusinessService();
-            
+            // Call the BusinessService to update SkillHistory of the User:
+            $portfolioBusiness = new PortfolioBusinessService();            
             $portfolioStatus = $portfolioBusiness->modifySkillHistory($skill);
             
-            $jobs = $portfolioBusiness->retrieveUserJobs($userID);
-            
-            $skills = $portfolioBusiness->retrieveUserSkills($userID);
-            
+            // // Retrieve the User's Portfolio items:
+            $jobs = $portfolioBusiness->retrieveUserJobs($userID);            
+            $skills = $portfolioBusiness->retrieveUserSkills($userID);            
             $education = $portfolioBusiness->retrieveUserEducation($userID);
             
+            // Check PortfolioStatus:
             if($portfolioStatus)
                 return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
                 
