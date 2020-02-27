@@ -1,6 +1,7 @@
 @extends('layouts.master') 
 @section('title', 'Account Page')
 
+@section('title', 'Edit Job Posting')
 
 @section('content')
 	<form action="editJobPost" method="POST">
