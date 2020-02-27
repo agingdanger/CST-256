@@ -37,9 +37,4 @@ class db_connector
 
     }
     
-//     public function getDb() {
-//         if ($this->db instanceof PDO) {
-//             return $this->db;
-//         }
-//     }
 }
