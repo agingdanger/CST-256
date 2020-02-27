@@ -12,7 +12,7 @@
 				<tr>
 					<td></td>
                     	<td><input type="hidden" name="jobid" value="{{ $job->getId() }}"/>
-                    	<!-- {{ $errors->first('firstname') }} --></td>
+                    	<!-- {{ $errors->first('id') }} --></td>
             	</tr>
 				
 				<tr>
