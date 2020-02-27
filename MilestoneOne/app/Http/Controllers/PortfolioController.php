@@ -80,6 +80,7 @@ class PortfolioController extends Controller
         
         try
         {
+            // Store Request info into variables:
             $id = "";
             $skillName = $request->input('skillname');
             $userID = $request->input('userid');
@@ -87,15 +88,15 @@ class PortfolioController extends Controller
             //Create a skill object to be added
             $skill = new Skill($id, $skillName, $userID);
             
+            // Call the Business Service to Post Skills Experience, retrieve UserJobHistory, UserSkills, UserEducation.
             $portfolioBusiness = new PortfolioBusinessService();
             $portfolioStatus = $portfolioBusiness->postSkillExperience($skill);
-            
-            $jobs = $portfolioBusiness->retrieveUserJobs($userID);
-            
-            $skills = $portfolioBusiness->retrieveUserSkills($userID);
-            
+            // Retrieve the User's Portfolio items:
+            $jobs = $portfolioBusiness->retrieveUserJobs($userID);            
+            $skills = $portfolioBusiness->retrieveUserSkills($userID);            
             $education = $portfolioBusiness->retrieveUserEducation($userID);
             
+            // Check the portfolio status.
             if($portfolioStatus)
             {
                 return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
@@ -122,6 +123,7 @@ class PortfolioController extends Controller
         
         try
         {
+            // Store Request info into variables:
             $id = "";
             $edName = $request->input('edname');
             $edYears = $request->input('edyears');
@@ -134,13 +136,13 @@ class PortfolioController extends Controller
             //Create an education object to be added
             $ed = new Education($id, $edName, $edYears, $edMajor, $edMinor, $edStartYear, $edEndYear, $userID);
             
+            // Call the Business Service to post Education History of User:
             $portfolioBusiness = new PortfolioBusinessService();
             $portfolioStatus = $portfolioBusiness->postEducationExperience($ed);
             
-            $jobs = $portfolioBusiness->retrieveUserJobs($userID);
-            
-            $skills = $portfolioBusiness->retrieveUserSkills($userID);
-            
+            // Retrieve the User's Portfolio items:
+            $jobs = $portfolioBusiness->retrieveUserJobs($userID);            
+            $skills = $portfolioBusiness->retrieveUserSkills($userID);            
             $education = $portfolioBusiness->retrieveUserEducation($userID);
             
             if($portfolioStatus)
@@ -167,12 +169,14 @@ class PortfolioController extends Controller
 //         try
 //         {
             $userID = Session::get("userID");
+            // Store Request info into variables:
             $id = $request->input('jobid');
             
             $portfolioBusiness = new PortfolioBusinessService();
             
             $portfolioStatus = $portfolioBusiness->removeUserJob($id);
             
+            // Retrieve the User's Portfolio items:
             $jobs = $portfolioBusiness->retrieveUserJobs($userID);
             
             $skills = $portfolioBusiness->retrieveUserSkills($userID);
@@ -201,12 +205,14 @@ class PortfolioController extends Controller
         
         
         $userID = Session::get("userID");
+        // Store Request info into variables:
         $id = $request->input('edid');
         
         $portfolioBusiness = new PortfolioBusinessService();
         
         $portfolioStatus = $portfolioBusiness->removeUserEducation($id);
         
+        // Retrieve the User's Portfolio items:
         $jobs = $portfolioBusiness->retrieveUserJobs($userID);
         
         $skills = $portfolioBusiness->retrieveUserSkills($userID);
@@ -234,16 +240,16 @@ class PortfolioController extends Controller
             
             
                 $userID = Session::get("userID");
+                // Store Request info into variables:
                 $id = $request->input('skillid');
                 
                 $portfolioBusiness = new PortfolioBusinessService();
                 
                 $portfolioStatus = $portfolioBusiness->removeUserSkill($id);
                 
-                $jobs = $portfolioBusiness->retrieveUserJobs($userID);
-                
-                $skills = $portfolioBusiness->retrieveUserSkills($userID);
-                
+                // Retrieve the User's Portfolio items:                
+                $jobs = $portfolioBusiness->retrieveUserJobs($userID);                
+                $skills = $portfolioBusiness->retrieveUserSkills($userID);                
                 $education = $portfolioBusiness->retrieveUserEducation($userID);
                 
                 return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
@@ -269,12 +275,12 @@ class PortfolioController extends Controller
             
             $portfolioBusiness = new PortfolioBusinessService();
             
-            $jobs = $portfolioBusiness->retrieveUserJobs($userID);
-            
-            $skills = $portfolioBusiness->retrieveUserSkills($userID);
-            
+            // Retrieve the User's Portfolio items:            
+            $jobs = $portfolioBusiness->retrieveUserJobs($userID);            
+            $skills = $portfolioBusiness->retrieveUserSkills($userID);            
             $education = $portfolioBusiness->retrieveUserEducation($userID);
             
+            // Return Portfolio view:
             return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
 
         }
@@ -293,6 +299,7 @@ class PortfolioController extends Controller
     {        
         try
         {
+            // Store Request info into variables:
             $id = $request->input('jobid');
             $name = $request->input('jobname');
             $position = $request->input('jobposition');
@@ -302,6 +309,7 @@ class PortfolioController extends Controller
             $endDate = $request->input('jobenddate');
             $userID = Session::get('userID');
             
+            // Create a JobHistory Object
             $job = new JobHistory($id, $name, $position, $description, $awards, $startDate, $endDate, $userID);
            
             
@@ -323,6 +331,7 @@ class PortfolioController extends Controller
     {
 //         try
 //         {
+            // Store Request info into variables:
             $id = $request->input('edid');
             $name = $request->input('edname');
             $years = $request->input('edyears');
@@ -352,6 +361,7 @@ class PortfolioController extends Controller
     {
         try
         {
+            // Store Request info into variables:
             $id = $request->input('skillid');
             $skillName = $request->input('skillname');
             $userID = $request->input('userid');
@@ -379,6 +389,7 @@ class PortfolioController extends Controller
         
         try
         {
+            // Store Request info into variables:
             $id = $request->input('jobid');
             $name = $request->input('jobname');
             $position = $request->input('jobposition');
@@ -422,6 +433,7 @@ class PortfolioController extends Controller
         
         try
         {
+            // Store Request info into variables:
             $id = $request->input('edid');
             $name = $request->input('edname');
             $years = $request->input('edyears');
@@ -465,6 +477,7 @@ class PortfolioController extends Controller
         
         try
         {
+            // Store Request info into variables:
             $id = $request->input('skillid');
             $name = $request->input('skillname');
             $userID = Session::get('userID');
