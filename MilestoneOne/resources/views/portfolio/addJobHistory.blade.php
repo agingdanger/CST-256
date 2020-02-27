@@ -8,32 +8,32 @@
 			<table>
 				<tr>
 					<td>Name: </td>
-					<td><input type = "text" name = "jobname" /></td>
+					<td><input type = "text" name = "jobname" />{{ $errors->first('jobname') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Position: </td>
-					<td><input type = "text" name = "jobposition" /></td>
+					<td><input type = "text" name = "jobposition" />{{ $errors->first('jobposition') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Description: </td>
-					<td><input type = "text" name = "jobdescription" /></td>
+					<td><input type = "text" name = "jobdescription" />{{ $errors->first('jobdescription') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Awards: </td>
-					<td><input type = "text" name = "jobaward" /></td>
+					<td><input type = "text" name = "jobaward" />{{ $errors->first('jobaward') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Start Date: </td>
-					<td><input type = "text" name = "jobstartdate" /></td>
+					<td><input type = "date" name = "jobstartdate" />{{ $errors->first('jobstartdate') }}</td>
 				</tr>
 				
 				<tr>
 					<td>End Date: </td>
-					<td><input type = "text" name = "jobenddate" /></td>
+					<td><input type = "date" name = "jobenddate" />{{ $errors->first('jobenddate') }}</td>
 				</tr>
 				
 				<tr>
@@ -47,5 +47,5 @@
 				</tr>
 			</table>
 		</form>
-		<a href="welcome">Click here to go back to the profile page.</a>
+		<a href="myportfolio">Click here to go back to the portfolio page.</a>
 @endsection

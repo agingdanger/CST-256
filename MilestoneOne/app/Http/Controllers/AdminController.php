@@ -212,7 +212,7 @@ class AdminController extends Controller
     public function onJobAddition(Request $request)
     {
         // Call the Validation Rules:
-        $this->validateJobForm($request);
+//         $this->validateJobForm($request);
 
         try
         {            
@@ -408,12 +408,11 @@ class AdminController extends Controller
 
         // Setup Data Validation Rules for Login Form.
         $rules = [
-            'id' => 'Required',
             'jobname' => 'Required | Max: 20 | Alpha',
             'description' => 'Required | Size: 1000',
             'company' => 'Required | Between: 4, 20 | Alpha',
             'requirements' => 'Required | Max: 50 | Alpha',
-            'skills' => 'Required | Between: 3, 50 | Alpha'
+            'skills' => 'Required | Between: 3, 50 | Alpha' 
         ];
 
         // Run Validation Rules:

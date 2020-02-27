@@ -9,32 +9,32 @@
 			
 				<tr>
 					<td>Name: </td>
-					<td><input type = "text" name = "jobname" value = "{{$job->getName()}}" /></td>
+					<td><input type = "text" name = "jobname" value = "{{$job->getName()}}" />{{ $errors->first('name') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Position: </td>
-					<td><input type = "text" name = "jobposition" value = "{{$job->getPosition()}}"/></td>
+					<td><input type = "text" name = "jobposition" value = "{{$job->getPosition()}}"/>{{ $errors->first('position') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Description: </td>
-					<td><input type = "text" name = "jobdescription" value = "{{$job->getDescription()}}"/></td>
+					<td><input type = "text" name = "jobdescription" value = "{{$job->getDescription()}}"/>{{ $errors->first('description') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Awards: </td>
-					<td><input type = "text" name = "jobawards" value = "{{$job->getAwards()}}"/></td>
+					<td><input type = "text" name = "jobawards" value = "{{$job->getAwards()}}"/>{{ $errors->first('awards') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Start Date: </td>
-					<td><input type = "text" name = "jobstartdate" value = "{{$job->getStartdate()}}"/></td>
+					<td><input type = "date" name = "jobstartdate" value = "{{$job->getStartdate()}}"/>{{ $errors->first('sdate') }}</td>
 				</tr>
 				
 				<tr>
 					<td>End Date: </td>
-					<td><input type = "text" name = "jobenddate" value = "{{$job->getEnddate()}}"/></td>
+					<td><input type = "date" name = "jobenddate" value = "{{$job->getEnddate()}}"/>{{ $errors->first('edate') }}</td>
 				</tr>
 				
 				<tr>

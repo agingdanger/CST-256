@@ -4,36 +4,36 @@
 @section('content')
 		<form action = "addEducation" method = "POST">
 			<input type = "hidden" name = "_token" value = "{{csrf_token()}}"/>
-			<h2>Add Job History</h2>
+			<h2>Add Education History</h2>
 			<table>
 				<tr>
 					<td>School: </td>
-					<td><input type = "text" name = "edname" /></td>
+					<td><input type = "text" name = "edname" />{{ $errors->first('edname') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Years: </td>
-					<td><input type = "text" name = "edyears" /></td>
+					<td><input type = "number" name = "edyears" placeholder="Range: 1 - 80"/>{{ $errors->first('edyears') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Major: </td>
-					<td><input type = "text" name = "edmajor" /></td>
+					<td><input type = "text" name = "edmajor" />{{ $errors->first('edmajor') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Minor: </td>
-					<td><input type = "text" name = "edminor" /></td>
+					<td><input type = "text" name = "edminor" />{{ $errors->first('edminor') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Start Year: </td>
-					<td><input type = "text" name = "edstartyear" /></td>
+					<td><input type = "number" name = "edstartyear" value="1970" placeholder="YYYY"/>{{ $errors->first('edstartyear') }}</td>
 				</tr>
 				
 				<tr>
 					<td>End Year: </td>
-					<td><input type = "text" name = "edendyear" /></td>
+					<td><input type = "number" name = "edendyear" value="2020" placeholder="YYYY"/>{{ $errors->first('edendyear') }}</td>
 				</tr>
 				
 				<tr>
@@ -42,10 +42,10 @@
 				
 				<tr>
 					<td colspan = "2" align = "center">
-						<input type = "submit" value = "Add" />
+						<input type = "submit" value = "Add Education History" />
 					</td>
 				</tr>
 			</table>
 		</form>
-		<a href="portfolio">Click here to go back to the portfolio page.</a>
+		<a href="myportfolio">Click here to go back to the portfolio page.</a>
 @endsection

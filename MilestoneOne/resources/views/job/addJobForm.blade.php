@@ -39,4 +39,5 @@
 				</tr>
 			</table>
 	</form>
+	<a href="viewJobs">Click here to go back to view the list of Jobs page.</a>
 @endsection

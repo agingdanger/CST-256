@@ -9,11 +9,15 @@ use App\Model\JobHistory;
 use App\Model\Education;
 use App\Model\Skill;
 use App\Services\Business\PortfolioBusinessService;
+use Dotenv\Exception\ValidationException;
 
 class PortfolioController extends Controller
 {
     public function onAddWorkExperience(Request $request)
     {
+        // Call the Validation Rules: 
+        $this->validateJobHistoryForm($request);
+        
         try
         {
             $id = "";
@@ -39,6 +43,10 @@ class PortfolioController extends Controller
             
             return view('portfolio.portfolio')->with('jobs', $jobs)->with('skills', $skills)->with('education', $education);
         }
+        catch (ValidationException $valExc)
+        {
+            throw $valExc;
+        }
         catch(Exception $e)
         {
             return view('error.commonError');
@@ -47,6 +55,9 @@ class PortfolioController extends Controller
     
     public function onAddSkill(Request $request)
     {
+        // Call the Validation Rule: 
+        $this->validateSkillForm($request);
+        
         try
         {
             $id = "";
@@ -81,6 +92,9 @@ class PortfolioController extends Controller
     
     public function onAddEducation(Request $request)
     {
+        // Call the Validation Form: 
+        $this->validateEducationForm($request);
+        
         try
         {
             $id = "";
@@ -226,7 +240,7 @@ class PortfolioController extends Controller
     }
     
     public function onRouteJobEdit(Request $request)
-    {
+    {        
         try
         {
             $id = $request->input('jobid');
@@ -295,6 +309,9 @@ class PortfolioController extends Controller
     
     public function onJobEdit(Request $request)
     {
+        // Call the Validation Rules:
+        $this->validateJobHistoryForm($request);
+        
         try
         {
             $id = $request->input('jobid');
@@ -330,6 +347,9 @@ class PortfolioController extends Controller
     
     public function onEducationEdit(Request $request)
     {
+        // Call the Validation Rule: 
+        $this->validateEducationForm($request);
+        
         try
         {
             $id = $request->input('edid');
@@ -365,6 +385,9 @@ class PortfolioController extends Controller
     
     public function onSkillEdit(Request $request)
     {
+        // Call the Validation Rule: 
+        $this->validateSkillForm($request);
+        
         try
         {
             $id = $request->input('skillid');
@@ -391,6 +414,60 @@ class PortfolioController extends Controller
         {
             return view('error.commonError');
         }
+    }
+    
+    /**
+     * Validation Rules for JobHistory Forms: 
+     * @param Request $request
+     */
+    private function validateJobHistoryForm(Request $request)
+    {
+        // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
+        
+        // Setup Data Validation Rules for Login Form.
+        $rules = [
+            'jobname' => 'Required | Max: 40 | Alpha',
+            'jobposition' => 'Required | Between: 4, 50',
+            'jobdescription' => 'Required | Max: 1000',
+            'jobaward' => 'Required | Between: 4, 50',
+            'jobstartdate' => 'Required | Date',
+            'jobenddate' => 'Required | Date'
+        ];
+        
+        // Run Validation Rules:
+        $this->validate($request, $rules);
+    }
+    
+    
+    private function validateEducationForm(Request $request)
+    {
+        // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
+        
+        // Setup Data Validation Rules for Login Form.
+        $rules = [
+            'edname' => 'Required | Between: 4, 50 | Alpha',
+            'edyears' => 'Required | Numeric | Between: 1, 80',
+            'edmajor' => 'Required | Between: 4, 50',
+            'edminor' => 'Required | Between: 4, 50',
+            'edstartyear' => 'Required | Digits: 4',
+            'edendyear' => 'Required | Digits: 4'
+        ];
+        
+        // Run Validation Rules:
+        $this->validate($request, $rules);
+    }
+    
+    private function validateSkillForm(Request $request)
+    {
+        // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
+        
+        // Setup Data Validation Rules for Login Form.
+        $rules = [
+            'skillname' => 'Required | Alpha | Between: 4, 150'
+        ];
+        
+        // Run Validation Rules:
+        $this->validate($request, $rules);
     }
 }
 

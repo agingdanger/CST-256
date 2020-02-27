@@ -8,7 +8,7 @@
 			<table>
 				<tr>
 					<td>Skill: </td>
-					<td><input type = "text" name = "skillname" /></td>
+					<td><input type = "text" name = "skillname" />{{ $errors->first('skillname') }}</td>
 				</tr>
 	
 				<tr>
