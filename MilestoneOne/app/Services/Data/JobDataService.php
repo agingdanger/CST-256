@@ -52,7 +52,7 @@ class JobDataService
     
     /**
      * Add a new Job to the Database: 
-     * @param unknown $job
+     * @param $job
      * @throws DatabaseException
      * @return boolean
      */

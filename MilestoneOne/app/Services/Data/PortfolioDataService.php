@@ -24,9 +24,9 @@ class PortfolioDataService
     
     /**
      * Find the Job history of a User.
-     * @param unknown $userID
+     * @param $userID
      * @throws DatabaseException
-     * @return unknown
+     * @return $result
      */
     public function findAllUserJobs($userID)
     {
@@ -48,6 +48,12 @@ class PortfolioDataService
         }
     }
     
+    /**
+     * Find all Skills of the User
+     * @param $userID
+     * @throws DatabaseException
+     * @return $result
+     */
     public function findAllUserSkills($userID)
     {
         try
@@ -68,6 +74,12 @@ class PortfolioDataService
         }
     }
     
+    /**
+     * Find all Education history from the User
+     * @param $userID
+     * @throws DatabaseException
+     * @return $result->fetchall()
+     */
     public function findAllUserEducation($userID)
     {
         try
@@ -89,6 +101,7 @@ class PortfolioDataService
     }
     
     /* ------------------------------- CREATE Methods ------------------------------ */
+    
     public function createJob(JobHistory $job)
     {
         try
