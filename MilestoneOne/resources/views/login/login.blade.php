@@ -8,12 +8,12 @@
 			<table>
 				<tr>
 					<td>Username: </td>
-					<td><input type = "text" name = "username" /></td>
+					<td><input type = "text" name = "username" />{{ $errors->first('username') }}</td>
 				</tr>
 				
 				<tr>
 					<td>Password: </td>
-					<td><input type = "password" name = "password" /></td>
+					<td><input type = "password" name = "password" />{{ $errors->first('password') }}</td>
 				</tr>
 				
 				<tr>
@@ -23,6 +23,14 @@
 				</tr>
 			</table>
 		</form>
+		
+    	@if($errors->count() != 0)
+        	<h5>List of Errors</h5>
+        	@foreach($errors->all() as $message) 
+        		{{ $message }} <br /> 
+        	@endforeach 
+    	@endif
+		
 		
 		<p><?php 
 // 		if ($message == null)

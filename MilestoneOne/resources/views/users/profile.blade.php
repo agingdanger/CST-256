@@ -72,10 +72,12 @@
                     	<div class="form-group">
                     		<label for="firstname">First Name</label>
                     		<input type="text" id= "firstname" class="form-control input-normal" name = "firstname" value = "{{$user['FIRST_NAME']}}" />
+                    		{{ $errors->first('firstname') }}
                     	</div>
             			<div class="form-group">
             				<label for="lastname">Last Name</label>
 							<input type="text" class="form-control input-normal" name = "lastname" value = "{{$user['LAST_NAME']}}"/>
+							{{ $errors->first('lastname') }}
 						</div>
         				<div class="form-group">
         					<label for="username">Username</label>
@@ -85,6 +87,7 @@
                 			<div class="form-group">
                 				<label for="password">Password</label>
             					<input type = "text" class="form-control input-normal" name = "password" value = "{{$user['PASSWORD']}}"/>
+            					{{ $errors->first('password') }}
             				</div>
             			@endif
             			<div class="form-group">
@@ -94,6 +97,7 @@
             			<div class="form-group">
             				<label for="phone">Phone</label>
             				<input type = "text" class="form-control input-normal" name = "phone" value = "{{$user['PHONE']}}"/>
+            				{{ $errors->first('phone') }}
             			</div>
             			@if(Session::get('role') == "admin" && Session::get('userID') != $user['ID'])
                 			<div class="form-group">
