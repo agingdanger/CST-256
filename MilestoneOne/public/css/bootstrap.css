@@ -541,6 +541,20 @@ pre code {
   overflow-y: scroll;
 }
 
+.image {
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 500px;
+  margin: 0px 0 0 0px;
+  -webkit-animation:spin 4s linear infinite , scaleX(-1);
+  -moz-animation:spin 4s linear infinite;
+  animation:spin .03s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
 .container {
   width: 100%;
   padding-right: 15px;
@@ -10220,5 +10234,6 @@ a.text-dark:hover, a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6;
   }
+  
 }
 /*# sourceMappingURL=bootstrap.css.map */

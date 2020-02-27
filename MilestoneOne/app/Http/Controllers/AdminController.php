@@ -313,7 +313,10 @@ class AdminController extends Controller
      */
     public function onEditJobPost(Request $request)
     {
+        // Validation IS NOT WORKING for Admin's Job forms.
         // Call the Validation Rules:
+//         $this->validateJobForm($request);
+        
         try
         {
             // Store the information from hidden values into a Job object:
@@ -408,11 +411,11 @@ class AdminController extends Controller
 
         // Setup Data Validation Rules for Login Form.
         $rules = [
-            'jobname' => 'Required | Max: 20 | Alpha',
+            'jobname' => 'Required | Alpha | Max: 20',
             'description' => 'Required | Size: 1000',
-            'company' => 'Required | Between: 4, 20 | Alpha',
-            'requirements' => 'Required | Max: 50 | Alpha',
-            'skills' => 'Required | Between: 3, 50 | Alpha' 
+            'company' => 'Required | Alpha | Between: 4, 20',
+            'requirements' => 'Required | Alpha | Max: 50',
+            'skills' => 'Required | Alpha | Between: 3, 50' 
         ];
 
         // Run Validation Rules:
