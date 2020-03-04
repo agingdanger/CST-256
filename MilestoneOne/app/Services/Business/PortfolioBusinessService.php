@@ -16,7 +16,7 @@ class PortfolioBusinessService
 {
     /**
      * 
-     * @param unknown $job
+     * @param $job
      * @return boolean
      */
     public function postJobExperience($job)
@@ -57,7 +57,7 @@ class PortfolioBusinessService
     
     /**
      * 
-     * @param unknown $skill
+     * @param $skill
      * @return boolean
      */
     public function postSkillExperience($skill)
@@ -77,7 +77,7 @@ class PortfolioBusinessService
     }
     /**
      * 
-     * @param unknown $userID
+     * @param $userID
      * @return \App\Services\Data\$result
      */
     public function retrieveUserJobs($userID)
@@ -98,7 +98,7 @@ class PortfolioBusinessService
     
     /**
      * 
-     * @param unknown $userID
+     * @param $userID
      * @return \App\Services\Data\$result
      */
     public function retrieveUserSkills($userID)
@@ -119,7 +119,7 @@ class PortfolioBusinessService
     
     /**
      * 
-     * @param unknown $userID
+     * @param $userID
      * @return \App\Services\Data\$result->fetchall()
      */
     public function retrieveUserEducation($userID)
@@ -140,8 +140,8 @@ class PortfolioBusinessService
     
     /**
      * 
-     * @param unknown $id
-     * @return \App\Services\Data\unknown|boolean
+     * @param $id
+     * @return boolean
      */
     public function removeUserJob($id)
     {
@@ -161,8 +161,8 @@ class PortfolioBusinessService
     
     /**
      * 
-     * @param unknown $id
-     * @return \App\Services\Data\unknown|boolean
+     * @param $id
+     * @return boolean
      */
     public function removeUserEducation($id)
     {
@@ -182,8 +182,8 @@ class PortfolioBusinessService
     
     /**
      * 
-     * @param unknown $id
-     * @return \App\Services\Data\unknown|boolean
+     * @param $id
+     * @return boolean
      */
     public function removeUserSkill($id)
     {
@@ -238,6 +238,7 @@ class PortfolioBusinessService
         return $portfolioData;
     }
     
+    /*
      * 
      * @param Skill $skill
      * @return boolean
