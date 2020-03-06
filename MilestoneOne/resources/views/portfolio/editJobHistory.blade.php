@@ -47,7 +47,7 @@
 				
 				<tr>
 					<td colspan = "2" align = "center">
-						<input type = "submit" value = "Add" />
+						<input type = "submit" value = "Edit" />
 					</td>
 				</tr>
 			</table>
