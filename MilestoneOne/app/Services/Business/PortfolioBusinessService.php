@@ -235,9 +235,15 @@ class PortfolioBusinessService
         $conn = $db->getConnection();
         //passes the connection to the DataService
         $portfolioService = new PortfolioDataService($conn);
+        
+        $portfolioData = $portfolioService->updateEducationHistory($ed);
+        
+        $conn = null;
+        
         return $portfolioData;
     }
     
+    /**
      * 
      * @param Skill $skill
      * @return boolean

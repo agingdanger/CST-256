@@ -387,7 +387,7 @@ class PortfolioController extends Controller
     public function onJobEdit(Request $request)
     {
         // Call the Validation Rules:
-        $this->validateJobHistoryForm($request);
+        //$this->validateJobHistoryForm($request);
         
         try
         {
@@ -432,7 +432,7 @@ class PortfolioController extends Controller
     public function onEducationEdit(Request $request)
     {
         // Call the Validation Rule: 
-        $this->validateEducationForm($request);
+        //$this->validateEducationForm($request);
         
         try
         {
@@ -477,7 +477,7 @@ class PortfolioController extends Controller
     public function onSkillEdit(Request $request)
     {
         // Call the Validation Rule: 
-        $this->validateSkillForm($request);
+        //$this->validateSkillForm($request);
         
         try
         {
@@ -542,10 +542,10 @@ class PortfolioController extends Controller
         
         // Setup Data Validation Rules for Login Form.
         $rules = [
-            'edname' => 'Required | Between: 4, 50 | Alpha',
+            'edname' => 'Required | Between: 3, 50 | Alpha',
             'edyears' => 'Required | Numeric | Between: 1, 80',
-            'edmajor' => 'Required | Between: 4, 50',
-            'edminor' => 'Required | Between: 4, 50',
+            'edmajor' => 'Required | Between: 3, 50',
+            'edminor' => 'Required | Between: 3, 50',
             'edstartyear' => 'Required | Digits: 4',
             'edendyear' => 'Required | Digits: 4'
         ];
