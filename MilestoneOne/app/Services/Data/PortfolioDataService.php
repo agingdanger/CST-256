@@ -277,9 +277,9 @@ class PortfolioDataService
     /* ------------------------------- DELETE Methods ------------------------------ */
     /**
      * 
-     * @param unknown $id
+     * @param $id
      * @throws DatabaseException
-     * @return unknown|boolean
+     * @return boolean
      */
     public function deleteJob($id)
     {
@@ -317,9 +317,9 @@ class PortfolioDataService
     
     /**
      * 
-     * @param unknown $id
+     * @param $id
      * @throws DatabaseException
-     * @return unknown|boolean
+     * @return boolean
      */
     public function deleteSkill($id)
     {
@@ -357,9 +357,9 @@ class PortfolioDataService
     
     /**
      * 
-     * @param unknown $id
+     * @param $id
      * @throws DatabaseException
-     * @return unknown|boolean
+     * @return boolean
      */
     public function deleteEducation($id)
     {
