@@ -119,7 +119,7 @@ Route::post('/jobPost', function()
 {
     return view('job.addJobForm');
 });
-// Route to add a Job after clicking the "Add a Job" from the Job list page:
+// Route to add a Job after clicking the "Add a Job" from the Add Job page:
 Route::post('/addJobPost', 'AdminController@onJobAddition');
 // Routes to view the EditJobForm Page from the Job list page: 
 Route::post('/viewEditJob', 'AdminController@onViewEditJob');
@@ -127,3 +127,17 @@ Route::post('/viewEditJob', 'AdminController@onViewEditJob');
 Route::post('/editJobPost', 'AdminController@onEditJobPost');
 // Routes to onJobDeletion controller method to delete the Job upon clicking "Delete" from Job list page:
 Route::post('/jobDelete', 'AdminController@onJobDeletion');
+
+
+/* ---------------------------- InterestGroup Routes ---------------------------- */
+
+// Route to view all the InterestGroups on clicking the Navbar link "Interest Groups."
+Route:get('/viewInterestGroups', 'InterestGroupController@onViewInterestGroups');
+
+// Route to view the "Add Interest Group" page:
+Route::post('/addInterestGroup', function()
+{
+    return view('interestGroup.addInterestGroupForm');
+});
+
+Route::post('/addInterestGroupPost', 'InterestGroupController@onInterestGroupAddition');

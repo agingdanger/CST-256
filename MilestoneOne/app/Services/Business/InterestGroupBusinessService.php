@@ -7,7 +7,11 @@ use App\Services\Data\InterestGroupDataService;
 
 class InterestGroupBusinessService
 {
-    public function gatherGroupList($param) 
+    /**
+     * 
+     * @return $listOfGroups
+     */
+    public function gatherGroupList() 
     {
         // Create a database connection object
         $db = new db_connector();
@@ -15,7 +19,24 @@ class InterestGroupBusinessService
         
         // Call the DataService to findAllGroups
         $dataService = new InterestGroupDataService($conn);
-        $result = $dataService->findAllGroups();
+        $listOfGroups = $dataService->findAllGroups();
+        
+        // Close the Connection
+        $conn = null;
+        
+        // Return the array of results-
+        return $listOfGroups;
+    }
+    
+    public function interestGroupAddition()
+    {
+        // Create a database connection object
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Call the DataService to findAllGroups
+        $dataService = new InterestGroupDataService($conn);
+        $result = $dataService->create();
         
         // Close the Connection
         $conn = null;
