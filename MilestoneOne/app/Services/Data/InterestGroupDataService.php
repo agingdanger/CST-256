@@ -22,7 +22,7 @@ class InterestGroupDataService
         try
         {
             // Run the Query to find all the Groups available from the Database
-            $result = $this->conn->prepare("INCLUDE THE MySQL QUERY HERE");
+            $result = $this->conn->prepare("SELECT * FROM interest_group");
             // Execute the Query
             $result->execute();
             

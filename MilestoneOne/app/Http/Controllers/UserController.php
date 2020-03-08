@@ -57,6 +57,9 @@ class UserController extends Controller
                 return view('error.suspended');
             }
 
+            // Store a piece of data in the session...
+//             session(['userID' => $userData['ID']]);
+            
             // Creating sessions here to get the user's ID & Role.
             Session::put('userID', $userData['ID']);
             Session::put('role', $userData['ROLE']);

@@ -33,17 +33,27 @@ class InterestGroupController extends Controller
         }
     }
     
-    
-    public function onViewEditInterestGroup(Request $request)
+    /**
+     * Call to view the Edit Form for the InterestGroup.
+     * 
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function onViewEditGroupForm(Request $request)
     {
         try
         {
-            // Call the Business Service and return the List of all InterestGroups
-            $service = new InterestGroupBusinessService();
-            $interestGroupList = $service->gatherGroupList();
+            // Store all the hidden data using request into method variables: 
+            $id = $request->input('id');
+            $name = $request->input('name');
+            $description = $request->input('description');
+            $tags = $request->input('tags');
             
-            // Return the View with the result data
-            return view('interestGroup.interestGroupList')->with('intGroups', $interestGroupList);
+            // Create an InterestGroup Object: 
+            $interestGroup = new InterestGroup($id, $name, $description, $tags);
+            
+            // Return the view by passing the interestGroup object. 
+            return view('interestGroup.editInterestGroupForm')->with('intGroup', $interestGroup);
         }
         catch (Exception $e)
         {
@@ -93,6 +103,43 @@ class InterestGroupController extends Controller
     }
     
     // Create onInterestGroupEdit
+    public function onEditInterestGroup(Request $request)
+    {
+        // Call the Validation Rules:
+        //         $this->validateJobForm($request);
+        
+        try
+        {
+            // Store the hidden values from request into member variablest:
+            $jobId = $request->input('jobid');
+            
+            
+            // Create a Job Object:
+            $job = new Job($jobId, $jobName, $jobDesc, $jobComp, $jobRequire, $jobSkills);
+            
+            // Send it to Business Service to Edit the Job:
+            $service = new AdminBusinessService();
+            $result = $service->jobModify($job);
+            
+            $jobsData = $service->populateJobs();
+            
+            // Check if Result is true:
+            if ($result)
+            {
+                return view('job.jobs')->with('jobs', $jobsData);
+            }
+            else
+            {
+                $message = "Please check the information again.";
+                return view('job.jobs')->with('message', $message);
+            }
+        }
+        catch (Exception $e)
+        {
+            // Throwing Exception with message:
+            throw $e->getMessage();
+        }
+    }
     
     // Create onInterestGroupDeletion
     

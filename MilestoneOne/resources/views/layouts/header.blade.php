@@ -15,27 +15,31 @@
 	
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href='home'>Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href='users'>Users</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="myportfolio">Portfolio</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="welcome">Logout</a>
-      </li>
-	@if(Session::get('role') === "admin")
-		<li class="nav-item">
-        <a class="nav-link" href='displayUsers'>Admin Users</a>
-      </li>
+    @if(Session::get('userID'))
+          <li class="nav-item active">
+            <a class="nav-link" href='home'>Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href='users'>Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="myportfolio">Portfolio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="welcome">Logout</a>
+          </li>
+        	@if(Session::get('role') === "admin")
+        		<li class="nav-item">
+                <a class="nav-link" href='displayUsers'>Admin Users</a>
+              	</li>
+            @endif
+          <li class="nav-item">      
+            <a class="nav-link" href='viewJobs'>Jobs</a>        
+          </li>
+          <li class="nav-item">
+          	<a class="nav-link" href='viewInterestGroups'>Interest Groups</a>
+          </li>
     @endif
-      <li class="nav-item">      
-        <a class="nav-link" href='viewJobs'>Jobs</a>        
-      </li>
-    
     </ul>
     <!-- Links -->
 

@@ -132,7 +132,7 @@ Route::post('/jobDelete', 'AdminController@onJobDeletion');
 /* ---------------------------- InterestGroup Routes ---------------------------- */
 
 // Route to view all the InterestGroups on clicking the Navbar link "Interest Groups."
-Route:get('/viewInterestGroups', 'InterestGroupController@onViewInterestGroups');
+Route::get('/viewInterestGroups', 'InterestGroupController@onViewInterestGroups');
 
 // Route to view the "Add Interest Group" page:
 Route::post('/addInterestGroup', function()
@@ -140,4 +140,11 @@ Route::post('/addInterestGroup', function()
     return view('interestGroup.addInterestGroupForm');
 });
 
+// Route to add an Interest Group to the table: 
 Route::post('/addInterestGroupPost', 'InterestGroupController@onInterestGroupAddition');
+
+// Route to view EditInterestGroup page from the InterestGroupList:
+Route::post('/editInterestGroupForm', 'InterestGroupController@onViewEditGroupForm');
+
+// Route to post the Edit details into database and return the updated list: 
+Route::post('/editInterestGroupPost', 'InterestGroupController@onEditInterestGroup');

@@ -26,20 +26,20 @@
             <td>
             	<form action="editInterestGroupForm" method="POST">
                 	<input type = "hidden" name = "_token" value = "{{ csrf_token() }}"/>
-                	<input type = "hidden" name = "id" value = "{{$job['ID']}}"/>
-                	<input type = "hidden" name = "job" value = "{{$intGroup['NAME']}}"/>
+                	<input type = "hidden" name = "id" value = "{{$intGroup['ID']}}"/>
+                	<input type = "hidden" name = "name" value = "{{$intGroup['NAME']}}"/>
                 	<input type = "hidden" name = "description" value = "{{$intGroup['DESCRIPTION']}}"/>
-                	<input type = "hidden" name = "company" value = "{{$intGroup['TAGS']}}"/>
+                	<input type = "hidden" name = "tags" value = "{{$intGroup['TAGS']}}"/>
                 	<input class = "btn btn-primary" type = "submit" value = "Edit" />
             	</form>
             </td>
             <td>
             	<form action="deleteInterestGroup" method="POST">
                 	<input type = "hidden" name = "_token" value = "{{ csrf_token() }}"/>
-                	<input type = "hidden" name = "id" value = "{{$job['ID']}}"/>
-                	<input type = "hidden" name = "job" value = "{{$intGroup['NAME']}}"/>
+                	<input type = "hidden" name = "id" value = "{{$intGroup['ID']}}"/>
+                	<input type = "hidden" name = "name" value = "{{$intGroup['NAME']}}"/>
                 	<input type = "hidden" name = "description" value = "{{$intGroup['DESCRIPTION']}}"/>
-                	<input type = "hidden" name = "company" value = "{{$intGroup['TAGS']}}"/>
+                	<input type = "hidden" name = "tags" value = "{{$intGroup['TAGS']}}"/>
                 	<input class = "btn btn-danger" type = "submit" value = "Delete" onclick="javascript:return confirm('Are you sure you want to delete this User?')"/>
             	</form>
             </td>
