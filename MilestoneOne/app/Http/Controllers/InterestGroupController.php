@@ -6,6 +6,8 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use App\Services\Business\InterestGroupBusinessService;
 use App\Model\InterestGroup;
+use App\Model\Job;
+use App\Services\Business\PortfolioBusinessService;
 
 class InterestGroupController extends Controller
 {
@@ -86,7 +88,7 @@ class InterestGroupController extends Controller
             
             // Send the object to Business Service to Add a new InterestGroup:
             $service = new InterestGroupBusinessService();
-            $result = $service->interestGroupAddition($interestGroup);
+            $result = $service->addition($interestGroup);
             
             // Call the private function to populate the data into the List of Groups view page.
             $this->populateData($service, $result);
@@ -110,16 +112,12 @@ class InterestGroupController extends Controller
         
         try
         {
-            // Store the hidden values from request into member variablest:
-            $jobId = $request->input('jobid');
-            
-            
-            // Create a Job Object:
-            $job = new Job($jobId, $jobName, $jobDesc, $jobComp, $jobRequire, $jobSkills);
+            // Call the private method to store request data into an object: 
+            $interestGroup = $this->storePostVariablesIntoObject($request);
             
             // Send it to Business Service to Edit the Job:
-            $service = new AdminBusinessService();
-            $result = $service->jobModify($job);
+            $service = new PortfolioBusinessService();
+            $result = $service->modify($interestGroup);
             
             $jobsData = $service->populateJobs();
             
@@ -144,6 +142,21 @@ class InterestGroupController extends Controller
     // Create onInterestGroupDeletion
     
     // Create a validation rules-
+    
+    private function storePostVariablesIntoObject(Request $request) 
+    {
+        // Store all the Requested info into Variables:
+        $id = $request->input('id');
+        $name = $request->input('name');
+        $description = $request->input('description');
+        $tags = $request->input('tags');
+        
+        // Create an InterestGroup object:
+        $interestGroup = new InterestGroup($id, $name, $description, $tags);
+        
+        // Return the interest group object.
+        return $interestGroup;
+    }
     
     /**
      * Return the view "interestGroupList" with the data collected from Services.

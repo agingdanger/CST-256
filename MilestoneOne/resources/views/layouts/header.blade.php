@@ -15,7 +15,7 @@
 	
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
-    @if(Session::get('userID'))
+    @if(session()->get('userID'))
           <li class="nav-item active">
             <a class="nav-link" href='home'>Home <span class="sr-only">(current)</span></a>
           </li>
@@ -38,6 +38,9 @@
           </li>
           <li class="nav-item">
           	<a class="nav-link" href='viewInterestGroups'>Interest Groups</a>
+          </li>
+          <li class="nav-item">
+          	<a class="nav-link" href='welcome'>Log Out</a>
           </li>
     @endif
     </ul>

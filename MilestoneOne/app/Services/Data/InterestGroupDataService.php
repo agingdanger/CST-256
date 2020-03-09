@@ -5,6 +5,7 @@ use Exception;
 use PDOException;
 use App\Services\Utility\DatabaseException;
 use Illuminate\Support\Facades\Log;
+use App\Model\InterestGroup;
 
 class InterestGroupDataService
 {
@@ -38,6 +39,57 @@ class InterestGroupDataService
         }
         catch (Exception $e)
         {
+        }
+    }
+    
+    public function update(InterestGroup $interestGroup)
+    {
+        try
+        {
+            // Put all the data from $job into variables:
+            $id = $job->getId();
+            $name = $job->getName();
+            $description = $job->getDescription();
+            $company = $job->getCompany();
+            $requirements = $job->getRequirements();
+            $skills = $job->getSkills();
+            
+            // Build the Query to Update the Job's info into the database:
+            $result = $this->conn->prepare("UPDATE job SET NAME=:jobname, DESCRIPTION=:desc, COMPANY=:company, REQUIREMENTS=:requirements, SKILLS=:skills WHERE ID=:id");
+            // Bind all the query variables with the method variables:
+            $result->bindParam(':id', $id);
+            $result->bindParam(':jobname', $name);
+            $result->bindParam(':desc', $description);
+            $result->bindParam(':company', $company);
+            $result->bindParam(':requirements', $requirements);
+            $result->bindParam(':skills', $skills);
+            // Execute the Query:
+            $result->execute();
+            
+            // Check if the result was true:
+            if($result)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch(PDOException $e)
+        {
+            Log::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+        catch(DatabaseException $e)
+        {
+            // Throwing Exception with message:
+            Log::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            return false;
         }
     }
 }

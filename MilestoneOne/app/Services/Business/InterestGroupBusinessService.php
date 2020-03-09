@@ -4,6 +4,7 @@ namespace App\Services\Business;
 
 use App\Services\Utility\db_connector;
 use App\Services\Data\InterestGroupDataService;
+use App\Model\InterestGroup;
 
 class InterestGroupBusinessService
 {
@@ -28,7 +29,11 @@ class InterestGroupBusinessService
         return $listOfGroups;
     }
     
-    public function interestGroupAddition()
+    /**
+     * 
+     * @return $result
+     */
+    public function addition()
     {
         // Create a database connection object
         $db = new db_connector();
@@ -42,6 +47,23 @@ class InterestGroupBusinessService
         $conn = null;
         
         // Return the array of results-
+        return $result;
+    }
+    
+    public function modify(InterestGroup $interestGroup) 
+    {
+        // Create a database connection object
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Call the DataService to update the interest Group's information:
+        $dataService = new InterestGroupDataService($conn);
+        $result = $dataService->update($interestGroup);
+        
+        // Close the Connection: 
+        $conn = null;
+        
+        // Return the array of results: 
         return $result;
     }
 }
