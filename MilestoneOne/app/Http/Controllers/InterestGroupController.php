@@ -11,10 +11,10 @@ use App\Services\Business\PortfolioBusinessService;
 
 class InterestGroupController extends Controller
 {
-    
+
     /**
      * Return the view InterestGroupList with the result data
-     * 
+     *
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function onViewInterestGroups()
@@ -34,10 +34,10 @@ class InterestGroupController extends Controller
             throw $e->getMessage();
         }
     }
-    
+
     /**
      * Call to view the Edit Form for the InterestGroup.
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
@@ -45,16 +45,16 @@ class InterestGroupController extends Controller
     {
         try
         {
-            // Store all the hidden data using request into method variables: 
+            // Store all the hidden data using request into method variables:
             $id = $request->input('id');
             $name = $request->input('name');
             $description = $request->input('description');
             $tags = $request->input('tags');
-            
-            // Create an InterestGroup Object: 
+
+            // Create an InterestGroup Object:
             $interestGroup = new InterestGroup($id, $name, $description, $tags);
-            
-            // Return the view by passing the interestGroup object. 
+
+            // Return the view by passing the interestGroup object.
             return view('interestGroup.editInterestGroupForm')->with('intGroup', $interestGroup);
         }
         catch (Exception $e)
@@ -63,36 +63,40 @@ class InterestGroupController extends Controller
             throw $e->getMessage();
         }
     }
-    
+
     /**
-     * Add an Interest Group to the List. 
-     * 
+     * Add an Interest Group to the List.
+     *
      * @param Request $request
      * @throws ValidationException
      */
-    public function onInterestGroupAddition(Request $request) 
+    public function onInterestGroupAddition(Request $request)
     {
         // Call the Validation Rules:
-        
-        
-        try
-        {
-            // Store all the Requested info into Variables:
-            $id = $request->input('id');
-            $name = $request->input('name');
-            $description = $request->input('description');
-            $tags = $request->input('tags');
-            
-            // Create an InterestGroup object: 
-            $interestGroup = new InterestGroup($id, $name, $description, $tags);
-            
+        /* try
+        { */
+            // Call the private function to store request variables into an object: 
+            $interestGroup = $this->storePostVariablesIntoObject($request);
+
             // Send the object to Business Service to Add a new InterestGroup:
             $service = new InterestGroupBusinessService();
             $result = $service->addition($interestGroup);
-            
-            // Call the private function to populate the data into the List of Groups view page.
-            $this->populateData($service, $result);
-        }
+
+            if ($result)
+            {
+                // Call the Business Service and return the List of all InterestGroups
+                $interestGroupList = $service->gatherGroupList();
+                
+                // Return the View with the result data
+                return view('interestGroup.interestGroupList')->with('intGroups', $interestGroupList);
+            }
+            else
+            {
+                // return the view with a message:
+                $message = "Please try again.";
+                return view('error.commonError')->with($message);
+            }
+        /* }
         catch (ValidationException $el)
         {
             throw $el;
@@ -101,35 +105,72 @@ class InterestGroupController extends Controller
         {
             // Throwing Exception with message:
             throw $e->getMessage();
-        }
+        } */
     }
-    
+
     // Create onInterestGroupEdit
     public function onEditInterestGroup(Request $request)
     {
         // Call the Validation Rules:
-        //         $this->validateJobForm($request);
-        
-        try
-        {
-            // Call the private method to store request data into an object: 
+        // $this->validateJobForm($request);
+        /* try
+        { */
+            // Call the private method to store request data into an object:
             $interestGroup = $this->storePostVariablesIntoObject($request);
-            
+
             // Send it to Business Service to Edit the Job:
-            $service = new PortfolioBusinessService();
+            $service = new InterestGroupBusinessService();
             $result = $service->modify($interestGroup);
-            
-            $jobsData = $service->populateJobs();
-            
-            // Check if Result is true:
+
+            // Check if result's true
             if ($result)
             {
-                return view('job.jobs')->with('jobs', $jobsData);
+                // Call the Business Service and return the List of all InterestGroups
+                $interestGroupList = $service->gatherGroupList();
+                
+                // Return the View with the result data
+                return view('interestGroup.interestGroupList')->with('intGroups', $interestGroupList);
             }
             else
             {
-                $message = "Please check the information again.";
-                return view('job.jobs')->with('message', $message);
+                // If result's false,
+                $message = "Please try again.";
+                return view('error.commonError')->with($message);
+            }
+        /* }
+        catch (Exception $e)
+        {
+            // Throwing Exception with message:
+            throw $e->getMessage();
+        } */
+    }
+
+    // Create onInterestGroupDeletion
+    public function onDelete(Request $request) 
+    {
+        try
+        {
+            // Store the information from hidden values into a Interest Group object:
+            $id = $request->input('id');
+            
+            // Send it to Business Service to Delete the Interest Group:
+            $service = new InterestGroupBusinessService();
+            $result = $service->remove($id);
+                        
+            // Check if result holds any value
+            if ($result)
+            {
+                // Call the Business Service and return the List of all InterestGroups
+                $interestGroupList = $service->gatherGroupList();
+                
+                // Return the View with the result data
+                return view('interestGroup.interestGroupList')->with('intGroups', $interestGroupList);
+            }
+            else
+            {
+                // If result's false,
+                $message = "Please try again.";
+                return view('error.commonError')->with($message);
             }
         }
         catch (Exception $e)
@@ -139,43 +180,21 @@ class InterestGroupController extends Controller
         }
     }
     
-    // Create onInterestGroupDeletion
-    
     // Create a validation rules-
-    
-    private function storePostVariablesIntoObject(Request $request) 
+    private function storePostVariablesIntoObject(Request $request)
     {
         // Store all the Requested info into Variables:
         $id = $request->input('id');
         $name = $request->input('name');
         $description = $request->input('description');
         $tags = $request->input('tags');
-        
+        $users_id = $request->input('users_id');
+
         // Create an InterestGroup object:
-        $interestGroup = new InterestGroup($id, $name, $description, $tags);
-        
+        $interestGroup = new InterestGroup($id, $name, $description, $tags, $users_id);
+
         // Return the interest group object.
         return $interestGroup;
     }
     
-    /**
-     * Return the view "interestGroupList" with the data collected from Services.
-     * 
-     * @param $service
-     * @param $result
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
-     */
-    private function populateData($service, $result) 
-    {
-        $interestGroupData = $service->gatherGroupList();
-        
-        // Check if the result was true
-        if ($result)
-        {
-            // Return the View with the result data
-            return view('interestGroup.interestGroupList')->with('intGroups', $interestGroupData);
-        }
-        else
-            return view('common.error');
-    }
 }

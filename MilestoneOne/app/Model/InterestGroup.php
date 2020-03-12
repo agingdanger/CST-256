@@ -8,13 +8,15 @@ class InterestGroup
     private $name;
     private $description;
     private $tags;
+    private $users_id;
     
-    public function __construct($id, $name, $description, $tags) 
+    public function __construct($id, $name, $description, $tags, $users_id) 
     {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->tags = $tags;
+        $this->users_id = $users_id;
     }
     
     // get JSON format if needed; 
@@ -54,6 +56,13 @@ class InterestGroup
     {
         return $this->tags;
     }
-
+    
+    /**
+     * @return mixed
+     */
+    public function getUsers_id()
+    {
+        return $this->users_id;
+    }
     
 }

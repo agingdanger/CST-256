@@ -11,7 +11,7 @@
 				
 				<tr>
 					<td></td>
-                    	<td><input type="hidden" name="jobid" value="{{ $intGroup->getId() }}"/>
+                    	<td><input type="hidden" name="id" value="{{ $intGroup->getId() }}"/>
                     	<!-- {{ $errors->first('id') }} --></td>
             	</tr>
 				
@@ -30,6 +30,12 @@
                 <tr>
                 	<td>Tags:</td>
                 	<td><input type="text" name="tags" value="{{ $intGroup->getTags() }}"/>
+                	<!-- {{ $errors->first('username') }} --></td>
+                </tr>
+                
+                <tr>
+                	<td></td>
+                	<td><input type="hidden" name="users_id" value="{{ $intGroup->getUsers_id() }}"/>
                 	<!-- {{ $errors->first('username') }} --></td>
                 </tr>
     				

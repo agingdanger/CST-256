@@ -18,6 +18,12 @@ class InterestGroupDataService
         $this->conn = $conn;
     }
 
+    /**
+     * find all the Interest Groups available. 
+     * 
+     * @throws DatabaseException
+     * @return $result->fetchAll()
+     */
     public function findAllGroups()
     {
         try
@@ -26,11 +32,11 @@ class InterestGroupDataService
             $result = $this->conn->prepare("SELECT * FROM interest_group");
             // Execute the Query
             $result->execute();
-            
+
             // return the result
-            return $result->fetchAll();            
+            return $result->fetchAll();
         }
-        catch(PDOException $el)
+        catch (PDOException $el)
         {
             Log::error("Exception in IntGroupDataService's findAllGroups(): ", array(
                 "message" => $el->getMessage()
@@ -41,33 +47,94 @@ class InterestGroupDataService
         {
         }
     }
-    
+
+    /**
+     * Create an Interest Group.
+     *
+     * @param InterestGroup $interestGroup
+     * @throws DatabaseException
+     * @return boolean
+     */
+    public function create(InterestGroup $interestGroup)
+    {
+        try
+        {
+            // Put all the data from $interestGroup into variables:
+            $id = $interestGroup->getId();
+            $name = $interestGroup->getName();
+            $description = $interestGroup->getDescription();
+            $tags = $interestGroup->getTags();
+            $users_id;
+
+            // Build the Query to add a job into the database:
+            $result = $this->conn->prepare("INSERT INTO interest_group (`ID`, `NAME`, `DESCRIPTION`, `TAGS`, `USERS_ID`) VALUES (:id, :name, :description, :tags, :users_id)");
+            // Bind all the values by matching them with the variables created:
+            $result->bindParam(':id', $id);
+            $result->bindParam(':name', $name);
+            $result->bindParam(':description', $description);
+            $result->bindParam(':tags', $tags);
+            $result->bindParam(':users_id', $users_id);
+
+            // Execute the query:
+            $result->execute();
+
+            // Check if result was successful:
+            if ($result->rowCount() == 1)
+            {
+                Log::info("Exit InterestGroupDataService.create() with true");
+                return true;
+            }
+            else
+            {
+                Log::info("Exit InterestGroupDataService.create() with false");
+                return false;
+            }
+        }
+        catch (PDOException $pdoExc)
+        {
+            Log::error("Exception: ", array(
+                "message" => $pdoExc->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $pdoExc->getMessage(), 0, $pdoExc);
+        }
+        catch (Exception $e)
+        {
+            // Throwing Exception with message:
+            throw $e->getMessage();
+        }
+    }
+
+    /**
+     * Update the Interest Group's fields.
+     *
+     * @param InterestGroup $interestGroup
+     * @throws DatabaseException
+     * @return boolean
+     */
     public function update(InterestGroup $interestGroup)
     {
         try
         {
             // Put all the data from $job into variables:
-            $id = $job->getId();
-            $name = $job->getName();
-            $description = $job->getDescription();
-            $company = $job->getCompany();
-            $requirements = $job->getRequirements();
-            $skills = $job->getSkills();
-            
+            $id = $interestGroup->getId();
+            $name = $interestGroup->getName();
+            $description = $interestGroup->getDescription();
+            $tags = $interestGroup->getTags();
+
             // Build the Query to Update the Job's info into the database:
-            $result = $this->conn->prepare("UPDATE job SET NAME=:jobname, DESCRIPTION=:desc, COMPANY=:company, REQUIREMENTS=:requirements, SKILLS=:skills WHERE ID=:id");
+            $result = $this->conn->prepare("UPDATE interest_group SET NAME=:name, DESCRIPTION=:desc, TAGS=:tags WHERE ID=:id");
+            
             // Bind all the query variables with the method variables:
             $result->bindParam(':id', $id);
-            $result->bindParam(':jobname', $name);
+            $result->bindParam(':name', $name);
             $result->bindParam(':desc', $description);
-            $result->bindParam(':company', $company);
-            $result->bindParam(':requirements', $requirements);
-            $result->bindParam(':skills', $skills);
+            $result->bindParam(':tags', $tags);
+
             // Execute the Query:
             $result->execute();
-            
+
             // Check if the result was true:
-            if($result)
+            if ($result)
             {
                 return true;
             }
@@ -76,6 +143,41 @@ class InterestGroupDataService
                 return false;
             }
         }
+        catch (PDOException $e)
+        {
+            Log::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+        catch (DatabaseException $e)
+        {
+            // Throwing Exception with message:
+            Log::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            return false;
+        }
+    }
+    
+    public function delete($id)
+    {
+        try
+        {
+            // Build the Query to delete a job from the Database:
+            $result = $this->conn->prepare("DELETE FROM interest_group WHERE ID =:id");
+            // Bind the query variables with the method variables:
+            $result->bindParam(':id', $id);
+            // Execute the Query:
+            $result->execute();
+            
+            // Check if result is true:
+            if($result)
+            {
+                return $id;
+            }
+            return false;
+        }
         catch(PDOException $e)
         {
             Log::error("Exception: ", array(
@@ -83,13 +185,10 @@ class InterestGroupDataService
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch (Exception $exc)
         {
             // Throwing Exception with message:
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
-            ));
-            return false;
+            throw $exc->getMessage();
         }
     }
 }

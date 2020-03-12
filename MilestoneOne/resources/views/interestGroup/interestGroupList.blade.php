@@ -7,6 +7,13 @@
 
 @section('content')
 
+@if(Session::get('role') == "admin")	
+    <form action="addInterestGroup" method="POST">
+        <input type = "hidden" name = "_token" value = "{{ csrf_token() }}"/>
+        <input class = "btn btn-primary" type = "submit" value = "Click Here to Add an Interest Group" />
+    </form>
+@endif
+
 	<table id="table_id" class="table table-striped table-bordered" style="width:95%">
     <thead>
         <tr>
@@ -30,6 +37,7 @@
                 	<input type = "hidden" name = "name" value = "{{$intGroup['NAME']}}"/>
                 	<input type = "hidden" name = "description" value = "{{$intGroup['DESCRIPTION']}}"/>
                 	<input type = "hidden" name = "tags" value = "{{$intGroup['TAGS']}}"/>
+                	<input type = "hidden" name = "users_id" value = "{{$intGroup['USERS_ID']}}"/>
                 	<input class = "btn btn-primary" type = "submit" value = "Edit" />
             	</form>
             </td>
@@ -40,6 +48,7 @@
                 	<input type = "hidden" name = "name" value = "{{$intGroup['NAME']}}"/>
                 	<input type = "hidden" name = "description" value = "{{$intGroup['DESCRIPTION']}}"/>
                 	<input type = "hidden" name = "tags" value = "{{$intGroup['TAGS']}}"/>
+                	<input type = "hidden" name = "users_id" value = "{{$intGroup['USERS_ID']}}"/>
                 	<input class = "btn btn-danger" type = "submit" value = "Delete" onclick="javascript:return confirm('Are you sure you want to delete this User?')"/>
             	</form>
             </td>

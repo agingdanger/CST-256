@@ -8,6 +8,10 @@
 			<h2>Add an Interest Group</h2>
 			<table>
 				<tr>
+					<td></td>
+                    <td><input type="hidden" name="id"/></td>
+            	</tr>
+				<tr>
 					<td>Group Name: </td>
 					<td><input type = "text" name = "name" />{{ $errors->first('name') }}</td>
 				</tr>

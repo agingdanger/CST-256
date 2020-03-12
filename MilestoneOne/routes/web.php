@@ -155,3 +155,6 @@ Route::post('/editInterestGroupForm', 'InterestGroupController@onViewEditGroupFo
 
 // Route to post the Edit details into database and return the updated list: 
 Route::post('/editInterestGroupPost', 'InterestGroupController@onEditInterestGroup');
+
+// Route to the delete controller method in InterestGroupController: 
+Route::post('/deleteInterestGroup', 'InterestGroupController@onDelete');
