@@ -30,6 +30,70 @@ class InterestGroupBusinessService
     }
     
     /**
+     *
+     * @return $listOfGroups
+     */
+    public function gatherGroup($igid)
+    {
+        // Create a database connection object
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Call the DataService to findAllGroups
+        $dataService = new InterestGroupDataService($conn);
+        $group = $dataService->findInterestGroupByID($igid);
+        
+        // Close the Connection
+        $conn = null;
+        
+        // Return the array of results-
+        return $group;
+    }
+    
+    /**
+     * Return users to controller method
+     * @return $users
+     */
+    public function gatherUsers($igid)
+    {
+        // Create a database connection object
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Call the DataService to findUsersByGroup
+        $dataService = new InterestGroupDataService($conn);
+        $users = $dataService->findUsersByGroup($igid);
+        
+        // Close the Connection
+        $conn = null;
+        
+        // Return the array of results-
+        return $users;
+    }
+    
+    /**
+     * Return users to controller method
+     * @return $users
+     */
+    public function joinGroup($igid)
+    {
+        // Create a database connection object
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Call the DataService to findUsersByGroup
+        $dataService = new InterestGroupDataService($conn);
+        $users = $dataService->addInterestedUser($igid);
+        
+        // Close the Connection
+        $conn = null;
+        
+        // Return the array of results-
+        return $users;
+    }
+    
+    
+    /**
      * 
      * @return $result
      */

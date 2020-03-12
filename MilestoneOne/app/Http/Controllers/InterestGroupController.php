@@ -34,6 +34,31 @@ class InterestGroupController extends Controller
             throw $e->getMessage();
         }
     }
+    
+    /**
+     * Return the view InterestGroup with data
+     * 
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function onViewInterestGroup(Request $request)
+    {
+//         try
+//         {
+            $igid = $request->input('id');
+            // Call the Business Service and return the List of all InterestGroups
+            $service = new InterestGroupBusinessService();
+            $interestGroup = $service->gatherGroup($igid);
+            $users = $service->gatherUsers($igid);
+            
+            // Return the View with the result data
+            return view('interestGroup.viewinterestGroup')->with('intGroup', $interestGroup)->with('users', $users);
+//         }
+//         catch (Exception $e)
+//         {
+//             // Throwing Exception with message:
+//             throw $e->getMessage();
+//         }
+    }
 
     /**
      * Call to view the Edit Form for the InterestGroup.
@@ -50,9 +75,10 @@ class InterestGroupController extends Controller
             $name = $request->input('name');
             $description = $request->input('description');
             $tags = $request->input('tags');
+            $userID = $request->input('users_ID');
 
             // Create an InterestGroup Object:
-            $interestGroup = new InterestGroup($id, $name, $description, $tags);
+            $interestGroup = new InterestGroup($id, $name, $description, $tags, $userID);
 
             // Return the view by passing the interestGroup object.
             return view('interestGroup.editInterestGroupForm')->with('intGroup', $interestGroup);
@@ -148,8 +174,8 @@ class InterestGroupController extends Controller
     // Create onInterestGroupDeletion
     public function onDelete(Request $request) 
     {
-        try
-        {
+//         try
+//         {
             // Store the information from hidden values into a Interest Group object:
             $id = $request->input('id');
             
@@ -172,12 +198,43 @@ class InterestGroupController extends Controller
                 $message = "Please try again.";
                 return view('error.commonError')->with($message);
             }
-        }
-        catch (Exception $e)
-        {
-            // Throwing Exception with message:
-            throw $e->getMessage();
-        }
+//         }
+//         catch (Exception $e)
+//         {
+//             // Throwing Exception with message:
+//             throw $e->getMessage();
+//         }
+    }
+    
+    /**
+     * Return the view InterestGroup with data
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function onJoinInterestGroup(Request $request)
+    {
+        //         try
+        //         {
+        
+        $igid = $request->input('id');
+        // Call the private method to store request data into an object:
+        $group = $this->storePostVariablesIntoObject($request);
+        
+        // Call the Business Service and return the List of all InterestGroups
+        $service = new InterestGroupBusinessService();
+        $interestGroup = $service->joinGroup($igid);
+        
+        $interestGroup = $service->gatherGroup($igid);
+        $users = $service->gatherUsers($igid);
+        
+        // Return the View with the result data
+        return view('interestGroup.viewinterestGroup')->with('intGroup', $interestGroup)->with('users', $users);
+        //         }
+        //         catch (Exception $e)
+        //         {
+        //             // Throwing Exception with message:
+        //             throw $e->getMessage();
+        //         }
     }
     
     // Create a validation rules-

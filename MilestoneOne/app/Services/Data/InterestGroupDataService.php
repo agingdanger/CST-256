@@ -5,6 +5,7 @@ use Exception;
 use PDOException;
 use App\Services\Utility\DatabaseException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use App\Model\InterestGroup;
 
 class InterestGroupDataService
@@ -18,6 +19,77 @@ class InterestGroupDataService
         $this->conn = $conn;
     }
 
+    /**
+     * find the available Group.
+     *
+     * @throws DatabaseException
+     * @return $result->fetchAll()
+     */
+    public function findInterestGroupByID($igid)
+    {
+        try
+        {
+            // Run the Query to find all the Groups available from the Database
+            $result = $this->conn->prepare("SELECT * FROM interest_group WHERE ID=:id");
+            $result->bindParam(':id', $igid);
+            // Execute the Query
+            $result->execute();
+            
+            // return the result
+            return $result->fetchAll();
+        }
+        catch (PDOException $el)
+        {
+            Log::error("Exception in IntGroupDataService's findAllGroups(): ", array(
+                "message" => $el->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $el->getMessage(), 0, $el);
+        }
+        catch (Exception $e)
+        {
+        }
+    }
+    
+    /**
+     * find the available Group.
+     *
+     * @throws DatabaseException
+     * @return $result->fetchAll()
+     */
+    public function findUsersByGroup($igid)
+    {
+        try
+        {
+            // Run the Query to find all the Groups available from the Database
+            $result = $this->conn->prepare("SELECT 
+                                                i.USERNAME
+                                                FROM 
+                                                users as i
+                                                LEFT JOIN user_interest as u
+                                                ON i.ID = u.users_ID
+                                                LEFT JOIN interest_group as ii
+                                                on u.interest_group_id = ii.ID
+                                                WHERE u.interest_group_ID=:id");
+            $result->bindParam(':id', $igid);
+            // Execute the Query
+            $result->execute();
+            
+            // return the result
+            return $result->fetchAll();
+        }
+        catch (PDOException $el)
+        {
+            Log::error("Exception in IntGroupDataService's findAllGroups(): ", array(
+                "message" => $el->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $el->getMessage(), 0, $el);
+        }
+        catch (Exception $e)
+        {
+        }
+    }
+    
+    
     /**
      * find all the Interest Groups available. 
      * 
@@ -64,7 +136,7 @@ class InterestGroupDataService
             $name = $interestGroup->getName();
             $description = $interestGroup->getDescription();
             $tags = $interestGroup->getTags();
-            $users_id;
+            $users_id = Session::get('userID');
 
             // Build the Query to add a job into the database:
             $result = $this->conn->prepare("INSERT INTO interest_group (`ID`, `NAME`, `DESCRIPTION`, `TAGS`, `USERS_ID`) VALUES (:id, :name, :description, :tags, :users_id)");
@@ -74,10 +146,22 @@ class InterestGroupDataService
             $result->bindParam(':description', $description);
             $result->bindParam(':tags', $tags);
             $result->bindParam(':users_id', $users_id);
-
+            
             // Execute the query:
             $result->execute();
-
+            
+            //pull interest group ID from database that was just created to add user to interest group
+            $igid = $this->conn->lastInsertId();
+            
+            
+            $result2 = $this->conn->prepare("INSERT INTO user_interest (`ID`, `interest_group_ID`, `users_ID`) VALUES (:id, :interest_group_id, :users_id)");
+            $result2->bindParam(':id', $id);
+            $result2->bindParam(':interest_group_id', $igid);
+            $result2->bindParam(':users_id', $users_id);
+            
+            //Execute
+            $result2->execute();
+            
             // Check if result was successful:
             if ($result->rowCount() == 1)
             {
@@ -160,6 +244,57 @@ class InterestGroupDataService
         }
     }
     
+    
+    /**
+     * Add an interested user to a group.
+     *
+     * @param InterestGroup $interestGroup
+     * @throws DatabaseException
+     * @return boolean
+     */
+    public function addInterestedUser($igid)
+    {
+        try
+        {
+            //Place variables values to ready the queries
+            $id = "";
+            $users_id = Session::get('userID');
+            
+            
+            $result2 = $this->conn->prepare("INSERT INTO user_interest (`ID`, `interest_group_ID`, `users_ID`) VALUES (:id, :interest_group_id, :users_id)");
+            $result2->bindParam(':id', $id);
+            $result2->bindParam(':interest_group_id', $igid);
+            $result2->bindParam(':users_id', $users_id);
+            
+            //Execute
+            $result2->execute();
+            
+            // Check if result was successful:
+            if ($result2->rowCount() == 1)
+            {
+                Log::info("Exit InterestGroupDataService.create() with true");
+                return true;
+            }
+            else
+            {
+                Log::info("Exit InterestGroupDataService.create() with false");
+                return false;
+            }
+        }
+        catch (PDOException $pdoExc)
+        {
+            Log::error("Exception: ", array(
+                "message" => $pdoExc->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $pdoExc->getMessage(), 0, $pdoExc);
+        }
+        catch (Exception $e)
+        {
+            // Throwing Exception with message:
+            throw $e->getMessage();
+        }
+    }
+    
     public function delete($id)
     {
         try
@@ -170,6 +305,13 @@ class InterestGroupDataService
             $result->bindParam(':id', $id);
             // Execute the Query:
             $result->execute();
+            
+//             //Build the Query to delete all users from an interest group
+//             $result2 = $this->conn->prepare("DELETE FROM users_interest WHERE interest_group_ID =:id");
+//             // Bind the query variables with the method variables:
+//             $result2->bindParam(':id', $id);
+//             //Execute the Query:
+//             $result2->execute();
             
             // Check if result is true:
             if($result)
