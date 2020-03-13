@@ -9,6 +9,7 @@ use App\Model\InterestGroup;
 class InterestGroupBusinessService
 {
     /**
+     * Get the list of Interest Groups
      * 
      * @return $listOfGroups
      */
@@ -30,6 +31,7 @@ class InterestGroupBusinessService
     }
     
     /**
+     * Get the group from the database.
      *
      * @return $listOfGroups
      */
@@ -51,7 +53,8 @@ class InterestGroupBusinessService
     }
     
     /**
-     * Return users to controller method
+     * Returns the Members of a specific Group to controller method
+     * 
      * @return $users
      */
     public function gatherUsers($igid)
@@ -72,8 +75,10 @@ class InterestGroupBusinessService
     }
     
     /**
-     * Return users to controller method
-     * @return $users
+     * Add a User to the Group. 
+     * 
+     * @param $igid
+     * @return boolean
      */
     public function joinGroup($igid)
     {
@@ -94,7 +99,7 @@ class InterestGroupBusinessService
     
     
     /**
-     * 
+     * Create a new Interest Group. 
      * @return $result
      */
     public function addition(InterestGroup $interestGroup)
@@ -137,6 +142,12 @@ class InterestGroupBusinessService
         return $result;
     }
     
+    /**
+     * Remove the Interest Group
+     * 
+     * @param $interestGroup_id
+     * @return boolean
+     */
     public function remove($interestGroup_id)
     {
         // Create a database connection object

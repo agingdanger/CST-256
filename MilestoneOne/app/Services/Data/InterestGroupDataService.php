@@ -14,6 +14,10 @@ class InterestGroupDataService
     // Declare a connection variable
     private $conn;
 
+    /**
+     * Non-default constructor
+     * @param $conn
+     */
     public function __construct($conn)
     {
         $this->conn = $conn;
@@ -31,6 +35,7 @@ class InterestGroupDataService
         {
             // Run the Query to find all the Groups available from the Database
             $result = $this->conn->prepare("SELECT * FROM interest_group WHERE ID=:id");
+            // Bind the params with variables: 
             $result->bindParam(':id', $igid);
             // Execute the Query
             $result->execute();
@@ -40,7 +45,8 @@ class InterestGroupDataService
         }
         catch (PDOException $el)
         {
-            Log::error("Exception in IntGroupDataService's findAllGroups(): ", array(
+            // Logging in the 
+            Log::error("Exception in IntGroupDataService's findInterestGroupByID(): ", array(
                 "message" => $el->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $el->getMessage(), 0, $el);
@@ -70,6 +76,7 @@ class InterestGroupDataService
                                                 LEFT JOIN interest_group as ii
                                                 on u.interest_group_id = ii.ID
                                                 WHERE u.interest_group_ID=:id");
+            // Bind the params with variables: 
             $result->bindParam(':id', $igid);
             // Execute the Query
             $result->execute();
@@ -79,7 +86,7 @@ class InterestGroupDataService
         }
         catch (PDOException $el)
         {
-            Log::error("Exception in IntGroupDataService's findAllGroups(): ", array(
+            Log::error("Exception in IntGroupDataService's findUsersByGroup(): ", array(
                 "message" => $el->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $el->getMessage(), 0, $el);
@@ -260,24 +267,25 @@ class InterestGroupDataService
             $id = "";
             $users_id = Session::get('userID');
             
-            
+            // Build the Query:
             $result2 = $this->conn->prepare("INSERT INTO user_interest (`ID`, `interest_group_ID`, `users_ID`) VALUES (:id, :interest_group_id, :users_id)");
+            // Bind the params with variables: 
             $result2->bindParam(':id', $id);
             $result2->bindParam(':interest_group_id', $igid);
             $result2->bindParam(':users_id', $users_id);
             
-            //Execute
+            // Execute the Query: 
             $result2->execute();
             
             // Check if result was successful:
             if ($result2->rowCount() == 1)
             {
-                Log::info("Exit InterestGroupDataService.create() with true");
+                Log::info("Exit InterestGroupDataService.addInterestedUser() with true");
                 return true;
             }
             else
             {
-                Log::info("Exit InterestGroupDataService.create() with false");
+                Log::info("Exit InterestGroupDataService.addInterestedUser() with false");
                 return false;
             }
         }
@@ -295,6 +303,13 @@ class InterestGroupDataService
         }
     }
     
+    /**
+     * Deletes an Interest Group along with the rows from bridging table. 
+     * 
+     * @param $id
+     * @throws DatabaseException
+     * @return boolean
+     */
     public function delete($id)
     {
         try
@@ -305,13 +320,6 @@ class InterestGroupDataService
             $result->bindParam(':id', $id);
             // Execute the Query:
             $result->execute();
-            
-//             //Build the Query to delete all users from an interest group
-//             $result2 = $this->conn->prepare("DELETE FROM users_interest WHERE interest_group_ID =:id");
-//             // Bind the query variables with the method variables:
-//             $result2->bindParam(':id', $id);
-//             //Execute the Query:
-//             $result2->execute();
             
             // Check if result is true:
             if($result)
