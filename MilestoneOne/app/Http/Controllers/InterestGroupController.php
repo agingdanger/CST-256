@@ -97,8 +97,8 @@ class InterestGroupController extends Controller
     public function onInterestGroupAddition(Request $request)
     {
         // Call the Validation Rules:
-        try
-        {
+        /* try
+        { */
             // Call the private function to store request variables into an object:
             $interestGroup = $this->storePostVariablesIntoObject($request);
 
@@ -120,7 +120,7 @@ class InterestGroupController extends Controller
                 $message = "Please try again.";
                 return view('error.commonError')->with($message);
             }
-        }
+        /* }
         catch (ValidationException $el)
         {
             throw $el;
@@ -129,7 +129,7 @@ class InterestGroupController extends Controller
         {
             // Throwing Exception with message:
             throw $e->getMessage();
-        }
+        } */
     }
 
     /**
