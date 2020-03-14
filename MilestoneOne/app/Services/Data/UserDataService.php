@@ -122,7 +122,7 @@ class UserDataService
             $role = $user->getRole();
 
             // change this to :variable for bindparam
-            $result = $this->conn->prepare("INSERT INTO `USERS` (`ID`, `FIRST_NAME`, `LAST_NAME`, `USERNAME`, `PASSWORD`, `EMAIL`, `PHONE`, `ROLE`) VALUES(:id, :firstname, :lastname, :username, :password, :email, :phone, :role)");
+            $result = $this->conn->prepare("INSERT INTO `users` (`ID`, `FIRST_NAME`, `LAST_NAME`, `USERNAME`, `PASSWORD`, `EMAIL`, `PHONE`, `ROLE`) VALUES(:id, :firstname, :lastname, :username, :password, :email, :phone, :role)");
             $result->bindParam(':id', $id);
             $result->bindParam(':firstname', $firstName);
             $result->bindParam(':lastname', $lastName);
