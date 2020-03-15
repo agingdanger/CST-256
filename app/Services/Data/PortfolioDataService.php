@@ -33,7 +33,7 @@ class PortfolioDataService
         try
         {
             // Find all the jobs for the user
-            $result = $this->conn->prepare("SELECT * FROM JOB_HISTORY WHERE users_ID = :userid");
+            $result = $this->conn->prepare("SELECT * FROM job_history WHERE users_ID = :userid");
             $result->bindParam('userid', $userID);
             $result->execute();
             
@@ -59,7 +59,7 @@ class PortfolioDataService
         try
         {
             // Find all the skills for the user
-            $result = $this->conn->prepare("SELECT * FROM SKILL WHERE users_ID = :userid");
+            $result = $this->conn->prepare("SELECT * FROM skill WHERE users_ID = :userid");
             $result->bindParam('userid', $userID);
             $result->execute();
             
@@ -125,7 +125,7 @@ class PortfolioDataService
             $userID = $job->getUserID();
             
             // Build the query to insert the job into the users history
-            $result = $this->conn->prepare("INSERT INTO `JOB_HISTORY` (`ID`, `NAME`, `POSITION`, `DESCRIPTION`, `AWARDS`, `START_DATE`, `END_DATE`, `users_ID`) VALUES(:id, :name, :position, :description, :awards, :startdate, :enddate, :usersid)");
+            $result = $this->conn->prepare("INSERT INTO job_history (`ID`, `NAME`, `POSITION`, `DESCRIPTION`, `AWARDS`, `START_DATE`, `END_DATE`, `users_ID`) VALUES(:id, :name, :position, :description, :awards, :startdate, :enddate, :usersid)");
             //Bind the query variables with the method variables
             $result->bindParam(':id', $id);
             $result->bindParam(':name', $jobName);
@@ -189,7 +189,7 @@ class PortfolioDataService
             $userID = $ed->getUserID();
             
             //Build the query to insert into education
-            $result = $this->conn->prepare("INSERT INTO `education` (`ID`, `NAME`, `YEARS`, `MAJOR`, `MINOR`, `START_YEAR`, `END_YEAR`, `users_ID`) VALUES(:id, :name, :years, :major, :minor, :startyear, :endyear, :usersid)");
+            $result = $this->conn->prepare("INSERT INTO education (`ID`, `NAME`, `YEARS`, `MAJOR`, `MINOR`, `START_YEAR`, `END_YEAR`, `users_ID`) VALUES(:id, :name, :years, :major, :minor, :startyear, :endyear, :usersid)");
             //Bind the query variables to the method variables
             $result->bindParam(':id', $id);
             $result->bindParam(':name', $edName);
