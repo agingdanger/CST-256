@@ -40,8 +40,8 @@ class InterestGroupController extends Controller
      */
     public function onViewInterestGroup(Request $request)
     {
-        try
-        {
+//         try
+//         {
             $igid = $request->input('id');
             // Call the Business Service and return the List of all InterestGroups
             $service = new InterestGroupBusinessService();
@@ -51,11 +51,11 @@ class InterestGroupController extends Controller
             // Return the View with the result data
             return view('interestGroup.viewinterestGroup')->with('intGroup', $interestGroup)->with('users', $users);
         }
-        catch (Exception $e)
-        {
-            // Throwing Exception with message:
-            throw $e->getMessage();
-        }
+//         catch (Exception $e)
+//         {
+//             // Throwing Exception with message:
+//             throw $e->getMessage();
+//         }
     }
 
     /**
