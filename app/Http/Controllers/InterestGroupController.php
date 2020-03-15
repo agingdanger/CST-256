@@ -49,7 +49,7 @@ class InterestGroupController extends Controller
             $users = $service->gatherUsers($igid);
 
             // Return the View with the result data
-            return view('interestGroup.viewinterestGroup')->with('intGroup', $interestGroup)->with('users', $users);
+            return view('interestGroup.viewInterestGroup')->with('intGroup', $interestGroup)->with('users', $users);
 //         }
 //         catch (Exception $e)
 //         {
