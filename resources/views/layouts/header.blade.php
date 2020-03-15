@@ -25,9 +25,6 @@
           <li class="nav-item">
             <a class="nav-link" href="myportfolio">Portfolio</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="welcome">Logout</a>
-          </li>
         	@if(Session::get('role') === "admin")
         		<li class="nav-item">
                 <a class="nav-link" href='displayUsers'>Admin Users</a>
