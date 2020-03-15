@@ -50,7 +50,7 @@ class InterestGroupController extends Controller
 
             // Return the View with the result data
             return view('interestGroup.viewinterestGroup')->with('intGroup', $interestGroup)->with('users', $users);
-        }
+//         }
 //         catch (Exception $e)
 //         {
 //             // Throwing Exception with message:
