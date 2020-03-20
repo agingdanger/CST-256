@@ -3,6 +3,7 @@ namespace App\Services\Business;
 
 use Illuminate\Http\Request;
 use App\Services\Data\UserDataService;
+use App\Services\Data\AdminDataService;
 use App\Model\User;
 use App\Services\Utility\db_connector;
 
@@ -32,6 +33,11 @@ class UserBusinessService
         return false;
     }
 
+    /**
+     * 
+     * @param User $user
+     * @return boolean
+     */
     public function modify(User $user)
     {
         $db = new db_connector();
@@ -45,6 +51,11 @@ class UserBusinessService
         return $userData;
     }
 
+    /**
+     * 
+     * @param User $user
+     * @return \App\Services\Data\$result|boolean
+     */
     public function profile(User $user)
     {
         // Create the database connection object.
@@ -55,6 +66,23 @@ class UserBusinessService
         $service = new UserDataService($conn);
         $result = $service->findById($user);
 
+        // if Result has some value, which it should, it should return
+        if($result)
+            return $result;
+        else
+            return false;
+    }
+    
+    public function search($param)
+    {
+        // Create the database connection object.
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Call the User Data Service to findById:
+        $service = new AdminDataService($conn);
+        $result = $service->findJob($param);
+        
         // if Result has some value, which it should, it should return
         if($result)
             return $result;

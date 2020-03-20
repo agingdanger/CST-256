@@ -247,6 +247,19 @@ class UserController extends Controller
         }
     }
     
+    /**
+     * 
+     * @param Request $request
+     */
+    public function onSearchJob(Request $request)
+    {
+        $param = $request->input('search');
+        
+        $userBusiness = new UserBusinessService();
+        
+        //$userBusiness->
+    }
+    
     
     /**
      * Validation function that can be reused

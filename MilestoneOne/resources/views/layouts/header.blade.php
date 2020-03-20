@@ -5,11 +5,20 @@
   <a class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
   	<img class="img-thumbnail" src="https://logodix.com/logo/1597047.gif" height="100px" width="100px"/>
   </a>
-
+	
+ <!-- Search Bar -->
+ @if(session()->has('role'))
+ <form class="form-inline my-2 my-lg-0" action="searchJobs" method="POST">
+   <input class="form-control mr-sm-2" type="text" name="search" placeholder="Job Search" aria-label="Search">
+   <input type = "hidden" name = "_token" value = "{{ csrf_token() }}"/>
+   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+ </form>
+ @endif
   <!-- Collapse button -->
   <button class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#navbarContent"
     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-
+	
+	
   <!-- Collapsible content -->
   <div class="collapse navbar-collapse" id="navbarContent">
 	
@@ -24,9 +33,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="myportfolio">Portfolio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="welcome">Logout</a>
           </li>
         	@if(Session::get('role') === "admin")
         		<li class="nav-item">
@@ -48,7 +54,7 @@
 
   </div>
   <!-- Collapsible content -->
-
+    
 </nav>
 <!--/.Navbar-->
 
