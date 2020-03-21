@@ -63,6 +63,7 @@ class UserController extends Controller
             // Creating sessions here to get the user's ID & Role.
             Session::put('userID', $userData['ID']);
             Session::put('role', $userData['ROLE']);
+            Session::put('principal', 'true');
 
             return view('home.home')->with('user', $userData);
         }
@@ -247,6 +248,15 @@ class UserController extends Controller
         }
     }
     
+    public function onLogout() 
+    {
+        // Flush out everything from a session:
+//         session()->flush();
+        Session::flush();
+        
+        // Return the logged in Home page: 
+        return view('login.login');
+    }
     
     /**
      * Validation function that can be reused

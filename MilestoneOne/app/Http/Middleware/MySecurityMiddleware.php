@@ -3,7 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Services\Utility\MyLogger2;
-    use Closure;
+use Illuminate\Support\Facades\Session;
+use Closure;
 
 class MySecurityMiddleware
 {
@@ -16,8 +17,6 @@ class MySecurityMiddleware
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
-        
         // Step 1: You can use the following to get the route URI $request->path()
         // or you can also use the $request->is()
         $path = $request->path();
@@ -25,7 +24,13 @@ class MySecurityMiddleware
         
         // Step 2: Run the business rules that check for all URI's that you do not need to secure
         $secureCheck = true;
-        if($request->is('/viewJobs'))
+        if($request->is('/') || 
+            $request->is('welcome') || 
+            $request->is('login') || 
+            $request->is('registration') ||
+            $request->is('register') || 
+            $request->is('registerstatus') || 
+            Session::get('principal') == true)
         {
             $secureCheck = false;
         }

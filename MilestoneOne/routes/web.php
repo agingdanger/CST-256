@@ -38,12 +38,7 @@ Route::get('/home', function ()
     return view('home.home');
 });
 
-Route::get('/logout', function()
-{    
-    // Flush out everything from a session: 
-    session()->flush();
-    return view('login.login');
-});
+Route::get('/logout', 'UserController@onLogout');
 
 /* ------------- Get History Routes -------------- */
 Route::get('/addJobHistory', function ()

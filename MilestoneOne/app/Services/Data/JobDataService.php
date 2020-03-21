@@ -52,6 +52,7 @@ class JobDataService
     
     /**
      * Add a new Job to the Database: 
+     * 
      * @param $job
      * @throws DatabaseException
      * @return boolean
@@ -106,6 +107,7 @@ class JobDataService
     
     /**
      * Update the Job's info in the Job Edit Form.
+     * 
      * @param Job $job
      * @throws DatabaseException
      * @return boolean
@@ -163,6 +165,7 @@ class JobDataService
     
     /**
      * Delete a Job from the Database: 
+     * 
      * @param Job $job
      * @throws DatabaseException
      * @return \App\Model\$id|boolean

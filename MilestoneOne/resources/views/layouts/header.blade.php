@@ -15,7 +15,7 @@
 	
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
-    @if(session()->get('userID'))
+    @if(Session::get('principal'))
           <li class="nav-item active">
             <a class="nav-link" href='home'>Home <span class="sr-only">(current)</span></a>
           </li>
@@ -24,9 +24,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="myportfolio">Portfolio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="welcome">Logout</a>
           </li>
         	@if(Session::get('role') === "admin")
         		<li class="nav-item">
@@ -40,7 +37,7 @@
           	<a class="nav-link" href='viewInterestGroups'>Interest Groups</a>
           </li>
           <li class="nav-item">
-          	<a class="nav-link" href='welcome'>Log Out</a>
+          	<a class="nav-link" href='logout'>Log Out</a>
           </li>
     @endif
     </ul>
