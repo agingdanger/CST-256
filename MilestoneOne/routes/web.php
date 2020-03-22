@@ -160,8 +160,8 @@ Route::post('/deleteInterestGroup', 'InterestGroupController@onDelete');
 // Route to join the Interest Group from the table:
 Route::post('/joinInterestGroup', 'InterestGroupController@onJoinInterestGroup');
 
-/*------------------------------User Job Search Route------------------------------*/
+/*------------------------------Job Search Route------------------------------*/
  // Routes the job search data into the controller method
-Route::post('/searchJobs', 'UserController@onSearchJob');
+Route::post('/searchJobs', 'JobController@onSearchJob');
 
 //
