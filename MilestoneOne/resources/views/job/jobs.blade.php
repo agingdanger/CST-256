@@ -6,8 +6,7 @@
 @section('content')
 
 @if(Session::get('role') == "admin")	
-    <form action="jobPost" method="POST">
-        <input type = "hidden" name = "_token" value = "{{ csrf_token() }}"/>
+    <form action="jobPost" method="GET">
         <input class = "btn btn-primary" type = "submit" value = "Click Here to Add a Job" />
     </form>
 @endif

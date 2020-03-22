@@ -117,7 +117,7 @@ Route::get('/myportfolio', 'PortfolioController@onPersonalPortfolioRetrieval');
 Route::get('/viewJobs', 'AdminController@onViewJobList');
 
 // Route to Add a Job: 
-Route::post('/jobPost', function()
+Route::get('/jobPost', function()
 {
     return view('job.addJobForm');
 });
@@ -162,6 +162,6 @@ Route::post('/joinInterestGroup', 'InterestGroupController@onJoinInterestGroup')
 
 /*------------------------------Job Search Route------------------------------*/
  // Routes the job search data into the controller method
-Route::post('/searchJobs', 'JobController@onSearchJob');
+Route::post('/searchJobs', 'JobController@onSearchJobs');
 
-// 
+Route::post('/viewJob', 'JobController@onViewJobInfo');

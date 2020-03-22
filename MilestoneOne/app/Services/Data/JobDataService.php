@@ -219,7 +219,7 @@ class JobDataService
             // Find all matching jobs.
             $result = $this->conn->prepare
                 ("SELECT s.NAME, 
-                		 j.NAME, j.DESCRIPTION, j.COMPANY, j.REQUIREMENTS, j.SKILLS
+                		 j.ID, j.NAME, j.DESCRIPTION, j.COMPANY, j.REQUIREMENTS, j.SKILLS
                 		 FROM 
                          skill as s
                          INNER JOIN job as j
@@ -258,7 +258,7 @@ class JobDataService
             $result = $this->conn->prepare
             ("SELECT * 
                 FROM job
-                WHERE concat(job.NAME, '', job.DESCRIPTION, '', job.COMPANY, '', job.REQUIREMENTS, '', job.SKILLS)
+                WHERE concat(job.ID, '', job.NAME, '', job.DESCRIPTION, '', job.COMPANY, '', job.REQUIREMENTS, '', job.SKILLS)
                 LIKE concat('%', :search, '%')");
             $result->bindParam(':search', $search);
             $result->execute();
