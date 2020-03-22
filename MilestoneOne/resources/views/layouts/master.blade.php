@@ -11,10 +11,10 @@
 <link rel="stylesheet" href="{{ URL::asset('css/bootstrap.css') }}" />
 
 <!-- This is for the jQuery Datatable-->
-<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
   
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script> -->
-<!-- jQuery Datatable ends -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+<!-- jQuery Datatable code ends -->
 
 <head>
 	<title>@yield('title')</title>
@@ -28,4 +28,9 @@
 @include('layouts.footer')
 </body>
 <!-- <script src = "./interestGroup/dataTable.js"></script> -->
+<script>
+$(document).ready( function () {
+    $('#table_id').DataTable();
+} );
+</script>
 </html>
