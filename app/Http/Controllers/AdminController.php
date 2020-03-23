@@ -212,7 +212,7 @@ class AdminController extends Controller
     public function onJobAddition(Request $request)
     {
         // Call the Validation Rules:
-        $this->validateJobForm($request);
+        //$this->validateJobForm($request);
 
         try
         {            
