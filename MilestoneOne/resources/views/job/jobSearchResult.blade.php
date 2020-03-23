@@ -1,6 +1,8 @@
 @extends('layouts.master') 
 @section('title', 'Job Result Page')
 
+@section('heading', 'Job Search Results')
+
 @section('content')
 @if(Session::get('role') == "admin")	
     <form action="jobPost" method="POST">
@@ -81,7 +83,7 @@
         	</tbody>
     </table>
     
-    <h3>Matched Jobs:</h3>
+    <h3>Matched Jobs-</h3>
     
     <table id="" class="display" style="width:100%">
             <thead>

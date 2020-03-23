@@ -246,6 +246,11 @@ class UserController extends Controller
         }
     }
     
+    /**
+     * Log out the User by killing all the session variables.
+     * 
+     * @return route: /welcome
+     */
     public function onLogout() 
     {
         try

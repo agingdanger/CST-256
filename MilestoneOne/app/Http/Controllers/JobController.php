@@ -7,23 +7,32 @@ use Exception;
 use App\Services\Business\JobBusinessService;
 use Illuminate\Validation\ValidationException;
 use App\Model\Job;
+use Illuminate\Support\Facades\Redirect;
 
 class JobController extends Controller
 {
 
+    /**
+     * Search the job by taking in the user's input text
+     * 
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|view('jobSearchResult')
+     */
     public function onSearchJobs(Request $request)
     {
-        $this->validateJobSearch($request);
-        /* try
-        { */
-            
+        
+        try
+        {
+            // Call the validation rule: 
+            $this->validateJobSearch($request);
             
             // Put search info into variable
             $search = $request->input('search');
             
+            // Call the Session ID
             $id = Session::get('userID');
             
-            // Call the User Business Service to access the profile:
+            // Call the User Business Service to search jobs:
             $jobBusiness = new JobBusinessService();
             $searchData = $jobBusiness->searchJobs($search);
             
@@ -38,17 +47,24 @@ class JobController extends Controller
             {
                 return view('error.commonError');
             }
-        /* }
+        }
         catch (ValidationException $valExc)
         {
-            throw new $valExc->getMessage();
+//             throw new $valExc->getMessage();
+            return Redirect::to('viewJobs');
         }
         catch (Exception $e)
         {
             throw new $e->getMessage();
-        } */
+        }
     }
 
+    /**
+     * Return the Job Info Page by passing in the Job's info through the button.
+     * 
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function onViewJobInfo(Request $request)
     {
         // Take the request info and put them in variables:
@@ -65,13 +81,18 @@ class JobController extends Controller
         return view('job.jobInfo')->with('job', $job);
     }
 
+    /**
+     * Create validation rules for job search.
+     * 
+     * @param Request $request
+     */
     private function validateJobSearch(Request $request)
     {
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
 
         // Setup Data Validation Rules for Search Form.
         $rules = [
-            'search' => 'Required | Between: 4, 10 | Alpha'
+            'search' => 'Required'
         ];
 
         // Run Validation Rules:
