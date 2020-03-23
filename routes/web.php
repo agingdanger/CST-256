@@ -38,12 +38,7 @@ Route::get('/home', function ()
     return view('home.home');
 });
 
-Route::get('/logout', function()
-{    
-    // Flush out everything from a session: 
-    session()->flush();
-    return view('login.login');
-});
+Route::get('/logout', 'UserController@onLogout');
 
 /* ------------- Get History Routes -------------- */
 Route::get('/addJobHistory', function ()
@@ -122,7 +117,7 @@ Route::get('/myportfolio', 'PortfolioController@onPersonalPortfolioRetrieval');
 Route::get('/viewJobs', 'AdminController@onViewJobList');
 
 // Route to Add a Job: 
-Route::post('/jobPost', function()
+Route::get('/jobPost', function()
 {
     return view('job.addJobForm');
 });
@@ -164,3 +159,9 @@ Route::post('/deleteInterestGroup', 'InterestGroupController@onDelete');
 
 // Route to join the Interest Group from the table:
 Route::post('/joinInterestGroup', 'InterestGroupController@onJoinInterestGroup');
+
+/*------------------------------Job Search Route------------------------------*/
+ // Routes the job search data into the controller method
+Route::post('/searchJobs', 'JobController@onSearchJobs');
+
+Route::post('/viewJob', 'JobController@onViewJobInfo');

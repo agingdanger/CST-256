@@ -15,6 +15,7 @@ use App\Model\userCredentials;
 use App\Services\Business\SecurityService;
 use App\Services\Business\UserBusinessService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Exception;
 use Dotenv\Exception\ValidationException;
@@ -56,13 +57,11 @@ class UserController extends Controller
             {   
                 return view('error.suspended');
             }
-
-            // Store a piece of data in the session...
-//             session(['userID' => $userData['ID']]);
             
             // Creating sessions here to get the user's ID & Role.
             Session::put('userID', $userData['ID']);
             Session::put('role', $userData['ROLE']);
+            Session::put('principal', 'true');
 
             return view('home.home')->with('user', $userData);
         }
@@ -247,6 +246,24 @@ class UserController extends Controller
         }
     }
     
+    public function onLogout() 
+    {
+        try
+        {
+            // Flush out everything from a session:
+            //         session()->flush();
+            Session::flush();
+            
+            // Return the logged in Home page:
+//             return redirect()->route('welcome');
+            return Redirect::to('welcome'); 
+        }
+        catch(Exception $e)
+        {
+            throw $e->getCode();
+        }
+        
+    }
     
     /**
      * Validation function that can be reused

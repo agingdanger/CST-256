@@ -8,15 +8,13 @@
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 
-<link rel="stylesheet" href="/public/css/bootstrap.css" />
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ URL::asset('css/bootstrap.css') }}" />
 
 <!-- This is for the jQuery Datatable-->
-<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
   
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script> -->
-<!-- jQuery Datatable ends -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+<!-- jQuery Datatable code ends -->
 
 <head>
 	<title>@yield('title')</title>
@@ -30,4 +28,9 @@
 @include('layouts.footer')
 </body>
 <!-- <script src = "./interestGroup/dataTable.js"></script> -->
+<script>
+$(document).ready( function () {
+    $('#table_id').DataTable();
+} );
+</script>
 </html>

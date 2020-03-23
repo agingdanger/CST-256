@@ -40,8 +40,8 @@ class InterestGroupController extends Controller
      */
     public function onViewInterestGroup(Request $request)
     {
-//         try
-//         {
+        try
+        {
             $igid = $request->input('id');
             // Call the Business Service and return the List of all InterestGroups
             $service = new InterestGroupBusinessService();
@@ -50,12 +50,12 @@ class InterestGroupController extends Controller
 
             // Return the View with the result data
             return view('interestGroup.viewInterestGroup')->with('intGroup', $interestGroup)->with('users', $users);
-//         }
-//         catch (Exception $e)
-//         {
-//             // Throwing Exception with message:
-//             throw $e->getMessage();
-//         }
+        }
+        catch (Exception $e)
+        {
+            // Throwing Exception with message:
+            throw $e->getMessage();
+        }
     }
 
     /**
@@ -97,8 +97,8 @@ class InterestGroupController extends Controller
     public function onInterestGroupAddition(Request $request)
     {
         // Call the Validation Rules:
-        /* try
-        { */
+        try
+        {
             // Call the private function to store request variables into an object:
             $interestGroup = $this->storePostVariablesIntoObject($request);
 
@@ -120,7 +120,7 @@ class InterestGroupController extends Controller
                 $message = "Please try again.";
                 return view('error.commonError')->with($message);
             }
-        /* }
+        }
         catch (ValidationException $el)
         {
             throw $el;
@@ -129,7 +129,7 @@ class InterestGroupController extends Controller
         {
             // Throwing Exception with message:
             throw $e->getMessage();
-        } */
+        }
     }
 
     /**

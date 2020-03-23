@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Session;
 use Exception;
 use PDOException;
 use App\Model\Job;
+use App\User;
 
 class JobDataService
 {
@@ -50,8 +51,11 @@ class JobDataService
         }
     }
     
+    
+    
     /**
      * Add a new Job to the Database: 
+     * 
      * @param $job
      * @throws DatabaseException
      * @return boolean
@@ -106,6 +110,7 @@ class JobDataService
     
     /**
      * Update the Job's info in the Job Edit Form.
+     * 
      * @param Job $job
      * @throws DatabaseException
      * @return boolean
@@ -163,6 +168,7 @@ class JobDataService
     
     /**
      * Delete a Job from the Database: 
+     * 
      * @param Job $job
      * @throws DatabaseException
      * @return \App\Model\$id|boolean
@@ -200,4 +206,79 @@ class JobDataService
             throw $exc->getMessage();
         }
     }
+    
+    /**
+     * Finds matches based on userID
+     * @param User $id
+     * @throws DatabaseException
+     */
+    public function findMatches($id)
+    {
+        try
+        {
+            // Find all matching jobs.
+            $result = $this->conn->prepare
+                ("SELECT s.NAME, 
+                		 j.ID, j.NAME, j.DESCRIPTION, j.COMPANY, j.REQUIREMENTS, j.SKILLS
+                		 FROM 
+                         skill as s
+                         INNER JOIN job as j
+                         ON j.SKILLS LIKE concat('%', s.NAME, '%') AND s.users_ID = :id");
+            $result->bindParam(':id', $id);
+            $result->execute();
+            
+            // Return an array of fetched results to the Business Service:
+            return $result->fetchAll();
+        }
+        catch(PDOException $e)
+        {
+            Log::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+        catch (Exception $exc)
+        {
+            // Throwing Exception with message:
+            throw $exc->getMessage();
+        }
+        
+    }
+    
+    /**
+     * Find available jobs by search
+     * @throws DatabaseException
+     * @return $results
+     */
+    public function findJobsBySearch($search)
+    {
+        try
+        {
+            // Find all matching jobs.
+            $result = $this->conn->prepare
+            ("SELECT * 
+                FROM job
+                WHERE concat(job.ID, '', job.NAME, '', job.DESCRIPTION, '', job.COMPANY, '', job.REQUIREMENTS, '', job.SKILLS)
+                LIKE concat('%', :search, '%')");
+            $result->bindParam(':search', $search);
+            $result->execute();
+            
+            // Return an array of fetched results to the Business Service:
+            return $result->fetchAll();
+        }
+        catch(PDOException $e)
+        {
+            Log::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+        catch (Exception $exc)
+        {
+            // Throwing Exception with message:
+            throw $exc->getMessage();
+        }
+    }
+    
+    
 }
