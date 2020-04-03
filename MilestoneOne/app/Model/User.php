@@ -3,7 +3,7 @@
 namespace App\Model;
 
 
-class User
+class User implements \JsonSerializable
 {
     
     // Declaring variables: 
@@ -30,6 +30,11 @@ class User
         //Encapsulating the User Login credentials into the user model
         $this->credentials = new userCredentials($username,$password);
     }    
+    
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
     
     // GETTERS AND SETTERS: 
     public function getId()
