@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Model\DTO;
-use App\Services\Business\SecurityService;
 use App\Services\Business\UserBusinessService;
 use App\Services\Utility\MyLogger2;
 use Exception;
@@ -62,9 +61,9 @@ class UsersRestController extends Controller
         //
         try
         {
-            // Call Service to get a users
-            $service = new SecurityService();
-            $user = $service->getUser($id);
+            // Call Service to get a user
+            $service = new UserBusinessService();
+            $user = $service->getUserByID($id);
 
             // Create a DTO
             if ($user == null)
