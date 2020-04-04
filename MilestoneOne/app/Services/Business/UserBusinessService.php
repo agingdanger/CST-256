@@ -89,4 +89,9 @@ class UserBusinessService
         else
             return false;
     }
+    
+    public function getAllUsers() 
+    {
+        ;
+    }
 }

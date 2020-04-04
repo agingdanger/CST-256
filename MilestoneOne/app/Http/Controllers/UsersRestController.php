@@ -1,9 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Services\Utility\MyLogger2;
 use App\Model\DTO;
-use Illuminate\Http\Request;
+use App\Services\Business\SecurityService;
+use App\Services\Business\UserBusinessService;
+use App\Services\Utility\MyLogger2;
 use Exception;
 
 class UsersRestController extends Controller
@@ -19,11 +20,11 @@ class UsersRestController extends Controller
 
         // ---------------------- NOTE: This method has code copied and pasted. Needs update!
 
-        //
+        // 
         try
         {
             // Call Service to get all users
-            $service = new SecurityService();
+            $service = new UserBusinessService();
             $users = $service->getAllUsers();
 
             // Create a DTO

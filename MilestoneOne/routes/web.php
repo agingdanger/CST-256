@@ -170,3 +170,6 @@ Route::post('/viewJob', 'JobController@onViewJobInfo');
 /*----------------------------- Rest Services Routes --------------------------*/
 // Routes for Users using REST Controller
 Route::resource('/usersrest','UsersRestController');
+
+// Routes for Jobs using REST Service through JobsRestController
+Route::resource('/jobsrest','JobsRestController');
