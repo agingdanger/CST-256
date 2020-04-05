@@ -28,9 +28,11 @@ use Exception;
  */
 class UserController extends Controller
 {
+    // Declare logger variable
     protected $logger;
     
-    public function __construct(ILoggerService $logger) 
+    // Non-default Constructor
+    public function __construct(ILoggerService $logger)
     {
         $this->logger = $logger;
     }
@@ -79,12 +81,12 @@ class UserController extends Controller
         }
         catch(ValidationException $el)
         {
-            $this->logger->error("Validation error in UserController's onLogin()");
+            $this->logger->error("Validation error in UserController's onLogin()", array("message" => $el->getMessage()));
             throw $el;
         }
         catch(Exception $e)
         {
-            $this->logger->error("Error in UserController's onLogin()");
+            $this->logger->error("Error in UserController's onLogin()", array("message" => $e->getMessage()));
             
             // Return the Error Page: 
             return view('error.commonError');
@@ -126,16 +128,20 @@ class UserController extends Controller
             // if Registration process is true.
             if($isRegisterAttempt)
             {
+                $this->logger->info("Exited UserController's onRegister() successfully");
+                
                 Session::put('role', $request->input('role'));
                 return view('registration.registerstatus')->with('message', $message = "Registered Successfully!");
             }
             
-            $this->logger->info("Exited UserController's onRegister()");
+            $this->logger->info("Exited UserController's onRegister() unsuccessfully");
             
             return view('registration.registerstatus')->with('message', $message = "Did not register. Try again.");
         }
         catch(Exception $e)
         {
+            $this->logger->error("Error UserController's onRegister()", array("message" => $e->getMessage()));
+            
             return view('error.commonError');
         }
     }
