@@ -226,4 +226,87 @@ class UserDataService
             return false;
         }
     }
+    
+    /* ----------------------------- REST Data Service Methods -------------------------------- */
+    
+    /**
+     * Find all Users and return an array of User objects.
+     * 
+     * @throws DatabaseException
+     * @return array|\App\Model\User[]
+     */
+    public function findAllUsers()
+    {
+        try
+        {
+            // Build the Query to find the User with the right ID:
+            $result = $this->conn->prepare("SELECT * FROM users");
+            // Execute the Query:
+            $result->execute();
+            
+            if($result->rowCount() == 0)
+            {
+                return array();
+            }
+            else
+            {
+                // Create an array and store User objects in the array.
+                $index = 0;
+                $users = array();
+                while($row = $result->fetch(PDO::FETCH_ASSOC))
+                {
+                    // Create a User object for each iteration to be added into the Users Array
+                    $user = new User($row['ID'], $row['FIRST_NAME'], $row['LAST_NAME'], $row['USERNAME'], $row['PASSWORD'], $row['EMAIL'], $row['PHONE'], $row['ROLE']);
+                    $users[$index++] = $user;
+                }
+                // Return the array of Users
+                return $users;
+            }
+        }
+        catch(PDOException $e)
+        {
+            Log::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+    }
+    
+    /**
+     * Find a User by the ID and return a User object
+     * 
+     * @param $id
+     * @throws DatabaseException
+     * @return $user|\App\Model\User
+     */
+    public function findByUserID($id)
+    {
+        try
+        {
+            // Build the Query
+            $stmt = $this->conn->prepare("SELECT ID, FIRST_NAME, LAST_NAME, USERNAME, PASSWORD, EMAIL, PHONE, ROLE FROM users WHERE ID =:id");
+            // Bind all the param with the variables
+            $stmt->bindParam(':id', $id);
+            // Execute the Query:
+            $stmt->execute();
+            
+            // Checks if any Users exist by the inputted ID
+            if ($stmt->rowCount() == 0)
+            {
+                return null;
+            }
+            else
+            {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $user = new User($row['ID'], $row['FIRST_NAME'], $row['LAST_NAME'], $row['USERNAME'], $row['PASSWORD'], $row['EMAIL'], $row['PHONE'], $row['ROLE']);
+                return $user;
+            }
+        }
+        catch (PDOException $e)
+        {
+            Log::error("Exception: ", array("message" => $e->getMessage()));
+            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+    }
+    
 }
