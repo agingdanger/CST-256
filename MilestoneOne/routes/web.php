@@ -167,6 +167,9 @@ Route::post('/searchJobs', 'JobController@onSearchJobs');
 // Routes into Job Info Page by passing the Job's info through the "Apply" button.
 Route::post('/viewJob', 'JobController@onViewJobInfo');
 
+// Route to Jobs Rest Controller
+Route::resource('/jobsrest', 'JobsRestController');
+
 /*----------------------------- Rest Services Routes --------------------------*/
 // Routes for Users using REST Controller
 Route::resource('/usersrest','UsersRestController');

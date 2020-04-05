@@ -13,7 +13,7 @@
  	@if($errors->first('search'))
    		<input class="form-control mr-sm-2" type="text" name="search" placeholder="{{ $errors->first('search') }}" aria-label="Search">
    	@else
-   		<input class="form-control mr-sm-2" type="text" name="search" placeholder="Job Search" aria-label="Search">
+   		<input class="form-control mr-sm-2" type="text" name="search" placeholder="Job Search" aria-label="Search" required>
    	@endif
    <input type = "hidden" name = "_token" value = "{{ csrf_token() }}"/>
    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Job Search</button>
