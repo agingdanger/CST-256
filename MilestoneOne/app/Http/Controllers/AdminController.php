@@ -8,11 +8,19 @@ use Exception;
 use App\Services\Business\AdminBusinessService;
 use App\Model\User;
 use App\Model\Job;
+use App\Services\Utility\ILoggerService;
 
 
 class AdminController extends Controller
 {
-
+    private $logger = true; 
+    
+    public function __construct(ILoggerService $logger)
+    {
+        $this->logger = $logger;
+    }
+    
+    
     /**
      * onUsersPull's purpose is for the Admin to view the datatable of Users.
      *
@@ -21,6 +29,8 @@ class AdminController extends Controller
      */
     public function onUsersPull(Request $request)
     {
+        $this->logger->info("Entering AdminController's onUsersPull()");
+        
         try
         {
             // Check if the user is Admin; then only move on to the Business Service
@@ -45,10 +55,14 @@ class AdminController extends Controller
                 $message = "Login Failure";
             }
 
+            $this->logger->info("Exiting AdminController's onUsersPull()");
+            
             return view('admin.displayUsers')->with('users', $userData);
         }
         catch (Exception $e)
         {
+            $this->logger->error("Errors in AdminController's onUsersPull()");
+            
             return view('error.commonError');
         }
     }
@@ -60,6 +74,8 @@ class AdminController extends Controller
      */
     public function onEdit(Request $request)
     {
+        $this->logger->info("Entering AdminController's onEdit()");
+        
         try
         {
             $id = $request->input('id');
@@ -83,6 +99,8 @@ class AdminController extends Controller
             }
             else
             {
+                $this->logger->info("Exiting AdminController's onEdit() with error");
+                
                 return view('error.privilege');
             }
             // $adminBusiness = new AdminBusinessService();
@@ -92,15 +110,21 @@ class AdminController extends Controller
 
             if ($userPull)
             {
+                $this->logger->info("Exiting AdminController's onEdit() with userData moving into the displayUsers page.");
+                
                 return view('admin.displayUsers')->with('users', $userData);
             }
             else
             {
+                $this->logger->info("Exiting AdminController's onEdit() moving into Privilege error page.");
+                
                 return view('error.privilege');
             }
         }
         catch (Exception $e)
         {
+            $this->logger->error("Errors in AdminController's onEdit() with error", $e);
+            
             return view('error.commonError');
         }
     }
@@ -113,6 +137,8 @@ class AdminController extends Controller
      */
     public function onRemoval(Request $request)
     {
+        $this->logger->info("Entering AdminController's onRemoval()");
+        
         try
         {
             $id = $request->input('id');
@@ -133,15 +159,21 @@ class AdminController extends Controller
 
             if ($userRemove)
             {
+                $this->logger->info("Exiting AdminController's onRemoval() with userData into displayUsers page.");
+                
                 return view('admin.displayUsers')->with('users', $userData);
             }
             else
             {
+                $this->logger->info("Exiting AdminController's onRemoval() with errors moving into Common Error page.");
+                
                 return view('error.privilege');
             }
         }
         catch (Exception $e)
         {
+            $this->logger->error("Errors in AdminController's onRemoval()");
+            
             return view('error.commonError');
         }
     }
@@ -154,6 +186,8 @@ class AdminController extends Controller
      */
     public function onSuspension(Request $request)
     {
+        $this->logger->info("Entering AdminController's onSuspension()");
+        
         try
         {
             if (Session::get('role') == "admin")
@@ -190,15 +224,21 @@ class AdminController extends Controller
 
             if ($userSuspend)
             {
+                $this->logger->info("Exiting AdminController's onSuspension() with userData into displayUsers page.");
+                
                 return view('admin.displayUsers')->with('users', $userData);
             }
             else
             {
+                $this->logger->info("Exiting AdminController's onSuspension() moving into Common Error page.");
+                
                 return view('error.privilege');
             }
         }
         catch (Exception $e)
         {
+            $this->logger->error("Errors in AdminController's onSuspension()");
+            
             return view('error.commonError');
         }
     }
@@ -211,6 +251,8 @@ class AdminController extends Controller
      */
     public function onJobAddition(Request $request)
     {
+        $this->logger->info("Entering AdminController's onJobAddition()");
+        
         // Call the Validation Rules:
         $this->validateJobForm($request);
 
@@ -234,17 +276,27 @@ class AdminController extends Controller
 
             if ($result)
             {
+                $this->logger->info("Exiting AdminController's onJobAddition() with jobsData into jobs page.");
+                
                 return view('job.jobs')->with('jobs', $jobsData);
             }
             else
+            {
+                $this->logger->info("Exiting AdminController's onJobAddition() moving into Common Error page.");
+                
                 return view('common.error');
+            }
         }
         catch (ValidationException $el)
-        {
+        {            
+            $this->logger->error("Errors in AdminController's onJobAddition()");
+            
             throw $el;
         }
         catch (Exception $e)
         {
+            $this->logger->error("Errors AdminController's onJobAddition()");
+            
             // Throwing Exception with message:
             throw $e->getMessage();
         }
@@ -257,6 +309,8 @@ class AdminController extends Controller
      */
     public function onViewJobList()
     {
+        $this->logger->info("Entering AdminController's onViewJobList()");
+        
         // Call the Validation Rules:
         try
         {
@@ -264,10 +318,14 @@ class AdminController extends Controller
             $service = new AdminBusinessService();
             $jobsData = $service->populateJobs();
 
+            $this->logger->info("Exiting AdminController's onViewJobList()");
+            
             return view('job.jobs')->with('jobs', $jobsData);
         }
         catch (Exception $e)
         {
+            $this->logger->error("Errors in AdminController's onViewJobList()");
+            
             // Throwing Exception with message:
             throw $e->getMessage();
         }
@@ -283,6 +341,8 @@ class AdminController extends Controller
      */
     public function onViewEditJob(Request $request)
     {
+        $this->logger->info("Entering AdminController's onViewEditJob()");
+        
         // Call the Validation Rules:
         try
         {
@@ -297,10 +357,14 @@ class AdminController extends Controller
             // Create a Job Object:
             $job = new Job($jobId, $jobName, $jobDesc, $jobComp, $jobRequire, $jobSkills);
 
+            $this->logger->info("Exiting AdminController's onViewEditJob()");
+            
             return view('job.editJobForm')->with('job', $job);
         }
         catch (Exception $e)
         {
+            $this->logger->error("Errors in AdminController's onViewEditJob()");
+            
             // Throwing Exception with message:
             throw $e->getMessage();
         }
@@ -313,6 +377,8 @@ class AdminController extends Controller
      */
     public function onEditJobPost(Request $request)
     {
+        $this->logger->info("Entering AdminController's onEditJobPost()");
+        
         // Validation IS NOT WORKING for Admin's Job forms.
         // Call the Validation Rules:
 //         $this->validateJobForm($request);
@@ -339,16 +405,22 @@ class AdminController extends Controller
             // Check if Result is true:
             if ($result)
             {
+                $this->logger->info("Exiting AdminController's onEditJobPost() with success in Job Modification.");
+                
                 return view('job.jobs')->with('jobs', $jobsData);
             }
             else
             {
+                $this->logger->info("Exiting AdminController's onEditJobPost() with an error");
+                
                 $message = "Please check the information again.";
                 return view('job.jobs')->with('message', $message);
             }
         }
         catch (Exception $e)
         {
+            $this->logger->error("Errors in AdminController's onEditJobPost()");
+            
             // Throwing Exception with message:
             throw $e->getMessage();
         }
@@ -362,6 +434,8 @@ class AdminController extends Controller
      */
     public function onJobDeletion(Request $request)
     {
+        $this->logger->info("Entering AdminController's onJobDeletion()");
+        
         // Call the Validation Rules:
         try
         {
@@ -385,16 +459,22 @@ class AdminController extends Controller
             // Check if Result is true:
             if ($result)
             {
+                $this->logger->info("Exiting AdminController's onJobDeletion() with success.");
+                
                 return view('job.jobs')->with('jobs', $jobsData);
             }
             else
-            {
+            {                
+                $this->logger->info("Exiting AdminController's onJobDeletion() with wrong info.");
+                
                 $message = "Please check the information again.";
                 return view('job.jobs')->with('message', $message);
             }
         }
         catch (Exception $e)
         {
+            $this->logger->error("Errors in AdminController's onJobDeletion()");
+            
             // Throwing Exception with message:
             throw $e->getMessage();
         }
@@ -407,6 +487,8 @@ class AdminController extends Controller
      */
     private function validateJobForm(Request $request)
     {
+        $this->logger->info("Entering AdminController's validateJobForm()");
+        
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
 
         // Setup Data Validation Rules for Login Form.
@@ -420,5 +502,7 @@ class AdminController extends Controller
 
         // Run Validation Rules:
         $this->validate($request, $rules);
+        
+        $this->logger->info("Exiting AdminController's validateJobForm()");
     }
 }

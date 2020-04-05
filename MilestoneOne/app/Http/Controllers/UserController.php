@@ -14,13 +14,12 @@ use App\Model\User;
 use App\Model\userCredentials;
 use App\Services\Business\SecurityService;
 use App\Services\Business\UserBusinessService;
+use App\Services\Utility\ILoggerService;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Exception;
-use Dotenv\Exception\ValidationException;
-use App\Services\Utility\ILoggerService;
-use App\Services\Utility\MyLogger2;
 
 /**
  *
