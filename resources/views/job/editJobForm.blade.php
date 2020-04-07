@@ -4,7 +4,7 @@
 @section('heading', 'Edit Job Posting')
 
 @section('content')
-	<form action="editJobPost" method="PATCH">
+	<form action="editJobPost" method="POST">
         <input type = "hidden" name = "_token" value = "{{ csrf_token() }}"/>
 			<h2>Edit Job</h2>
 			<table>

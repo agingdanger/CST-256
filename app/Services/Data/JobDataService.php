@@ -209,6 +209,7 @@ class JobDataService
     
     /**
      * Finds matches based on userID
+     * 
      * @param User $id
      * @throws DatabaseException
      */
@@ -247,6 +248,7 @@ class JobDataService
     
     /**
      * Find available jobs by search
+     * 
      * @throws DatabaseException
      * @return $results
      */

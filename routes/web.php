@@ -164,4 +164,15 @@ Route::post('/joinInterestGroup', 'InterestGroupController@onJoinInterestGroup')
  // Routes the job search data into the controller method
 Route::post('/searchJobs', 'JobController@onSearchJobs');
 
+// Routes into Job Info Page by passing the Job's info through the "Apply" button.
 Route::post('/viewJob', 'JobController@onViewJobInfo');
+
+// Route to Jobs Rest Controller
+Route::resource('/jobsrest', 'JobsRestController');
+
+/*----------------------------- Rest Services Routes --------------------------*/
+// Routes for Users using REST Controller
+Route::resource('/usersrest','UsersRestController');
+
+// Routes for Jobs using REST Service through JobsRestController
+Route::resource('/jobsrest','JobsRestController');
