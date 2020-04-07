@@ -354,7 +354,7 @@ class UserController extends Controller
             'password' => 'Required | Between: 4, 15',
             'firstname' => 'Required | Between: 4, 10 | Alpha',
             'lastname' => 'Required | Between: 4, 10 | Alpha',
-            'email' => 'Required | Between: 3, 20 | E-Mail',
+            'email' => 'Required | Between: 3, 50 | E-Mail',
             'phone' => 'Required | Digits: 10',
             'role' => 'Required | Max: 5 | Alpha'
         ];
