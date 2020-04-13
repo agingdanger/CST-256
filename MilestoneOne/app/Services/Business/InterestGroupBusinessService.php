@@ -2,12 +2,14 @@
 
 namespace App\Services\Business;
 
-use App\Services\Utility\db_connector;
-use App\Services\Data\InterestGroupDataService;
 use App\Model\InterestGroup;
+use App\Services\Data\InterestGroupDataService;
+use App\Services\Utility\MyLogger2;
+use App\Services\Utility\db_connector;
 
 class InterestGroupBusinessService
 {
+    
     /**
      * Get the list of Interest Groups
      * 
@@ -15,6 +17,8 @@ class InterestGroupBusinessService
      */
     public function gatherGroupList() 
     {
+        MyLogger2::info("Enter InterestBusinessService.gatherGroupList()");
+        
         // Create a database connection object
         $db = new db_connector();
         $conn = $db->getConnection();
@@ -25,6 +29,8 @@ class InterestGroupBusinessService
         
         // Close the Connection
         $conn = null;
+        
+        MyLogger2::info("Exit InterestBusinessService.gatherGroupList()");
         
         // Return the array of results-
         return $listOfGroups;
@@ -37,6 +43,8 @@ class InterestGroupBusinessService
      */
     public function gatherGroup($igid)
     {
+        MyLogger2::info("Enter InterestBusinessService.gatherGroup()");
+        
         // Create a database connection object
         $db = new db_connector();
         $conn = $db->getConnection();
@@ -47,6 +55,8 @@ class InterestGroupBusinessService
         
         // Close the Connection
         $conn = null;
+        
+        MyLogger2::info("Exit InterestBusinessService.gatherGroup()");
         
         // Return the array of results-
         return $group;
@@ -59,6 +69,8 @@ class InterestGroupBusinessService
      */
     public function gatherUsers($igid)
     {
+        MyLogger2::info("Enter InterestBusinessService.gatherUsers()");
+        
         // Create a database connection object
         $db = new db_connector();
         $conn = $db->getConnection();
@@ -69,6 +81,8 @@ class InterestGroupBusinessService
         
         // Close the Connection
         $conn = null;
+        
+        MyLogger2::info("Exit InterestBusinessService.gatherUsers()");
         
         // Return the array of results-
         return $users;
@@ -82,6 +96,8 @@ class InterestGroupBusinessService
      */
     public function joinGroup($igid)
     {
+        MyLogger2::info("Enter InterestBusinessService.joinGroup()");
+        
         // Create a database connection object
         $db = new db_connector();
         $conn = $db->getConnection();
@@ -92,6 +108,8 @@ class InterestGroupBusinessService
         
         // Close the Connection
         $conn = null;
+        
+        MyLogger2::info("Exit InterestBusinessService.joinGroup()");
         
         // Return the array of results-
         return $users;
@@ -104,6 +122,8 @@ class InterestGroupBusinessService
      */
     public function addition(InterestGroup $interestGroup)
     {
+        MyLogger2::info("Enter InterestBusinessService.addition()");
+        
         // Create a database connection object
         $db = new db_connector();
         $conn = $db->getConnection();
@@ -114,6 +134,8 @@ class InterestGroupBusinessService
         
         // Close the Connection
         $conn = null;
+        
+        MyLogger2::info("Exit InterestBusinessService.addition()");
         
         // Return the array of results-
         return $result;
@@ -127,6 +149,8 @@ class InterestGroupBusinessService
      */
     public function modify(InterestGroup $interestGroup) 
     {
+        MyLogger2::info("Enter InterestBusinessService.modify()");
+        
         // Create a database connection object
         $db = new db_connector();
         $conn = $db->getConnection();
@@ -137,6 +161,8 @@ class InterestGroupBusinessService
         
         // Close the Connection: 
         $conn = null;
+        
+        MyLogger2::info("Exit InterestBusinessService.modify()");
         
         // Return the array of results: 
         return $result;
@@ -150,6 +176,8 @@ class InterestGroupBusinessService
      */
     public function remove($interestGroup_id)
     {
+        MyLogger2::info("Enter InterestBusinessService.remove()");
+        
         // Create a database connection object
         $db = new db_connector();
         $conn = $db->getConnection();
@@ -160,6 +188,8 @@ class InterestGroupBusinessService
         
         // Close the Connection:
         $conn = null;
+        
+        MyLogger2::info("Exit InterestBusinessService.remove()");
         
         // Return the array of results:
         return $result;

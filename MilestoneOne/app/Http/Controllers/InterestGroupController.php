@@ -4,21 +4,13 @@ namespace App\Http\Controllers;
 use App\Model\InterestGroup;
 use App\Services\Business\InterestGroupBusinessService;
 use App\Services\Utility\ILoggerService;
+use App\Services\Utility\MyLogger2;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Exception;
 
 class InterestGroupController extends Controller
 {
-    // Declare logger variable
-    protected $logger;
-    
-    // Non-default Constructor
-    public function __construct(ILoggerService $logger)
-    {
-        $this->logger = $logger;
-    }
-    
     /**
      * Return the view InterestGroupList with the result data
      *
@@ -26,7 +18,7 @@ class InterestGroupController extends Controller
      */
     public function onViewInterestGroups()
     {
-        $this->logger->info("Entered InterestGroupController's onViewInterestGroups()");
+        MyLogger2::info("Entered InterestGroupController's onViewInterestGroups()");
         
         try
         {
@@ -34,14 +26,14 @@ class InterestGroupController extends Controller
             $service = new InterestGroupBusinessService();
             $interestGroupList = $service->gatherGroupList();
 
-            $this->logger->info("Exiting InterestGroupController's onViewInterestGroups()");
+            MyLogger2::info("Exiting InterestGroupController's onViewInterestGroups()");
             
             // Return the View with the result data
             return view('interestGroup.interestGroupList')->with('intGroups', $interestGroupList);
         }
         catch (Exception $e)
         {
-            $this->logger->error("Errors in InterestGroupController's onViewInterestGroups()");
+            MyLogger2::error("Errors in InterestGroupController's onViewInterestGroups()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -55,7 +47,7 @@ class InterestGroupController extends Controller
      */
     public function onViewInterestGroup(Request $request)
     {
-        $this->logger->info("Entering InterestGroupController's onViewInterestGroup()");
+        MyLogger2::info("Entering InterestGroupController's onViewInterestGroup()");
         
         try
         {
@@ -65,14 +57,14 @@ class InterestGroupController extends Controller
             $interestGroup = $service->gatherGroup($igid);
             $users = $service->gatherUsers($igid);
 
-            $this->logger->info("Exiting InterestGroupController's onViewInterestGroup()");
+            MyLogger2::info("Exiting InterestGroupController's onViewInterestGroup()");
             
             // Return the View with the result data
             return view('interestGroup.viewInterestGroup')->with('intGroup', $interestGroup)->with('users', $users);
         }
         catch (Exception $e)
         {
-            $this->logger->error("Errors in InterestGroupController's onViewInterestGroup()");
+            MyLogger2::error("Errors in InterestGroupController's onViewInterestGroup()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -87,7 +79,7 @@ class InterestGroupController extends Controller
      */
     public function onViewEditGroupForm(Request $request)
     {
-        $this->logger->info("Entering InterestGroupController's onViewEditGroupForm()");
+        MyLogger2::info("Entering InterestGroupController's onViewEditGroupForm()");
         
         try
         {
@@ -101,14 +93,14 @@ class InterestGroupController extends Controller
             // Create an InterestGroup Object:
             $interestGroup = new InterestGroup($id, $name, $description, $tags, $userID);
 
-            $this->logger->info("Exiting InterestGroupController's onViewEditGroupForm()");
+            MyLogger2::info("Exiting InterestGroupController's onViewEditGroupForm()");
             
             // Return the view by passing the interestGroup object.
             return view('interestGroup.editInterestGroupForm')->with('intGroup', $interestGroup);
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in InterestGroupController's onViewEditGroupForm()");
+            MyLogger2::error("Error in InterestGroupController's onViewEditGroupForm()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -123,7 +115,7 @@ class InterestGroupController extends Controller
      */
     public function onInterestGroupAddition(Request $request)
     {
-        $this->logger->info("Entering InterestGroupController's onInterestGroupAddition()");
+        MyLogger2::info("Entering InterestGroupController's onInterestGroupAddition()");
         
         // Call the Validation Rules:
         try
@@ -140,14 +132,14 @@ class InterestGroupController extends Controller
                 // Call the Business Service and return the List of all InterestGroups
                 $interestGroupList = $service->gatherGroupList();
 
-                $this->logger->info("Exiting InterestGroupController's onInterestGroupAddition() successfully");
+                MyLogger2::info("Exiting InterestGroupController's onInterestGroupAddition() successfully");
                 
                 // Return the View with the result data
                 return view('interestGroup.interestGroupList')->with('intGroups', $interestGroupList);
             }
             else
             {
-                $this->logger->info("Exiting InterestGroupController's onInterestGroupAddition() failed");
+                MyLogger2::info("Exiting InterestGroupController's onInterestGroupAddition() failed");
                 
                 // return the view with a message:
                 $message = "Please try again.";
@@ -156,13 +148,13 @@ class InterestGroupController extends Controller
         }
         catch (ValidationException $el)
         {
-            $this->logger->error("Validation Error in InterestGroupController's onInterestGroupAddition()");
+            MyLogger2::error("Validation Error in InterestGroupController's onInterestGroupAddition()");
             
             throw $el;
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in InterestGroupController's onInterestGroupAddition()");
+            MyLogger2::error("Error in InterestGroupController's onInterestGroupAddition()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -177,7 +169,7 @@ class InterestGroupController extends Controller
      */
     public function onEditInterestGroup(Request $request)
     {
-        $this->logger->info("Entering InterestGroupController's onEditInterestGroup()");
+        MyLogger2::info("Entering InterestGroupController's onEditInterestGroup()");
         
         // Call the Validation Rules:
         // $this->validateJobForm($request);
@@ -196,14 +188,14 @@ class InterestGroupController extends Controller
                 // Call the Business Service and return the List of all InterestGroups
                 $interestGroupList = $service->gatherGroupList();
 
-                $this->logger->info("Exiting InterestGroupController's onEditInterestGroup() successfully.");
+                MyLogger2::info("Exiting InterestGroupController's onEditInterestGroup() successfully.");
                 
                 // Return the View with the result data
                 return view('interestGroup.interestGroupList')->with('intGroups', $interestGroupList);
             }
             else
             {
-                $this->logger->info("Exiting InterestGroupController's onEditInterestGroup() failed.");
+                MyLogger2::info("Exiting InterestGroupController's onEditInterestGroup() failed.");
                 
                 // If result's false,
                 $message = "Please try again.";
@@ -212,7 +204,7 @@ class InterestGroupController extends Controller
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in InterestGroupController's onEditInterestGroup()");
+            MyLogger2::error("Error in InterestGroupController's onEditInterestGroup()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -227,7 +219,7 @@ class InterestGroupController extends Controller
      */
     public function onDelete(Request $request)
     {
-        $this->logger->info("Entering InterestGroupController's onDelete()");
+        MyLogger2::info("Entering InterestGroupController's onDelete()");
         
         try
         {
@@ -244,14 +236,14 @@ class InterestGroupController extends Controller
                 // Call the Business Service and return the List of all InterestGroups
                 $interestGroupList = $service->gatherGroupList();
 
-                $this->logger->info("Exiting InterestGroupController's onDelete() successfully.");
+                MyLogger2::info("Exiting InterestGroupController's onDelete() successfully.");
                 
                 // Return the View with the result data
                 return view('interestGroup.interestGroupList')->with('intGroups', $interestGroupList);
             }
             else
             {
-                $this->logger->info("Exiting InterestGroupController's onDelete() failed.");
+                MyLogger2::info("Exiting InterestGroupController's onDelete() failed.");
                 
                 // If result's false,
                 $message = "Please try again.";
@@ -260,7 +252,7 @@ class InterestGroupController extends Controller
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in InterestGroupController's onDelete()");
+            MyLogger2::error("Error in InterestGroupController's onDelete()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -274,7 +266,7 @@ class InterestGroupController extends Controller
      */
     public function onJoinInterestGroup(Request $request)
     {
-        $this->logger->info("Entering InterestGroupController's onJoinInterestGroup()");
+        MyLogger2::info("Entering InterestGroupController's onJoinInterestGroup()");
         
         try
         {
@@ -289,14 +281,14 @@ class InterestGroupController extends Controller
             $interestGroup = $service->gatherGroup($igid);
             $users = $service->gatherUsers($igid);
 
-            $this->logger->info("Exiting InterestGroupController's onJoinInterestGroup() successfully");
+            MyLogger2::info("Exiting InterestGroupController's onJoinInterestGroup() successfully");
             
             // Return the View with the result data
             return view('interestGroup.viewInterestGroup')->with('intGroup', $interestGroup)->with('users', $users);
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in InterestGroupController's onJoinInterestGroup()");
+            MyLogger2::error("Error in InterestGroupController's onJoinInterestGroup()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -311,7 +303,7 @@ class InterestGroupController extends Controller
      */
     private function storePostVariablesIntoObject(Request $request)
     {
-        $this->logger->info("Entering InterestGroupController's storePostVariablesIntoObject()");
+        MyLogger2::info("Entering InterestGroupController's storePostVariablesIntoObject()");
         
         // Store all the Requested info into Variables:
         $id = $request->input('id');
@@ -326,6 +318,6 @@ class InterestGroupController extends Controller
         // Return the interest group object.
         return $interestGroup;
         
-        $this->logger->info("Exiting InterestGroupController's storePostVariablesIntoObject()");
+        MyLogger2::info("Exiting InterestGroupController's storePostVariablesIntoObject()");
     }
 }

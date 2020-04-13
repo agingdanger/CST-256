@@ -9,17 +9,17 @@ use App\Services\Business\AdminBusinessService;
 use App\Model\User;
 use App\Model\Job;
 use App\Services\Utility\ILoggerService;
+use App\Services\Utility\MyLogger2;
 
 
 class AdminController extends Controller
-{
-    private $logger = true; 
+{   
+    private $logger;
     
-    public function __construct(ILoggerService $logger)
+    public function __construct(MyLogger2 $logger) 
     {
         $this->logger = $logger;
     }
-    
     
     /**
      * onUsersPull's purpose is for the Admin to view the datatable of Users.
@@ -29,7 +29,7 @@ class AdminController extends Controller
      */
     public function onUsersPull(Request $request)
     {
-        $this->logger->info("Entering AdminController's onUsersPull()");
+        $this->logger->info("Entering AdminController.onUsersPull()");
         
         try
         {
@@ -55,13 +55,13 @@ class AdminController extends Controller
                 $message = "Login Failure";
             }
 
-            $this->logger->info("Exiting AdminController's onUsersPull()");
+            $this->logger->info("Exiting AdminController.onUsersPull()");
             
             return view('admin.displayUsers')->with('users', $userData);
         }
         catch (Exception $e)
         {
-            $this->logger->error("Errors in AdminController's onUsersPull()");
+            $this->logger->error("Errors in AdminController.onUsersPull()");
             
             return view('error.commonError');
         }
@@ -74,7 +74,7 @@ class AdminController extends Controller
      */
     public function onEdit(Request $request)
     {
-        $this->logger->info("Entering AdminController's onEdit()");
+        $this->logger->info("Entering AdminController.onEdit()");
         
         try
         {
@@ -99,7 +99,7 @@ class AdminController extends Controller
             }
             else
             {
-                $this->logger->info("Exiting AdminController's onEdit() with error");
+                $this->logger->info("Exiting AdminController.onEdit() with error");
                 
                 return view('error.privilege');
             }
@@ -110,20 +110,20 @@ class AdminController extends Controller
 
             if ($userPull)
             {
-                $this->logger->info("Exiting AdminController's onEdit() with userData moving into the displayUsers page.");
+                $this->logger->info("Exiting AdminController.onEdit() with userData moving into the displayUsers page.");
                 
                 return view('admin.displayUsers')->with('users', $userData);
             }
             else
             {
-                $this->logger->info("Exiting AdminController's onEdit() moving into Privilege error page.");
+                $this->logger->info("Exiting AdminController.onEdit() moving into Privilege error page.");
                 
                 return view('error.privilege');
             }
         }
         catch (Exception $e)
         {
-            $this->logger->error("Errors in AdminController's onEdit() with error", $e);
+            $this->logger->error("Errors in AdminController.onEdit() with error", $e);
             
             return view('error.commonError');
         }
@@ -137,7 +137,7 @@ class AdminController extends Controller
      */
     public function onRemoval(Request $request)
     {
-        $this->logger->info("Entering AdminController's onRemoval()");
+        $this->logger->info("Entering AdminController.onRemoval()");
         
         try
         {
@@ -159,20 +159,20 @@ class AdminController extends Controller
 
             if ($userRemove)
             {
-                $this->logger->info("Exiting AdminController's onRemoval() with userData into displayUsers page.");
+                $this->logger->info("Exiting AdminController.onRemoval() with userData into displayUsers page.");
                 
                 return view('admin.displayUsers')->with('users', $userData);
             }
             else
             {
-                $this->logger->info("Exiting AdminController's onRemoval() with errors moving into Common Error page.");
+                $this->logger->info("Exiting AdminController.onRemoval() with errors moving into Common Error page.");
                 
                 return view('error.privilege');
             }
         }
         catch (Exception $e)
         {
-            $this->logger->error("Errors in AdminController's onRemoval()");
+            $this->logger->error("Errors in AdminController.onRemoval()");
             
             return view('error.commonError');
         }
@@ -186,7 +186,7 @@ class AdminController extends Controller
      */
     public function onSuspension(Request $request)
     {
-        $this->logger->info("Entering AdminController's onSuspension()");
+        $this->logger->info("Entering AdminController.onSuspension()");
         
         try
         {
@@ -224,20 +224,20 @@ class AdminController extends Controller
 
             if ($userSuspend)
             {
-                $this->logger->info("Exiting AdminController's onSuspension() with userData into displayUsers page.");
+                $this->logger->info("Exiting AdminController.onSuspension() with userData into displayUsers page.");
                 
                 return view('admin.displayUsers')->with('users', $userData);
             }
             else
             {
-                $this->logger->info("Exiting AdminController's onSuspension() moving into Common Error page.");
+                $this->logger->info("Exiting AdminController.onSuspension() moving into Common Error page.");
                 
                 return view('error.privilege');
             }
         }
         catch (Exception $e)
         {
-            $this->logger->error("Errors in AdminController's onSuspension()");
+            $this->logger->error("Errors in AdminController.onSuspension()");
             
             return view('error.commonError');
         }
@@ -251,7 +251,7 @@ class AdminController extends Controller
      */
     public function onJobAddition(Request $request)
     {
-        $this->logger->info("Entering AdminController's onJobAddition()");
+        $this->logger->info("Entering AdminController.onJobAddition()");
         
         // Call the Validation Rules:
         $this->validateJobForm($request);
@@ -276,26 +276,26 @@ class AdminController extends Controller
 
             if ($result)
             {
-                $this->logger->info("Exiting AdminController's onJobAddition() with jobsData into jobs page.");
+                $this->logger->info("Exiting AdminController.onJobAddition() with jobsData into jobs page.");
                 
                 return view('job.jobs')->with('jobs', $jobsData);
             }
             else
             {
-                $this->logger->info("Exiting AdminController's onJobAddition() moving into Common Error page.");
+                $this->logger->info("Exiting AdminController.onJobAddition() moving into Common Error page.");
                 
                 return view('common.error');
             }
         }
         catch (ValidationException $el)
         {            
-            $this->logger->error("Errors in AdminController's onJobAddition()");
+            $this->logger->error("Errors in AdminController.onJobAddition()");
             
             throw $el;
         }
         catch (Exception $e)
         {
-            $this->logger->error("Errors AdminController's onJobAddition()");
+            $this->logger->error("Errors AdminController.onJobAddition()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -309,7 +309,7 @@ class AdminController extends Controller
      */
     public function onViewJobList()
     {
-        $this->logger->info("Entering AdminController's onViewJobList()");
+        $this->logger->info("Entering AdminController.onViewJobList()");
         
         // Call the Validation Rules:
         try
@@ -318,13 +318,13 @@ class AdminController extends Controller
             $service = new AdminBusinessService();
             $jobsData = $service->populateJobs();
 
-            $this->logger->info("Exiting AdminController's onViewJobList()");
+            $this->logger->info("Exiting AdminController.onViewJobList()");
             
             return view('job.jobs')->with('jobs', $jobsData);
         }
         catch (Exception $e)
         {
-            $this->logger->error("Errors in AdminController's onViewJobList()");
+            $this->logger->error("Errors in AdminController.onViewJobList()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -341,7 +341,7 @@ class AdminController extends Controller
      */
     public function onViewEditJob(Request $request)
     {
-        $this->logger->info("Entering AdminController's onViewEditJob()");
+        $this->logger->info("Entering AdminController.onViewEditJob()");
         
         // Call the Validation Rules:
         try
@@ -357,13 +357,13 @@ class AdminController extends Controller
             // Create a Job Object:
             $job = new Job($jobId, $jobName, $jobDesc, $jobComp, $jobRequire, $jobSkills);
 
-            $this->logger->info("Exiting AdminController's onViewEditJob()");
+            $this->logger->info("Exiting AdminController.onViewEditJob()");
             
             return view('job.editJobForm')->with('job', $job);
         }
         catch (Exception $e)
         {
-            $this->logger->error("Errors in AdminController's onViewEditJob()");
+            $this->logger->error("Errors in AdminController.onViewEditJob()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -377,7 +377,7 @@ class AdminController extends Controller
      */
     public function onEditJobPost(Request $request)
     {
-        $this->logger->info("Entering AdminController's onEditJobPost()");
+        $this->logger->info("Entering AdminController.onEditJobPost()");
         
         // Validation IS NOT WORKING for Admin's Job forms.
         // Call the Validation Rules:
@@ -405,13 +405,13 @@ class AdminController extends Controller
             // Check if Result is true:
             if ($result)
             {
-                $this->logger->info("Exiting AdminController's onEditJobPost() with success in Job Modification.");
+                $this->logger->info("Exiting AdminController.onEditJobPost() with success in Job Modification.");
                 
                 return view('job.jobs')->with('jobs', $jobsData);
             }
             else
             {
-                $this->logger->info("Exiting AdminController's onEditJobPost() with an error");
+                $this->logger->info("Exiting AdminController.onEditJobPost() with an error");
                 
                 $message = "Please check the information again.";
                 return view('job.jobs')->with('message', $message);
@@ -419,7 +419,7 @@ class AdminController extends Controller
         }
         catch (Exception $e)
         {
-            $this->logger->error("Errors in AdminController's onEditJobPost()");
+            $this->logger->error("Errors in AdminController.onEditJobPost()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -434,7 +434,7 @@ class AdminController extends Controller
      */
     public function onJobDeletion(Request $request)
     {
-        $this->logger->info("Entering AdminController's onJobDeletion()");
+        $this->logger->info("Entering AdminController.onJobDeletion()");
         
         // Call the Validation Rules:
         try
@@ -459,13 +459,13 @@ class AdminController extends Controller
             // Check if Result is true:
             if ($result)
             {
-                $this->logger->info("Exiting AdminController's onJobDeletion() with success.");
+                $this->logger->info("Exiting AdminController.onJobDeletion() with success.");
                 
                 return view('job.jobs')->with('jobs', $jobsData);
             }
             else
             {                
-                $this->logger->info("Exiting AdminController's onJobDeletion() with wrong info.");
+                $this->logger->info("Exiting AdminController.onJobDeletion() with wrong info.");
                 
                 $message = "Please check the information again.";
                 return view('job.jobs')->with('message', $message);
@@ -473,7 +473,7 @@ class AdminController extends Controller
         }
         catch (Exception $e)
         {
-            $this->logger->error("Errors in AdminController's onJobDeletion()");
+            $this->logger->error("Errors in AdminController.onJobDeletion()");
             
             // Throwing Exception with message:
             throw $e->getMessage();
@@ -487,22 +487,22 @@ class AdminController extends Controller
      */
     private function validateJobForm(Request $request)
     {
-        $this->logger->info("Entering AdminController's validateJobForm()");
+        $this->logger->info("Entering AdminController.validateJobForm()");
         
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
 
         // Setup Data Validation Rules for Login Form.
         $rules = [
             'jobname' => 'Required | Max: 20 | Alpha',
-            'description' => 'Required | Size: 1000',
-            'company' => 'Required | Between: 4, 20 | Alpha',
-            'requirements' => 'Required | Max: 50 | Alpha',
-            'skills' => 'Required | Between: 3, 50 | Alpha' 
+            'description' => 'Required | Max: 1000',
+            'company' => 'Required | Between: 4, 20',
+            'requirements' => 'Required | Max: 1000',
+            'skills' => 'Required | Between: 3, 500' 
         ];
 
         // Run Validation Rules:
         $this->validate($request, $rules);
         
-        $this->logger->info("Exiting AdminController's validateJobForm()");
+        $this->logger->info("Exiting AdminController.validateJobForm()");
     }
 }

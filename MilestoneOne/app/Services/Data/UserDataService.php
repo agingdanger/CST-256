@@ -8,12 +8,15 @@ use PDOException;
 use App\Model\User;
 use App\Model\userCredentials;
 use App\Services\Utility\DatabaseException;
+use App\Services\Utility\ILoggerService;
+use App\Services\Utility\MyLogger2;
 
 class UserDataService
 {
-    private $db;
+    // Declare class variables:
     private $conn;
-
+    
+    // Non-Default Constructor:
     public function __construct($conn)
     {
         $this->conn = $conn;
@@ -27,6 +30,7 @@ class UserDataService
      */
     public function findbyId(User $user)
     {
+        MyLogger2::info("Enter UserDataService.findById()");
         try
         {
             // Get UserId:
@@ -39,26 +43,26 @@ class UserDataService
             // Check if Result has any result:
             if($result->rowCount() == 1)
             {
-                Log::info("Exit UserDataService.findById() with true");
+                MyLogger2::info("Exit UserDataService.findById() with true");
                 return $result->fetch(PDO::FETCH_OBJ);
             }
             else
             {
-                Log::info("Exit UserDataService.findById() with false");
+                MyLogger2::info("Exit UserDataService.findById() with false");
                 return false;
             }
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("PDOException: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("DatabaseException: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -70,8 +74,9 @@ class UserDataService
      * @param userCredentials $userAttempt
      * @return $result from the executed SQL Statement.
      */
-    public function findbyUser(userCredentials $userAttempt)
+    public function findbyUserCredentials(userCredentials $userAttempt)
     {
+        MyLogger2::info("Enter UserDataService.findbyUser()");
         try
         {
             $username = $userAttempt->getUsername();
@@ -84,18 +89,18 @@ class UserDataService
 
             if($result->rowCount() == 1)
             {
-                Log::info("Exit UserDataService.findByUser() with true");
+                MyLogger2::info("Exit UserDataService.findByUser() with true");
                 return $result->fetch(PDO::FETCH_OBJ);
             }
             else
             {
-                Log::info("Exit UserDataService.findByUser() with false");
+                MyLogger2::info("Exit UserDataService.findByUser() with false");
                 return false;
             }
         }
         catch(DatabaseException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("DatabaseException: ", array(
                 "message" => $e->getMessage()
             ));
             return false;
@@ -110,6 +115,7 @@ class UserDataService
      */
     public function create(User $user)
     {
+        MyLogger2::info("Enter UserDataService.create()");
         try
         {
             $id = $user->getId();
@@ -135,26 +141,26 @@ class UserDataService
 
             if($result->rowCount() == 1)
             {
-                Log::info("Exit UserDataService.findByUser() with true");
+                MyLogger2::info("Exit UserDataService.create() with true");
                 return true;
             }
             else
             {
-                Log::info("Exit UserDataService.findByUser() with false");
+                MyLogger2::info("Exit UserDataService.create() with false");
                 return false;
             }
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("PDOException: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("DatabaseException: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -172,6 +178,7 @@ class UserDataService
      */
     public function update(User $user)
     {
+        MyLogger2::info("Enter UserDataService.update()");
         try
         {
             $id = $user->getId();
@@ -196,24 +203,26 @@ class UserDataService
 
             if($result)
             {
+                MyLogger2::info("Enter UserDataService.update() with true");
                 return $result;
             }
             else
             {
+                MyLogger2::info("Enter UserDataService.update() with false");
                 return false;
             }
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -237,6 +246,7 @@ class UserDataService
      */
     public function findAllUsers()
     {
+        MyLogger2::info("Enter UserDataService.findAllUsers()");
         try
         {
             // Build the Query to find the User with the right ID:
@@ -246,6 +256,7 @@ class UserDataService
             
             if($result->rowCount() == 0)
             {
+                MyLogger2::info("Exit UserDataService.findAllUsers() with 0 rowCount.");
                 return array();
             }
             else
@@ -259,13 +270,16 @@ class UserDataService
                     $user = new User($row['ID'], $row['FIRST_NAME'], $row['LAST_NAME'], $row['USERNAME'], $row['PASSWORD'], $row['EMAIL'], $row['PHONE'], $row['ROLE']);
                     $users[$index++] = $user;
                 }
+                
+                MyLogger2::info("Exit UserDataService.findAllUsers() with users:", $users);
+                
                 // Return the array of Users
                 return $users;
             }
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
@@ -281,6 +295,7 @@ class UserDataService
      */
     public function findByUserID($id)
     {
+        MyLogger2::info("Enter UserDataService.findByUserID()");
         try
         {
             // Build the Query
@@ -293,18 +308,21 @@ class UserDataService
             // Checks if any Users exist by the inputted ID
             if ($stmt->rowCount() == 0)
             {
+                MyLogger2::info("Exit UserDataService.findByUserID() with 0 rowCount");
                 return null;
             }
             else
             {
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 $user = new User($row['ID'], $row['FIRST_NAME'], $row['LAST_NAME'], $row['USERNAME'], $row['PASSWORD'], $row['EMAIL'], $row['PHONE'], $row['ROLE']);
+                
+                MyLogger2::info("Exit UserDataService.findByUserID() with user: ", $user);
                 return $user;
             }
         }
         catch (PDOException $e)
         {
-            Log::error("Exception: ", array("message" => $e->getMessage()));
+            MyLogger2::error("Exception: ", array("message" => $e->getMessage()));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
     }

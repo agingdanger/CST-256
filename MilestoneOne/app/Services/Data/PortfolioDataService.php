@@ -5,16 +5,18 @@ use App\Model\Education;
 use App\Model\JobHistory;
 use App\Model\Skill;
 use App\Services\Utility\DatabaseException;
+use App\Services\Utility\ILoggerService;
+use App\Services\Utility\MyLogger2;
 use Illuminate\Support\Facades\Log;
 use PDOException;
 
 
 class PortfolioDataService
 {
-    private $db;
+    // Declare class variables:
     private $conn;
     
-    // Default Constructor: 
+    // Non-Default Constructor:
     public function __construct($conn)
     {
         $this->conn = $conn;
@@ -30,18 +32,22 @@ class PortfolioDataService
      */
     public function findAllUserJobs($userID)
     {
+        MyLogger2::info("Enter PortfolioDataService.findAllUserJobs()");
+        
         try
         {
             // Find all the jobs for the user
             $result = $this->conn->prepare("SELECT * FROM JOB_HISTORY WHERE users_ID = :userid");
             $result->bindParam('userid', $userID);
             $result->execute();
+        
+            MyLogger2::info("Exit PortfolioDataService.findAllUserJobs()");
             
             return $result->fetchAll();
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
@@ -56,6 +62,8 @@ class PortfolioDataService
      */
     public function findAllUserSkills($userID)
     {
+        MyLogger2::info("Enter PortfolioDataService.findAllUserSkills()");
+        
         try
         {
             // Find all the skills for the user
@@ -63,12 +71,14 @@ class PortfolioDataService
             $result->bindParam('userid', $userID);
             $result->execute();
             
+            MyLogger2::info("Exit PortfolioDataService.findAllUserSkills()");
+            
             //return result as an array
             return $result->fetchAll();
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
@@ -83,6 +93,8 @@ class PortfolioDataService
      */
     public function findAllUserEducation($userID)
     {
+        MyLogger2::info("Enter PortfolioDataService.findAllUserEducation()");
+        
         try
         {
             // Find all the education for the user
@@ -90,12 +102,14 @@ class PortfolioDataService
             $result->bindParam('userid', $userID);
             $result->execute();
             
+            MyLogger2::info("Exit PortfolioDataService.findAllUserEducation()");
+            
             //return result as an array
             return $result->fetchAll();
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
@@ -112,6 +126,8 @@ class PortfolioDataService
      */
     public function createJob(JobHistory $job)
     {
+        MyLogger2::info("Enter PortfolioDataService.createJob()");
+        
         try
         {
             //expand the job into query variables
@@ -142,26 +158,26 @@ class PortfolioDataService
             //check if result contains a result
             if($result->rowCount() == 1)
             {
-                Log::info("Exit PortfolioDataservice create with true");
+                MyLogger2::info("Exit PortfolioDataService.createJob() with rowCount: ", array("rowCount" => $result->rowCount()));
                 return true;
             }
             else
             {
-                Log::info("Exit PortfolioDataService.create() with false");
+                MyLogger2::info("Exit PortfolioDataService.createJob() unsuccessfully. ");
                 return false;
             }
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -176,6 +192,8 @@ class PortfolioDataService
      */
     public function createEducation(Education $ed)
     {
+        MyLogger2::info("Enter PortfolioDataService.createEducation()");
+        
         try
         {
             //expand the $ed argument into query variables
@@ -204,26 +222,26 @@ class PortfolioDataService
             
             if($result->rowCount() == 1)
             {
-                Log::info("Exit PortfolioDataservice create ed with true");
+                MyLogger2::info("Exit PortfolioDataService.createEducation() successfully");
                 return true;
             }
             else
             {
-                Log::info("Exit PortfolioDataService.createEd() with false");
+                MyLogger2::info("Exit PortfolioDataService.createEducation() unsuccessfully");
                 return false;
             }
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -231,6 +249,8 @@ class PortfolioDataService
     
     public function createSkill(Skill $skill)
     {
+        MyLogger2::info("Enter PortfolioDataService.createSkill()");
+        
         try
         {
             //open the skill variable to build query variables
@@ -249,26 +269,26 @@ class PortfolioDataService
             //see if the result contains a row
             if($result->rowCount() == 1)
             {
-                Log::info("Exit PortfolioDataservice create skill with true");
+                MyLogger2::info("Exit PortfolioDataService.createSkill() successfully");
                 return true;
             }
             else
             {
-                Log::info("Exit PortfolioDataService.createSkill) with false");
+                MyLogger2::info("Exit PortfolioDataService.createSkill() unsuccessfully");
                 return false;
             }
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -283,6 +303,8 @@ class PortfolioDataService
      */
     public function deleteJob($id)
     {
+        MyLogger2::info("Enter PortfolioDataService.deleteJob()");
+        
         try
         {
             //Build a query that will delete from the users job history
@@ -295,21 +317,25 @@ class PortfolioDataService
             //check if the query executed
             if($result)
             {
+                MyLogger2::info("Exit PortfolioDataService.deleteJob() successfully");
                 return $id;
             }
+            
+            MyLogger2::info("Exit PortfolioDataService.deleteJob() unsuccessfully");
+            
             return false;
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -323,6 +349,8 @@ class PortfolioDataService
      */
     public function deleteSkill($id)
     {
+        MyLogger2::info("Enter PortfolioDataService.deleteSkill()");
+        
         try
         {
             //Build the query to delete the skill from the user's history
@@ -335,21 +363,24 @@ class PortfolioDataService
             //Check if the query executed, 
             if($result)
             {
+                MyLogger2::info("Exit PortfolioDataService.deleteSkill() successfully");
                 return $id;
             }
+            
+            MyLogger2::info("Enter PortfolioDataService.deleteSkill() unsuccessfully");
             return false;
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -363,6 +394,7 @@ class PortfolioDataService
      */
     public function deleteEducation($id)
     {
+        MyLogger2::info("Enter PortfolioDataService.deleteEducation()");
         try
         {
             //Build the query to delete the user's education based on the ID
@@ -376,21 +408,24 @@ class PortfolioDataService
             //Check if the query was executed
             if($result)
             {
+                MyLogger2::info("Exit PortfolioDataService.deleteEducation() successfully");
                 return $id;
             }
+            
+            MyLogger2::info("Exit PortfolioDataService.deleteEducation() unsuccessfully");
             return false;
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -406,6 +441,7 @@ class PortfolioDataService
      */
     public function updateJobHistory(JobHistory $job)
     {
+        MyLogger2::info("Enter PortfolioDataService.updateJobHistory()");
         try
         {
             //Expand the JobHistory object variable into query variables
@@ -433,24 +469,26 @@ class PortfolioDataService
             //Check if the result is executed
             if($result)
             {
+                MyLogger2::info("Exit PortfolioDataService.updateJobHistory() successfully");
                 return true;
             }
             else
             {
+                MyLogger2::info("Exit PortfolioDataService.updateJobHistory() unsuccessfully");
                 return false;
             }
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -464,6 +502,7 @@ class PortfolioDataService
      */
     public function updateEducationHistory(Education $ed)
     {
+        MyLogger2::info("Enter PortfolioDataService.updateEducationHistory()");
         try
         {
             //Expand the $ed variable into query variables
@@ -491,24 +530,26 @@ class PortfolioDataService
             //check if the result is built
             if($result)
             {
+                MyLogger2::info("Exit PortfolioDataService.updateEducationHistory() successfully");
                 return true;
             }
             else
             {
+                MyLogger2::info("Exit PortfolioDataService.updateEducationHistory() unsuccessfully");
                 return false;
             }
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -522,6 +563,7 @@ class PortfolioDataService
      */
     public function updateSkillHistory(Skill $skill)
     {
+        MyLogger2::info("Enter PortfolioDataService.updateSkillHistory()");
         try
         {
             //take the user's updated skills to the 
@@ -539,24 +581,26 @@ class PortfolioDataService
             //check if the query was executed
             if($result)
             {
+                MyLogger2::info("Exit PortfolioDataService.updateSkillHistory() successfully");
                 return true;
             }
             else
             {
+                MyLogger2::info("Exit PortfolioDataService.updateSkillHistory() unsuccessfully");
                 return false;
             }
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }

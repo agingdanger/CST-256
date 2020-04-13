@@ -17,6 +17,7 @@ class UsersRestController extends Controller
     public function index()
     {
 
+        MyLogger2::info("Enter UsersRestController.index()");
         // ---------------------- NOTE: This method has code copied and pasted. Needs update!
 
         // 
@@ -32,6 +33,8 @@ class UsersRestController extends Controller
             // Serialize the DTO to JSON
             $json = json_encode($dto);
 
+            MyLogger2::info("Exit UsersRestController.index()");
+            
             // Return JSON back to caller
             return $json;
         }
@@ -56,6 +59,7 @@ class UsersRestController extends Controller
      */
     public function show($id)
     {
+        MyLogger2::info("Enter UsersRestController.show()");
         // ---------------------- NOTE: This method has code copied and pasted. Needs update!
         
         //
@@ -74,6 +78,8 @@ class UsersRestController extends Controller
             // Serialize DTO to JSON
             $json = json_encode($dto);
 
+            MyLogger2::info("Exit UsersRestController.show()");
+            
             // Return JSON back to caller
             return $json;
         }

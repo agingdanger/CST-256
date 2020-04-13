@@ -2,6 +2,8 @@
 namespace App\Services\Data;
 
 use App\Services\Utility\DatabaseException;
+use App\Services\Utility\ILoggerService;
+use App\Services\Utility\MyLogger2;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Exception;
@@ -11,11 +13,10 @@ use App\User;
 
 class JobDataService
 {
-    // Create Class Variables: 
-    private $db;
+    // Declare class variables:
     private $conn;
     
-    // Default Constructor: 
+    // Non-Default Constructor:
     public function __construct($conn)
     {
         $this->conn = $conn;
@@ -29,24 +30,30 @@ class JobDataService
      */
     public function findAllJobs()
     {
+        MyLogger2::info("Enter JobDataService.findAllJobs()");
         try
         {
             // Find all jobs.
             $result = $this->conn->prepare("SELECT * FROM job");
             $result->execute();
             
+            MyLogger2::info("Exit JobDataService.findAllJobs()");
+            
             // Return an array of fetched results to the Business Service: 
             return $result->fetchAll();
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("PDOException: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
         catch(Exception $exc)
         {
+            MyLogger2::error("Exception: ", array(
+                "message" => $exc->getMessage()
+            ));
             throw $exc->getMessage();
         }
     }
@@ -62,6 +69,8 @@ class JobDataService
      */
     public function create($job) 
     {
+        MyLogger2::info("Enter JobDataService.create()");
+        
         try
         {
             // Put all the data from $job into variables: 
@@ -87,22 +96,25 @@ class JobDataService
             // Check if result was successful: 
             if($result->rowCount() == 1)
             {
-                Log::info("Exit JobDataService.create() with true");
+                MyLogger2::info("Exit JobDataService.create() with rowCount and true");
                 return true;
             }
             else
             {
-                Log::info("Exit JobDataService.create() with false");
+                MyLogger2::info("Exit JobDataService.create() with no rowCount false");
                 return false;
             }
         }
         catch (PDOException $pdoExc)
         {
-            Log::error("Exception: ", array("message" => $pdoExc->getMessage));
+            MyLogger2::error("PDOException: ", array("message" => $pdoExc->getMessage));
             throw new DatabaseException("Database Exception: " . $pdoExc->getMessage(), 0, $pdoExc);
         }
         catch(Exception $e)
         {
+            MyLogger2::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
             // Throwing Exception with message: 
             throw $e->getMessage();
         }
@@ -117,6 +129,7 @@ class JobDataService
      */
     public function update(Job $job)
     {
+        MyLogger2::info("Enter JobDataService.update()");
         try
         {
             // Put all the data from $job into variables:
@@ -142,25 +155,27 @@ class JobDataService
             // Check if the result was true: 
             if($result)
             {
+                MyLogger2::info("Exit JobDataService.update() with true");
                 return true;
             }
             else
             {
+                MyLogger2::info("Exit JobDataService.update() with false");
                 return false;
             }
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
-        catch(DatabaseException $e)
+        catch(DatabaseException $dbe)
         {
             // Throwing Exception with message: 
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $dbe->getMessage()
             ));
             return false;
         }
@@ -175,6 +190,7 @@ class JobDataService
      */
     public function delete(Job $job)
     {
+        MyLogger2::info("Enter JobDataService.delete()");
         try
         {
             // Store the ID of the Job into a variable from the Job object: 
@@ -189,19 +205,26 @@ class JobDataService
             // Check if result is true: 
             if($result)
             {
+                MyLogger2::info("Exit JobDataService.delete() with true");
                 return $id;
             }
+            
+            MyLogger2::info("Exit JobDataService.delete() with false");
+            
             return false;
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
         catch (Exception $exc)
         {
+            MyLogger2::error("Exception: ", array(
+                "message" => $exc->getMessage()
+            ));
             // Throwing Exception with message: 
             throw $exc->getMessage();
         }
@@ -215,6 +238,7 @@ class JobDataService
      */
     public function findMatches($id)
     {
+        MyLogger2::info("Enter JobDataService.findMatches()");
         try
         {
             // Find all matching jobs.
@@ -228,20 +252,25 @@ class JobDataService
             $result->bindParam(':id', $id);
             $result->execute();
             
+            MyLogger2::info("Exit JobDataService.findMatches()");
+            
             // Return an array of fetched results to the Business Service:
             return $result->fetchAll();
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
         catch (Exception $exc)
         {
+            MyLogger2::error("Exception: ", array(
+                "message" => $exc->getMessage()
+            ));
             // Throwing Exception with message:
-            throw $exc->getMessage();
+            throw new $exc->getMessage();
         }
         
     }
@@ -254,6 +283,7 @@ class JobDataService
      */
     public function findJobsBySearch($search)
     {
+        MyLogger2::info("Enter JobDataService.findJobsBySearch()");
         try
         {
             // Find all matching jobs.
@@ -265,20 +295,24 @@ class JobDataService
             $result->bindParam(':search', $search);
             $result->execute();
             
+            MyLogger2::info("Exit JobDataService.findJobsBySearch()");
+            
             // Return an array of fetched results to the Business Service:
             return $result->fetchAll();
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("PDOException: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
         catch (Exception $exc)
         {
-            // Throwing Exception with message:
-            throw $exc->getMessage();
+            MyLogger2::error("Exception: ", array(
+                "message" => $exc->getMessage()
+            ));
+            throw new $exc->getMessage();
         }
     }
     

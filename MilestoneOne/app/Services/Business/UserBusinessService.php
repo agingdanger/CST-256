@@ -1,16 +1,15 @@
 <?php
 namespace App\Services\Business;
 
-use Illuminate\Http\Request;
-use PDOException;
-use App\Services\Data\UserDataService;
-use App\Services\Data\AdminDataService;
 use App\Model\User;
+use App\Services\Data\AdminDataService;
+use App\Services\Data\UserDataService;
+use App\Services\Utility\MyLogger2;
 use App\Services\Utility\db_connector;
+use App\Services\Utility\ILoggerService;
 
 class UserBusinessService
-{
-
+{    
     /**
      * register business service method: Creating a user in the database.
      *
@@ -19,16 +18,26 @@ class UserBusinessService
      */
     public function register(User $user)
     {
+        MyLogger2::info("Enter UserBusinessService.register()");
+        
+        // Call the database connection
         $db = new db_connector();
         $conn = $db->getConnection();
+        
+        // Call the DAO to create a User in the database
         $userData = new UserDataService($conn);
-
         $isRegistered = $userData->create($user);
 
+        // Close the PDO Connection
         $conn = null;
 
         if ($isRegistered)
-        {return true;}
+        {
+            MyLogger2::info("Exit UserBusinessService.register() with true.");
+            return true;
+        }
+        
+        MyLogger2::info("Exit UserBusinessService.register() with false.");
         return false;
     }
 
@@ -39,14 +48,20 @@ class UserBusinessService
      */
     public function modify(User $user)
     {
+        MyLogger2::info("Enter UserBusinessService.modify()");
+        
+        // Call the database connection
         $db = new db_connector();
         $conn = $db->getConnection();
+        
+        // Call the DAO to update a User's info
         $userService = new UserDataService($conn);
-
         $userData = $userService->update($user);
 
+        // Close the PDO connection
         $conn = null;
 
+        MyLogger2::info("Exit UserBusinessService.modify()");
         return $userData;
     }
 
@@ -57,6 +72,8 @@ class UserBusinessService
      */
     public function profile(User $user)
     {
+        MyLogger2::info("Enter UserBusinessService.profile()");
+        
         // Create the database connection object.
         $db = new db_connector();
         $conn = $db->getConnection();
@@ -70,13 +87,21 @@ class UserBusinessService
 
         // if Result has some value, which it should, it should return
         if ($result)
+        {
+            MyLogger2::info("Exit UserBusinessService.profile() with true");
             return $result;
+        }
         else
+        {
+            MyLogger2::info("Exit UserBusinessService.profile() with false");
             return false;
+        }
     }
 
     public function search($param)
     {
+        MyLogger2::info("Enter UserBusinessService.search()");
+        
         // Create the database connection object.
         $db = new db_connector();
         $conn = $db->getConnection();
@@ -90,9 +115,15 @@ class UserBusinessService
 
         // if Result has some value, which it should, it should return
         if ($result)
+        {
+            MyLogger2::info("Exit UserBusinessService.search() with true");
             return $result;
+        }
         else
+        {
+            MyLogger2::info("Exit UserBusinessService.search() with false");
             return false;
+        }
     }
 
     /** -------------------------------- REST Business Methods -------------------------------- **/
@@ -104,6 +135,8 @@ class UserBusinessService
      */
     public function getAllUsers()
     {
+        MyLogger2::info("Enter UserBusinessService.getAllUsers()");
+        
         // Create the database connection object.
         $db = new db_connector();
         $conn = $db->getConnection();
@@ -114,6 +147,8 @@ class UserBusinessService
 
         // Close the PDO Connection
         $conn = null;
+        
+        MyLogger2::info("Exit UserBusinessService.getAllUsers()");
         
         // Return the result
         return $users;
@@ -127,6 +162,8 @@ class UserBusinessService
      */
     public function getUserByID($id)
     {
+        MyLogger2::info("Enter UserBusinessService.getUserByID()");
+        
         // Create the database connection object.
         $db = new db_connector();
         $conn = $db->getConnection();
@@ -137,6 +174,8 @@ class UserBusinessService
         
         // Close the PDO Connection
         $conn = null;
+        
+        MyLogger2::info("Exit UserBusinessService.getUserByID()");
         
         // Return the result
         return $users;

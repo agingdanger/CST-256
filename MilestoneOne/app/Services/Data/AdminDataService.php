@@ -3,16 +3,17 @@ namespace App\Services\Data;
 
 use App\Model\User;
 use App\Services\Utility\DatabaseException;
+use App\Services\Utility\MyLogger2;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Exception;
 use PDO;
 use PDOException;
+use App\Services\Utility\ILoggerService;
 
 class AdminDataService
 {
     // Declare class variables: 
-    private $db;
     private $conn;
 
     // Default Constructor: 
@@ -29,6 +30,7 @@ class AdminDataService
      */
     public function findAll()
     {
+        MyLogger2::info("Enter AdminDataService.findAll()");
         try
         {
             // Find all the users except for the current userID.
@@ -40,11 +42,13 @@ class AdminDataService
             // Execute the Query: 
             $result->execute();
 
+            MyLogger2::info("Exit AdminDataService.findAll()");
+            
             return $result->fetchAll();
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
@@ -53,6 +57,7 @@ class AdminDataService
     
     public function findByID()
     {
+        MyLogger2::info("Enter AdminDataService.findByID()");
         try
         {
             // Find all the users except for the current userID.
@@ -76,12 +81,14 @@ class AdminDataService
             // Execute the Query: 
             $result->execute();
             
+            MyLogger2::info("Exit AdminDataService.findByID()");
+            
             // Return the result with all the User's info: 
             return $result->fetchAll();
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
@@ -96,6 +103,7 @@ class AdminDataService
      */
     public function update(User $user)
     {
+        MyLogger2::info("Enter AdminDataService.update()");
         try
         {
             // Store the User's info from the object param into variables: 
@@ -125,23 +133,25 @@ class AdminDataService
             // Check if there is result: 
             if($result)
             {
+                MyLogger2::info("Exit AdminDataService.update() with true");
                 return true;
             }
             else
             {
+                MyLogger2::info("Exit AdminDataService.update() with false");
                 return false;
             }
         }
-        catch(PDOException $e)
+        catch(PDOException $pdoExc)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $pdoExc->getMessage()
             ));
-            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+            throw new DatabaseException("Database Exception: " . $pdoExc->getMessage(), 0, $pdoExc);
         }
         catch(DatabaseException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             return false;
@@ -156,6 +166,7 @@ class AdminDataService
      */
     public function delete(User $user)
     {
+        MyLogger2::info("Enter AdminDataService.delete()");
         try
         {
             $id = $user->getId();
@@ -165,13 +176,16 @@ class AdminDataService
 
             if($result)
             {
+                MyLogger2::info("Exit AdminDataService.delete() with id & true");
                 return $id;
             }
+            
+            MyLogger2::info("Exit AdminDataService.delete() with false");
             return false;
         }
         catch(PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);

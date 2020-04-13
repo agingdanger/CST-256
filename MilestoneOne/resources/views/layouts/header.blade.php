@@ -19,6 +19,7 @@
    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Job Search</button>
  </form>
  @endif
+ 
   <!-- Collapse button -->
   <button class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#navbarContent"
     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -34,10 +35,10 @@
             <a class="nav-link" href='home'>Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href='users'>Users</a>
+            <a class="nav-link" href="myportfolio">Portfolio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="myportfolio">Portfolio</a>
+            <a class="nav-link" href="profile">My Profile</a>
           </li>
         	@if(Session::get('role') === "admin")
         		<li class="nav-item">

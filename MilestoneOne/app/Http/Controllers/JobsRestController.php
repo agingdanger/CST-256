@@ -10,14 +10,6 @@ use Exception;
 
 class JobsRestController extends Controller
 {
-    // Declare logger variable
-    protected $logger;
-
-    // Non-default Constructor
-    public function __construct(ILoggerService $logger)
-    {
-        $this->logger = $logger;
-    }
 
     /**
      * Display a listing of the resource.
@@ -26,7 +18,7 @@ class JobsRestController extends Controller
      */
     public function index()
     {
-        $this->logger->info("Entering JobsRestController's index()");
+        MyLogger2::info("Entering JobsRestController's index()");
 
         try
         {
@@ -40,14 +32,14 @@ class JobsRestController extends Controller
             // Serialize the DTO to JSON
             $json = json_encode($dto);
 
-            $this->logger->info("Exiting JobsRestController's index()");
+            MyLogger2::info("Exiting JobsRestController's index()");
 
             // Return JSON back to caller
             return $json;
         }
         catch (Exception $e1)
         {
-            $this->logger->error("Exception ", array(
+            MyLogger2::error("Exception ", array(
                 "message" => $e1->getMessage()
             ));
 
@@ -65,7 +57,7 @@ class JobsRestController extends Controller
      */
     public function show($search)
     {
-        $this->logger->info("Entering JobsRestController's show()");
+        MyLogger2::info("Entering JobsRestController's show()");
 
         try
         {
@@ -80,14 +72,14 @@ class JobsRestController extends Controller
             // Serialize DTO to JSON
             $json = json_encode($dto);
 
-            $this->logger->info("Exiting JobsRestController's show()");
+            MyLogger2::info("Exiting JobsRestController's show()");
 
             // return JSON back to caller
             return $json;
         }
         catch (Exception $e1)
         {
-            $this->logger->error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e1->getMessage()
             ));
 

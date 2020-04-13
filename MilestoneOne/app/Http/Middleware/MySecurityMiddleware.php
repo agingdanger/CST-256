@@ -45,8 +45,8 @@ class MySecurityMiddleware
         // NOTE: To test this, try to go to the /askme route or one of your other loginX routes.
         // You will be redirected by to a login route.
         
-        $enable = false;
-        if($secureCheck && $enable)
+//         $enable = true;
+        if($secureCheck)
         {
             MyLogger2::info("Leaving My Security Middlware in handle() doing a redirect back to login");
             return redirect('/welcome');

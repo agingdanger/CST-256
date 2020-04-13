@@ -14,7 +14,7 @@ use App\Model\User;
 use App\Model\userCredentials;
 use App\Services\Business\SecurityService;
 use App\Services\Business\UserBusinessService;
-use App\Services\Utility\ILoggerService;
+use App\Services\Utility\MyLogger2;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -28,14 +28,6 @@ use Exception;
  */
 class UserController extends Controller
 {
-    // Declare logger variable
-    protected $logger;
-    
-    // Non-default Constructor
-    public function __construct(ILoggerService $logger)
-    {
-        $this->logger = $logger;
-    }
     
     /**
      * Creating a login Controller method:
@@ -45,7 +37,7 @@ class UserController extends Controller
      */
     public function onLogin(Request $request)
     {
-        $this->logger->info("Entered UserController's onLogin()");
+        MyLogger2::info("Entered UserController's onLogin()");
         
         // Call the ValidateForm:
         $this->validateLoginForm($request);
@@ -75,18 +67,18 @@ class UserController extends Controller
             Session::put('role', $userData['ROLE']);
             Session::put('principal', 'true');
 
-            $this->logger->info("Exiting UserController's onLogin()", $userData);
+            MyLogger2::info("Exiting UserController's onLogin()", $userData);
             
             return view('home.home')->with('user', $userData);
         }
         catch(ValidationException $el)
         {
-            $this->logger->error("Validation error in UserController's onLogin()", array("message" => $el->getMessage()));
+            MyLogger2::error("Validation error in UserController's onLogin()", array("message" => $el->getMessage()));
             throw $el;
         }
         catch(Exception $e)
         {
-            $this->logger->error("Error in UserController's onLogin()", array("message" => $e->getMessage()));
+            MyLogger2::error("Error in UserController's onLogin()", array("message" => $e->getMessage()));
             
             // Return the Error Page: 
             return view('error.commonError');
@@ -101,7 +93,7 @@ class UserController extends Controller
      */
     public function onRegister(Request $request)
     {
-        $this->logger->info("Entered UserController's onRegister()");
+        MyLogger2::info("Entered UserController's onRegister()");
         
         // Call the ValidateForm:
         $this->validateRegistrationForm($request);
@@ -128,19 +120,19 @@ class UserController extends Controller
             // if Registration process is true.
             if($isRegisterAttempt)
             {
-                $this->logger->info("Exited UserController's onRegister() successfully");
+                MyLogger2::info("Exited UserController's onRegister() successfully");
                 
                 Session::put('role', $request->input('role'));
                 return view('registration.registerstatus')->with('message', $message = "Registered Successfully!");
             }
             
-            $this->logger->info("Exited UserController's onRegister() unsuccessfully");
+            MyLogger2::info("Exited UserController's onRegister() unsuccessfully");
             
             return view('registration.registerstatus')->with('message', $message = "Did not register. Try again.");
         }
         catch(Exception $e)
         {
-            $this->logger->error("Error UserController's onRegister()", array("message" => $e->getMessage()));
+            MyLogger2::error("Error UserController's onRegister()", array("message" => $e->getMessage()));
             
             return view('error.commonError');
         }
@@ -154,7 +146,7 @@ class UserController extends Controller
      */
     public function onEdit(Request $request)
     {
-        $this->logger->info("Entered UserController's onEdit()");
+        MyLogger2::info("Entered UserController's onEdit()");
         
         // This piece of code needs to be used later for validation in the Edit form. 
         /* // Call the ValidateForm:
@@ -195,7 +187,7 @@ class UserController extends Controller
                     return view('users.profile')->with('user', $userData);
                 }
                 
-                $this->logger->info("Exited UserController's onEdit()");
+                MyLogger2::info("Exited UserController's onEdit()");
                 
                 return view('error.commonError');
             }
@@ -219,7 +211,7 @@ class UserController extends Controller
      */
     public function onNavigate(Request $request)
     {
-        $this->logger->info("Entered UserController's onNavigate()");
+        MyLogger2::info("Entered UserController's onNavigate()");
         
         try
         {
@@ -235,7 +227,7 @@ class UserController extends Controller
             // Create a User Object and populate the data
             $user = new User($id, $firstName, $lastName, $username, $password, $email, $phone, $role);
 
-            $this->logger->info("Exited UserController's onNavigate()");
+            MyLogger2::info("Exited UserController's onNavigate()");
             
             return view('home.account')->with('user', $user);
         }
@@ -252,7 +244,7 @@ class UserController extends Controller
      */
     public function onProfile(Request $request)
     {
-        $this->logger->info("Entered UserController's onProfile()");
+        MyLogger2::info("Entered UserController's onProfile()");
         
         try
         {
@@ -270,13 +262,13 @@ class UserController extends Controller
             // if there is a result, then return the profile View
             if($userData)
             {
-                $this->logger->info("Exiting UserController's onProfile()");
+                MyLogger2::info("Exiting UserController's onProfile()");
                 
                 return view('users.profile')->with('user', $userData);
             }
             else 
             {
-                $this->logger->info("Exiting UserController's onProfile()");
+                MyLogger2::info("Exiting UserController's onProfile()");
                 
                 return view('error.commonError');
             }
@@ -295,7 +287,7 @@ class UserController extends Controller
      */
     public function onLogout() 
     {
-        $this->logger->info("Entered UserController's onLogout()");
+        MyLogger2::info("Entered UserController's onLogout()");
         
         try
         {
@@ -303,7 +295,7 @@ class UserController extends Controller
             //         session()->flush();
             Session::flush();
             
-            $this->logger->info("Exiting UserController's onLogout()");
+            MyLogger2::info("Exiting UserController's onLogout()");
             
             // Return the logged in Home page:
 //             return redirect()->route('welcome');
@@ -322,7 +314,7 @@ class UserController extends Controller
      */
     private function validateLoginForm(Request $request)
     {
-        $this->logger->info("Entered UserController's validateLoginForm()");
+        MyLogger2::info("Entered UserController.validateLoginForm()");
         
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
         
@@ -335,7 +327,7 @@ class UserController extends Controller
         // Run Validation Rules:
         $this->validate($request, $rules);
         
-        $this->logger->info("Exiting UserController's validateLoginForm()");
+        MyLogger2::info("Exiting UserController.validateLoginForm()");
     }
     
     /**
@@ -344,7 +336,7 @@ class UserController extends Controller
      */
     private function validateRegistrationForm(Request $request)
     {
-        $this->logger->info("Entering UserController's validateRegistrationForm()");
+        MyLogger2::info("Entering UserController.validateRegistrationForm()");
         
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
         
@@ -362,7 +354,7 @@ class UserController extends Controller
         // Run Validation Rules:
         $this->validate($request, $rules);
         
-        $this->logger->info("Exiting UserController's validateRegistrationForm()");
+        MyLogger2::info("Exiting UserController's validateRegistrationForm()");
     }
     
     /**
@@ -371,7 +363,7 @@ class UserController extends Controller
      */
     private function validateEditForm(Request $request)
     {
-        $this->logger->info("Entering UserController's validateEditForm()");
+        MyLogger2::info("Entering UserController's validateEditForm()");
         
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
         
@@ -386,7 +378,7 @@ class UserController extends Controller
         // Run Validation Rules:
         $this->validate($request, $rules);
         
-        $this->logger->info("Exiting UserController's validateEditForm()");
+        MyLogger2::info("Exiting UserController's validateEditForm()");
     }
     
     

@@ -9,18 +9,11 @@ use App\Model\Education;
 use App\Model\Skill;
 use App\Services\Business\PortfolioBusinessService;
 use App\Services\Utility\ILoggerService;
+use App\Services\Utility\MyLogger2;
 use Dotenv\Exception\ValidationException;
 
 class PortfolioController extends Controller
 {
-    // Declare logger variable
-    protected $logger;
-
-    // Non-default Constructor
-    public function __construct(ILoggerService $logger)
-    {
-        $this->logger = $logger;
-    }
 
     /**
      * Add Job History to a User's portfolio:
@@ -31,7 +24,7 @@ class PortfolioController extends Controller
      */
     public function onAddWorkExperience(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onAddWorkExperience()");
+        MyLogger2::info("Entered PortfolioController's onAddWorkExperience()");
 
         // Call the Validation Rules:
         $this->validateJobHistoryForm($request);
@@ -64,7 +57,7 @@ class PortfolioController extends Controller
             // Store into education all the education history of the user.
             $education = $portfolioBusiness->retrieveUserEducation($userID);
 
-            $this->logger->info("Exiting PortfolioController's onAddWorkExperience()");
+            MyLogger2::info("Exiting PortfolioController's onAddWorkExperience()");
 
             // Return portfolio view with all the updated number of job history, education history, and skill history.
             return view('portfolio.portfolio')->with('jobs', $jobs)
@@ -73,14 +66,14 @@ class PortfolioController extends Controller
         }
         catch (ValidationException $valExc)
         {
-            $this->logger->error("Validation Error in PortfolioController's onAddWorkExperience()", $valExc->getMessage());
+            MyLogger2::error("Validation Error in PortfolioController's onAddWorkExperience()", $valExc->getMessage());
 
             // throw Valexc
             throw $valExc;
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in PortfolioController's onAddWorkExperience()", $e->getMessage());
+            MyLogger2::error("Error in PortfolioController's onAddWorkExperience()", $e->getMessage());
 
             // throw
             return view('error.commonError');
@@ -95,7 +88,7 @@ class PortfolioController extends Controller
      */
     public function onAddSkill(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onAddSkill()");
+        MyLogger2::info("Entered PortfolioController's onAddSkill()");
 
         // Call the Validation Rule:
         $this->validateSkillForm($request);
@@ -121,7 +114,7 @@ class PortfolioController extends Controller
             // Check the portfolio status.
             if ($portfolioStatus)
             {
-                $this->logger->info("Exiting PortfolioController's onAddSkill()");
+                MyLogger2::info("Exiting PortfolioController's onAddSkill()");
 
                 return view('portfolio.portfolio')->with('jobs', $jobs)
                     ->with('skills', $skills)
@@ -129,14 +122,14 @@ class PortfolioController extends Controller
             }
             else
             {
-                $this->logger->info("Exiting PortfolioController's onAddSkill() failed.");
+                MyLogger2::info("Exiting PortfolioController's onAddSkill() failed.");
 
                 return view('error.error');
             }
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in PortfolioController's onAddSkill()", $e->getMessage());
+            MyLogger2::error("Error in PortfolioController's onAddSkill()", $e->getMessage());
 
             return view('error.commonError');
         }
@@ -150,7 +143,7 @@ class PortfolioController extends Controller
      */
     public function onAddEducation(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onAddEducation()");
+        MyLogger2::info("Entered PortfolioController's onAddEducation()");
 
         // Call the Validation Form:
         $this->validateEducationForm($request);
@@ -181,7 +174,7 @@ class PortfolioController extends Controller
 
             if ($portfolioStatus)
             {
-                $this->logger->info("Exiting PortfolioController's onAddEducation() successfully");
+                MyLogger2::info("Exiting PortfolioController's onAddEducation() successfully");
 
                 return view('portfolio.portfolio')->with('jobs', $jobs)
                     ->with('skills', $skills)
@@ -189,14 +182,14 @@ class PortfolioController extends Controller
             }
             else
             {
-                $this->logger->info("Exiting PortfolioController's onAddEducation() failed.");
+                MyLogger2::info("Exiting PortfolioController's onAddEducation() failed.");
 
                 return view('error.error');
             }
         }
         catch (Exception $e)
         {
-            $this->logger->error("Exiting PortfolioController's onAddEducation()", $e->getMessage());
+            MyLogger2::error("Exiting PortfolioController's onAddEducation()", $e->getMessage());
 
             return view('error.commonError');
         }
@@ -210,7 +203,7 @@ class PortfolioController extends Controller
      */
     public function onJobRemoval(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onJobRemoval()");
+        MyLogger2::info("Entered PortfolioController's onJobRemoval()");
 
         try
         {
@@ -227,7 +220,7 @@ class PortfolioController extends Controller
             $skills = $portfolioBusiness->retrieveUserSkills($userID);
             $education = $portfolioBusiness->retrieveUserEducation($userID);
 
-            $this->logger->info("Exiting PortfolioController's onJobRemoval()");
+            MyLogger2::info("Exiting PortfolioController's onJobRemoval()");
 
             // Return the Portfolio View page:
             return view('portfolio.portfolio')->with('jobs', $jobs)
@@ -236,7 +229,7 @@ class PortfolioController extends Controller
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in PortfolioController's onJobRemoval()", $e->getMessage());
+            MyLogger2::error("Error in PortfolioController's onJobRemoval()", $e->getMessage());
 
             return view('error.commonError');
         }
@@ -250,7 +243,7 @@ class PortfolioController extends Controller
      */
     public function onEducationRemoval(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onEducationRemoval()");
+        MyLogger2::info("Entered PortfolioController's onEducationRemoval()");
 
         try
         {
@@ -267,7 +260,7 @@ class PortfolioController extends Controller
             $skills = $portfolioBusiness->retrieveUserSkills($userID);
             $education = $portfolioBusiness->retrieveUserEducation($userID);
 
-            $this->logger->info("Exiting PortfolioController's onEducationRemoval()");
+            MyLogger2::info("Exiting PortfolioController's onEducationRemoval()");
 
             // Return the Portfolio view page:
             return view('portfolio.portfolio')->with('jobs', $jobs)
@@ -276,7 +269,7 @@ class PortfolioController extends Controller
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in PortfolioController's onEducationRemoval()", $e->getMessage());
+            MyLogger2::error("Error in PortfolioController's onEducationRemoval()", $e->getMessage());
 
             return view('error.commonError');
         }
@@ -290,7 +283,7 @@ class PortfolioController extends Controller
      */
     public function onSkillRemoval(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onSkillRemoval()");
+        MyLogger2::info("Entered PortfolioController's onSkillRemoval()");
 
         try
         {
@@ -307,7 +300,7 @@ class PortfolioController extends Controller
             $skills = $portfolioBusiness->retrieveUserSkills($userID);
             $education = $portfolioBusiness->retrieveUserEducation($userID);
 
-            $this->logger->info("Exiting in PortfolioController's onSkillRemoval()");
+            MyLogger2::info("Exiting in PortfolioController's onSkillRemoval()");
 
             // Return the Portfolio View Page:
             return view('portfolio.portfolio')->with('jobs', $jobs)
@@ -316,7 +309,7 @@ class PortfolioController extends Controller
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in PortfolioController's onSkillRemoval()", $e->getMessage());
+            MyLogger2::error("Error in PortfolioController's onSkillRemoval()", $e->getMessage());
 
             return view('error.commonError');
         }
@@ -330,7 +323,7 @@ class PortfolioController extends Controller
      */
     public function onPersonalPortfolioRetrieval(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onPersonalPortfolioRetrieval()");
+        MyLogger2::info("Entered PortfolioController's onPersonalPortfolioRetrieval()");
 
         try
         {
@@ -343,7 +336,7 @@ class PortfolioController extends Controller
             $skills = $portfolioBusiness->retrieveUserSkills($userID);
             $education = $portfolioBusiness->retrieveUserEducation($userID);
 
-            $this->logger->info("Exiting PortfolioController's onPersonalPortfolioRetrieval()");
+            MyLogger2::info("Exiting PortfolioController's onPersonalPortfolioRetrieval()");
 
             // Return Portfolio view:
             return view('portfolio.portfolio')->with('jobs', $jobs)
@@ -352,7 +345,7 @@ class PortfolioController extends Controller
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in PortfolioController's onPersonalPortfolioRetrieval()", $e->getMessage());
+            MyLogger2::error("Error in PortfolioController's onPersonalPortfolioRetrieval()", $e->getMessage());
 
             return view('error.commonError');
         }
@@ -366,7 +359,7 @@ class PortfolioController extends Controller
      */
     public function onRouteJobEdit(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onRouteJobEdit()");
+        MyLogger2::info("Entered PortfolioController's onRouteJobEdit()");
 
         try
         {
@@ -383,14 +376,14 @@ class PortfolioController extends Controller
             // Create a JobHistory Object
             $job = new JobHistory($id, $name, $position, $description, $awards, $startDate, $endDate, $userID);
 
-            $this->logger->info("Exiting PortfolioController's onRouteJobEdit()");
+            MyLogger2::info("Exiting PortfolioController's onRouteJobEdit()");
 
             // Return the EditJobHistory View
             return view('portfolio.editJobHistory')->with('job', $job);
         }
         catch (Exception $e)
         {
-            $this->logger->error("Exiting PortfolioController's onRouteJobEdit()", $e->getMessage());
+            MyLogger2::error("Exiting PortfolioController's onRouteJobEdit()", $e->getMessage());
 
             return view('error.commonError');
         }
@@ -404,7 +397,7 @@ class PortfolioController extends Controller
      */
     public function onRouteEducationEdit(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onRouteEducationEdit()");
+        MyLogger2::info("Entered PortfolioController's onRouteEducationEdit()");
 
         try
         {
@@ -421,14 +414,14 @@ class PortfolioController extends Controller
             // Create an Education Object:
             $ed = new Education($id, $name, $years, $major, $minor, $startYear, $endYear, $userID);
 
-            $this->logger->info("Exiting PortfolioController's onRouteEducationEdit()");
+            MyLogger2::info("Exiting PortfolioController's onRouteEducationEdit()");
 
             // Return EditEducationForm view
             return view('portfolio.editEducation')->with('ed', $ed);
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in PortfolioController's onRouteEducationEdit()", $e->getMessage());
+            MyLogger2::error("Error in PortfolioController's onRouteEducationEdit()", $e->getMessage());
             
             return view('error.commonError');
         }
@@ -442,7 +435,7 @@ class PortfolioController extends Controller
      */
     public function onRouteSkillEdit(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onRouteSkillEdit()");
+        MyLogger2::info("Entered PortfolioController's onRouteSkillEdit()");
         
         try
         {
@@ -454,14 +447,14 @@ class PortfolioController extends Controller
             // Create a skill object to be added
             $skill = new Skill($id, $skillName, $userID);
 
-            $this->logger->info("Exiting PortfolioController's onRouteSkillEdit()");
+            MyLogger2::info("Exiting PortfolioController's onRouteSkillEdit()");
             
             // Returns the EditSkillForm view
             return view('portfolio.editSkill')->with('skill', $skill);
         }
         catch (Exception $e)
         {
-            $this->logger->error("Entered PortfolioController's onRouteSkillEdit()", $e->getMessage());
+            MyLogger2::error("Entered PortfolioController's onRouteSkillEdit()", $e->getMessage());
             
             return view('error.commonError');
         }
@@ -475,7 +468,7 @@ class PortfolioController extends Controller
      */
     public function onJobEdit(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onJobEdit()");
+        MyLogger2::info("Entered PortfolioController's onJobEdit()");
         // Call the Validation Rules:
         // $this->validateJobHistoryForm($request);
         try
@@ -502,7 +495,7 @@ class PortfolioController extends Controller
             $skills = $portfolioBusiness->retrieveUserSkills($userID);
             $education = $portfolioBusiness->retrieveUserEducation($userID);
 
-            $this->logger->info("Exiting PortfolioController's onJobEdit()");
+            MyLogger2::info("Exiting PortfolioController's onJobEdit()");
             
             // Check if the PortfolioStatus is available:
             if ($portfolioStatus)
@@ -512,7 +505,7 @@ class PortfolioController extends Controller
         }
         catch (Exception $e)
         {
-            $this->logger->error("Entered PortfolioController's onJobEdit()", array("message" => $e->getMessage()));
+            MyLogger2::error("Entered PortfolioController's onJobEdit()", array("message" => $e->getMessage()));
             
             return view('error.commonError');
         }
@@ -526,7 +519,7 @@ class PortfolioController extends Controller
      */
     public function onEducationEdit(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onEducationEdit()");
+        MyLogger2::info("Entered PortfolioController's onEducationEdit()");
         
         // Call the Validation Rule:
         // $this->validateEducationForm($request);
@@ -554,7 +547,7 @@ class PortfolioController extends Controller
             $skills = $portfolioBusiness->retrieveUserSkills($userID);
             $education = $portfolioBusiness->retrieveUserEducation($userID);
 
-            $this->logger->info("Exiting PortfolioController's onEducationEdit()");
+            MyLogger2::info("Exiting PortfolioController's onEducationEdit()");
             
             // Check if PortfolioStatus
             if ($portfolioStatus)
@@ -564,7 +557,7 @@ class PortfolioController extends Controller
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in PortfolioController's onEducationEdit()", array("message" => $e->getMessage()));
+            MyLogger2::error("Error in PortfolioController's onEducationEdit()", array("message" => $e->getMessage()));
             
             return view('error.commonError');
         }
@@ -578,7 +571,7 @@ class PortfolioController extends Controller
      */
     public function onSkillEdit(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's onSkillEdit()");
+        MyLogger2::info("Entered PortfolioController's onSkillEdit()");
         
         // Call the Validation Rule:
         // $this->validateSkillForm($request);
@@ -601,7 +594,7 @@ class PortfolioController extends Controller
             $skills = $portfolioBusiness->retrieveUserSkills($userID);
             $education = $portfolioBusiness->retrieveUserEducation($userID);
 
-            $this->logger->info("Exiting PortfolioController's onSkillEdit()");
+            MyLogger2::info("Exiting PortfolioController's onSkillEdit()");
             
             // Check PortfolioStatus:
             if ($portfolioStatus)
@@ -611,7 +604,7 @@ class PortfolioController extends Controller
         }
         catch (Exception $e)
         {
-            $this->logger->error("Exiting PortfolioController's onSkillEdit()", array("message" => $e->getMessage()));
+            MyLogger2::error("Exiting PortfolioController's onSkillEdit()", array("message" => $e->getMessage()));
             
             return view('error.commonError');
         }
@@ -624,7 +617,7 @@ class PortfolioController extends Controller
      */
     private function validateJobHistoryForm(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's validateJobHistoryForm()");
+        MyLogger2::info("Entered PortfolioController's validateJobHistoryForm()");
         
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
 
@@ -641,7 +634,7 @@ class PortfolioController extends Controller
         // Run Validation Rules:
         $this->validate($request, $rules);
         
-        $this->logger->info("Exiting PortfolioController's validateJobHistoryForm()");
+        MyLogger2::info("Exiting PortfolioController's validateJobHistoryForm()");
     }
 
     /**
@@ -651,7 +644,7 @@ class PortfolioController extends Controller
      */
     private function validateEducationForm(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's validateEducationForm()");
+        MyLogger2::info("Entered PortfolioController's validateEducationForm()");
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
 
         // Setup Data Validation Rules for Login Form.
@@ -667,7 +660,7 @@ class PortfolioController extends Controller
         // Run Validation Rules:
         $this->validate($request, $rules);
         
-        $this->logger->info("Exiting PortfolioController's validateEducationForm()");
+        MyLogger2::info("Exiting PortfolioController's validateEducationForm()");
     }
 
     /**
@@ -677,7 +670,7 @@ class PortfolioController extends Controller
      */
     private function validateSkillForm(Request $request)
     {
-        $this->logger->info("Entered PortfolioController's validateSkillForm()");
+        MyLogger2::info("Entered PortfolioController's validateSkillForm()");
         
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
 
@@ -689,7 +682,7 @@ class PortfolioController extends Controller
         // Run Validation Rules:
         $this->validate($request, $rules);
         
-        $this->logger->info("Exiting PortfolioController's validateSkillForm()");
+        MyLogger2::info("Exiting PortfolioController's validateSkillForm()");
     }
 }
 

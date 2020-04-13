@@ -6,20 +6,13 @@ use Illuminate\Support\Facades\Session;
 use Exception;
 use App\Services\Business\JobBusinessService;
 use App\Services\Utility\ILoggerService;
+use App\Services\Utility\MyLogger2;
 use Illuminate\Validation\ValidationException;
 use App\Model\Job;
 use Illuminate\Support\Facades\Redirect;
 
 class JobController extends Controller
 {
-    // Declare logger variable
-    protected $logger;
-    
-    // Non-default Constructor
-    public function __construct(ILoggerService $logger)
-    {
-        $this->logger = $logger;
-    }
     
     /**
      * Search the job by taking in the user's input text
@@ -29,7 +22,7 @@ class JobController extends Controller
      */
     public function onSearchJobs(Request $request)
     {
-        $this->logger->info("Entering JobController's onSearchJobs()");
+        MyLogger2::info("Entering JobController's onSearchJobs()");
         
         try
         {
@@ -51,27 +44,27 @@ class JobController extends Controller
             
             if ($searchData || $matchData)
             {
-                $this->logger->info("Exiting JobController's onSearchJobs() successfully.");
+                MyLogger2::info("Exiting JobController's onSearchJobs() successfully.");
                 
                 return view('job.jobSearchResult')->with('searchData', $searchData)->with('matchData', $matchData);
             }
             else
             {
-                $this->logger->info("Exiting JobController's onSearchJobs() failed.");
+                MyLogger2::info("Exiting JobController's onSearchJobs() failed.");
                 
                 return view('error.commonError');
             }
         }
         catch (ValidationException $valExc)
         {
-            $this->logger->error("Validation Error in JobController's onSearchJobs()");
+            MyLogger2::error("Validation Error in JobController's onSearchJobs()");
             
 //             throw new $valExc->getMessage();
             return Redirect::to('viewJobs');
         }
         catch (Exception $e)
         {
-            $this->logger->error("Error in JobController's onSearchJobs()");
+            MyLogger2::error("Error in JobController's onSearchJobs()");
             
             throw new $e->getMessage();
         }
@@ -85,7 +78,7 @@ class JobController extends Controller
      */
     public function onViewJobInfo(Request $request)
     {
-        $this->logger->info("Entering in JobController's onViewJobInfo()");
+        MyLogger2::info("Entering in JobController's onViewJobInfo()");
         
         try 
         {
@@ -100,13 +93,13 @@ class JobController extends Controller
             // Create a job object:
             $job = new Job($id, $name, $description, $company, $requirements, $skills);
             
-            $this->logger->info("Exiting in JobController's onViewJobInfo()");
+            MyLogger2::info("Exiting in JobController's onViewJobInfo()");
             
             return view('job.jobInfo')->with('job', $job);
         } 
         catch (Exception $e)
         {
-            $this->logger->error("Error in JobController's onViewJobInfo()");
+            MyLogger2::error("Error in JobController's onViewJobInfo()");
             
             throw new $e->getMessage();
         }
@@ -119,7 +112,7 @@ class JobController extends Controller
      */
     private function validateJobSearch(Request $request)
     {
-        $this->logger->info("Entering in JobController's validateJobSearch()");
+        MyLogger2::info("Entering in JobController's validateJobSearch()");
         
         // Best Practice: centralize your rules so you have a consistent architecture and even reuse your rules
 
@@ -131,6 +124,6 @@ class JobController extends Controller
         // Run Validation Rules:
         $this->validate($request, $rules);
         
-        $this->logger->info("Exiting in JobController's validateJobSearch()");
+        MyLogger2::info("Exiting in JobController's validateJobSearch()");
     }
 }

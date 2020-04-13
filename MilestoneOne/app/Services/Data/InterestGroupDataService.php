@@ -4,20 +4,18 @@ namespace App\Services\Data;
 use Exception;
 use PDOException;
 use App\Services\Utility\DatabaseException;
+use App\Services\Utility\ILoggerService;
+use App\Services\Utility\MyLogger2;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use App\Model\InterestGroup;
 
 class InterestGroupDataService
 {
-
-    // Declare a connection variable
+    // Declare class variables:
     private $conn;
-
-    /**
-     * Non-default constructor
-     * @param $conn
-     */
+    
+    // Non-Default Constructor:
     public function __construct($conn)
     {
         $this->conn = $conn;
@@ -31,31 +29,38 @@ class InterestGroupDataService
      */
     public function findInterestGroupByID($igid)
     {
+        MyLogger2::info("Enter InterestGroupDataService.findInterestGroupByID()");
         try
         {
             // Run the Query to find all the Groups available from the Database
             $result = $this->conn->prepare("SELECT * FROM interest_group WHERE ID=:id");
-            // Bind the params with variables: 
+            // Bind the params with variables:
             $result->bindParam(':id', $igid);
             // Execute the Query
             $result->execute();
-            
+
+            MyLogger2::info("Exit InterestGroupDataService.findInterestGroupByID()");
+
             // return the result
             return $result->fetchAll();
         }
         catch (PDOException $el)
         {
-            // Logging in the 
-            Log::error("Exception in IntGroupDataService's findInterestGroupByID(): ", array(
+            // Logging in the
+            MyLogger2::error("PDOException in IntGroupDataService.findInterestGroupByID(): ", array(
                 "message" => $el->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $el->getMessage(), 0, $el);
         }
         catch (Exception $e)
         {
+            MyLogger2::error("Exception in IntGroupDataService.findInterestGroupByID(): ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new $e->getMessage();
         }
     }
-    
+
     /**
      * find the available Group.
      *
@@ -64,6 +69,7 @@ class InterestGroupDataService
      */
     public function findUsersByGroup($igid)
     {
+        MyLogger2::info("Enter InterestGroupDataService.findUsersByGroup()");
         try
         {
             // Run the Query to find all the Groups available from the Database
@@ -76,35 +82,41 @@ class InterestGroupDataService
                                                 LEFT JOIN interest_group as ii
                                                 on u.interest_group_id = ii.ID
                                                 WHERE u.interest_group_ID=:id");
-            // Bind the params with variables: 
+            // Bind the params with variables:
             $result->bindParam(':id', $igid);
             // Execute the Query
             $result->execute();
+
+            MyLogger2::info("Exit InterestGroupDataService.findUsersByGroup()");
             
             // return the result
             return $result->fetchAll();
         }
         catch (PDOException $el)
         {
-            Log::error("Exception in IntGroupDataService's findUsersByGroup(): ", array(
+            MyLogger2::error("PDOException in IntGroupDataService.findUsersByGroup(): ", array(
                 "message" => $el->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $el->getMessage(), 0, $el);
         }
         catch (Exception $e)
         {
+            MyLogger2::error("Exception in IntGroupDataService.findUsersByGroup(): ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new $e->getMessage();
         }
     }
-    
-    
+
     /**
-     * find all the Interest Groups available. 
-     * 
+     * find all the Interest Groups available.
+     *
      * @throws DatabaseException
      * @return $result->fetchAll()
      */
     public function findAllGroups()
     {
+        MyLogger2::info("Enter InterestGroupDataService.findAllGroups()");
         try
         {
             // Run the Query to find all the Groups available from the Database
@@ -112,18 +124,24 @@ class InterestGroupDataService
             // Execute the Query
             $result->execute();
 
+            MyLogger2::info("Exit InterestGroupDataService.findAllGroups()");
+            
             // return the result
             return $result->fetchAll();
         }
         catch (PDOException $el)
         {
-            Log::error("Exception in IntGroupDataService's findAllGroups(): ", array(
+            MyLogger2::error("PDOException in IntGroupDataService.findAllGroups(): ", array(
                 "message" => $el->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $el->getMessage(), 0, $el);
         }
         catch (Exception $e)
         {
+            MyLogger2::error("Exception in IntGroupDataService.findAllGroups(): ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new $e->getMessage();
         }
     }
 
@@ -136,6 +154,7 @@ class InterestGroupDataService
      */
     public function create(InterestGroup $interestGroup)
     {
+        MyLogger2::info("Enter InterestGroupDataService.create()");
         try
         {
             // Put all the data from $interestGroup into variables:
@@ -153,45 +172,48 @@ class InterestGroupDataService
             $result->bindParam(':description', $description);
             $result->bindParam(':tags', $tags);
             $result->bindParam(':users_id', $users_id);
-            
+
             // Execute the query:
             $result->execute();
-            
-            //pull interest group ID from database that was just created to add user to interest group
+
+            // pull interest group ID from database that was just created to add user to interest group
             $igid = $this->conn->lastInsertId();
-            
-            
+
             $result2 = $this->conn->prepare("INSERT INTO user_interest (`ID`, `interest_group_ID`, `users_ID`) VALUES (:id, :interest_group_id, :users_id)");
             $result2->bindParam(':id', $id);
             $result2->bindParam(':interest_group_id', $igid);
             $result2->bindParam(':users_id', $users_id);
-            
-            //Execute
+
+            // Execute
             $result2->execute();
-            
+
             // Check if result was successful:
             if ($result->rowCount() == 1)
             {
-                Log::info("Exit InterestGroupDataService.create() with true");
+                MyLogger2::info("Exit InterestGroupDataService.create() with true");
                 return true;
             }
             else
             {
-                Log::info("Exit InterestGroupDataService.create() with false");
+                MyLogger2::info("Exit InterestGroupDataService.create() with false");
                 return false;
             }
         }
         catch (PDOException $pdoExc)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("PDOException: ", array(
                 "message" => $pdoExc->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $pdoExc->getMessage(), 0, $pdoExc);
         }
         catch (Exception $e)
         {
+            MyLogger2::error("Exception in IntGroupDataService.findUsersByGroup(): ", array(
+                "message" => $e->getMessage()
+            ));
+            
             // Throwing Exception with message:
-            throw $e->getMessage();
+            throw new $e->getMessage();
         }
     }
 
@@ -204,6 +226,7 @@ class InterestGroupDataService
      */
     public function update(InterestGroup $interestGroup)
     {
+        MyLogger2::info("Enter InterestGroupDataService.update()");
         try
         {
             // Put all the data from $job into variables:
@@ -214,7 +237,7 @@ class InterestGroupDataService
 
             // Build the Query to Update the Job's info into the database:
             $result = $this->conn->prepare("UPDATE interest_group SET NAME=:name, DESCRIPTION=:desc, TAGS=:tags WHERE ID=:id");
-            
+
             // Bind all the query variables with the method variables:
             $result->bindParam(':id', $id);
             $result->bindParam(':name', $name);
@@ -227,31 +250,32 @@ class InterestGroupDataService
             // Check if the result was true:
             if ($result)
             {
+                MyLogger2::info("Exit InterestGroupDataService.update() with true");
                 return true;
             }
             else
             {
+                MyLogger2::info("Exit InterestGroupDataService.update() with false");
                 return false;
             }
         }
-        catch (PDOException $e)
+        catch (PDOException $pdoExc)
         {
-            Log::error("Exception: ", array(
-                "message" => $e->getMessage()
+            MyLogger2::error("Exception: ", array(
+                "message" => $pdoExc->getMessage()
             ));
-            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+            throw new DatabaseException("Database Exception: " . $pdoExc->getMessage(), 0, $pdoExc);
         }
         catch (DatabaseException $e)
         {
             // Throwing Exception with message:
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $e->getMessage()
             ));
             return false;
         }
     }
-    
-    
+
     /**
      * Add an interested user to a group.
      *
@@ -261,57 +285,63 @@ class InterestGroupDataService
      */
     public function addInterestedUser($igid)
     {
+        MyLogger2::info("Enter InterestGroupDataService.addInterestedUser()");
         try
         {
-            //Place variables values to ready the queries
+            // Place variables values to ready the queries
             $id = "";
             $users_id = Session::get('userID');
-            
+
             // Build the Query:
             $result2 = $this->conn->prepare("INSERT INTO user_interest (`ID`, `interest_group_ID`, `users_ID`) VALUES (:id, :interest_group_id, :users_id)");
-            // Bind the params with variables: 
+            // Bind the params with variables:
             $result2->bindParam(':id', $id);
             $result2->bindParam(':interest_group_id', $igid);
             $result2->bindParam(':users_id', $users_id);
-            
-            // Execute the Query: 
+
+            // Execute the Query:
             $result2->execute();
-            
+
             // Check if result was successful:
             if ($result2->rowCount() == 1)
             {
-                Log::info("Exit InterestGroupDataService.addInterestedUser() with true");
+                MyLogger2::info("Exit InterestGroupDataService.addInterestedUser() with true");
                 return true;
             }
             else
             {
-                Log::info("Exit InterestGroupDataService.addInterestedUser() with false");
+                MyLogger2::info("Exit InterestGroupDataService.addInterestedUser() with false");
                 return false;
             }
         }
         catch (PDOException $pdoExc)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("Exception: ", array(
                 "message" => $pdoExc->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $pdoExc->getMessage(), 0, $pdoExc);
         }
         catch (Exception $e)
         {
+            MyLogger2::error("Exception in IntGroupDataService.addInterestedUser(): ", array(
+                "message" => $e->getMessage()
+            ));
             // Throwing Exception with message:
-            throw $e->getMessage();
+            throw new $e->getMessage();
         }
     }
-    
+
     /**
-     * Deletes an Interest Group along with the rows from bridging table. 
-     * 
-     * @param $id
+     * Deletes an Interest Group along with the rows from bridging table.
+     *
+     * @param
+     *            $id
      * @throws DatabaseException
      * @return boolean
      */
     public function delete($id)
     {
+        MyLogger2::info("Enter InterestGroupDataService.delete()");
         try
         {
             // Build the Query to delete a job from the Database:
@@ -320,25 +350,31 @@ class InterestGroupDataService
             $result->bindParam(':id', $id);
             // Execute the Query:
             $result->execute();
-            
+
             // Check if result is true:
-            if($result)
+            if ($result)
             {
+                MyLogger2::info("Exit InterestGroupDataService.delete() with true");
                 return $id;
             }
+            
+            MyLogger2::info("Exit InterestGroupDataService.delete() with false");
             return false;
         }
-        catch(PDOException $e)
+        catch (PDOException $e)
         {
-            Log::error("Exception: ", array(
+            MyLogger2::error("PDOException: ", array(
                 "message" => $e->getMessage()
             ));
             throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
         }
         catch (Exception $exc)
         {
+            MyLogger2::error("Exception: ", array(
+                "message" => $exc->getMessage()
+            ));
             // Throwing Exception with message:
-            throw $exc->getMessage();
+            throw new $exc->getMessage();
         }
     }
 }
