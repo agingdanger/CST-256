@@ -3,8 +3,7 @@
 namespace App\Services\Utility;
 
 use Monolog\Logger;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\StreamHandler;
+use Monolog\Handler\LogglyHandler;
 
 class MyLogger2 implements ILogger
 {
@@ -14,31 +13,29 @@ class MyLogger2 implements ILogger
     {
         if (self::$logger == null)
         {
-            self::$logger = new Logger('MyApp');
-            $stream = new StreamHandler(__DIR__.'/../../../storage/logs/myapp.log', Logger::DEBUG);
-            $stream->setFormatter(new LineFormatter("%datetime% : %level_name% : %message% %context%\n", "g:iA n/j/Y"));
-            self::$logger->pushHandler($stream);
+            self::$logger = new Logger('playlaravel'); 
+            self::$logger->pushHandler(new LogglyHandler('932853ca-d111-48b1-a9ff-3bd82a217a14/tag/cst323_logfile_heroku_milestone_php', Logger::DEBUG));
         }
         return self::$logger;
     }
     
     public static function debug($message, $data=array())
     {
-        self::getLogger()->debug($message, $data);
+        self::getLogger()->addDebug($message, $data);
     }
     
     public static function info($message, $data=array())
     {
-        self::getLogger()->info($message, $data);
+        self::getLogger()->addInfo($message, $data);
     }
     
     public static function warning($message, $data=array())
     {
-        self::getLogger()->warning($message, $data);
+        self::getLogger()->addWarning($message, $data);
     }
     
     public static function error($message, $data=array())
     {
-        self::getLogger()->error($message, $data);
+        self::getLogger()->addError($message, $data);
     }
 }
