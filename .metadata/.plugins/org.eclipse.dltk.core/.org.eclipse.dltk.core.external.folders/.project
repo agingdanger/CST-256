@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>.org.eclipse.dltk.core.external.folders</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>.link2</name>
+			<type>2</type>
+			<location>C:/MAMP/htdocs/CST-256/.metadata/.plugins/org.eclipse.php.core/__language__/a52b6b96</location>
+		</link>
+		<link>
+			<name>.link3</name>
+			<type>2</type>
+			<location>C:/MAMP/htdocs/CST-256/.metadata/.plugins/org.eclipse.php.core/__language__/a52b6b98</location>
+		</link>
+	</linkedResources>
+</projectDescription>

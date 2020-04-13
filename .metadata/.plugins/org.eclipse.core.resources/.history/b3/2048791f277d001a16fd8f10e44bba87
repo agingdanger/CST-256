@@ -1,0 +1,178 @@
+<?php
+namespace App\Services\Business;
+
+use App\Model\User;
+use App\Services\Data\AdminDataService;
+use App\Services\Data\UserDataService;
+use App\Services\Utility\db_connector;
+
+class UserBusinessService
+{
+
+    /**
+     * register business service method: Creating a user in the database.
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function register(User $user)
+    {
+        $this->logger->info("Enter UserBusinessService.register()");
+        
+        // Call the database connection
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Call the DAO to create a User in the database
+        $userData = new UserDataService($conn);
+        $isRegistered = $userData->create($user);
+
+        // Close the PDO Connection
+        $conn = null;
+
+        if ($isRegistered)
+        {
+            $this->logger->info("Exit UserBusinessService.register() with true.");
+            return true;
+        }
+        
+        $this->logger->info("Exit UserBusinessService.register() with false.");
+        return false;
+    }
+
+    /**
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function modify(User $user)
+    {
+        $this->logger->info("Enter UserBusinessService.modify()");
+        
+        // Call the database connection
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Call the DAO to update a User's info
+        $userService = new UserDataService($conn);
+        $userData = $userService->update($user);
+
+        // Close the PDO connection
+        $conn = null;
+
+        $this->logger->info("Exit UserBusinessService.modify()");
+        return $userData;
+    }
+
+    /**
+     *
+     * @param User $user
+     * @return \App\Services\Data\$result|boolean
+     */
+    public function profile(User $user)
+    {
+        $this->logger->info("Enter UserBusinessService.profile()");
+        
+        // Create the database connection object.
+        $db = new db_connector();
+        $conn = $db->getConnection();
+
+        // Call the User Data Service to findById:
+        $service = new UserDataService($conn);
+        $result = $service->findById($user);
+        
+        // Close the PDO Connection
+        $conn = null;
+
+        // if Result has some value, which it should, it should return
+        if ($result)
+        {
+            $this->logger->info("Exit UserBusinessService.profile() with true");
+            return $result;
+        }
+        else
+        {
+            $this->logger->info("Exit UserBusinessService.profile() with false");
+            return false;
+        }
+    }
+
+    public function search($param)
+    {
+        $this->logger->info("Enter UserBusinessService.search()");
+        
+        // Create the database connection object.
+        $db = new db_connector();
+        $conn = $db->getConnection();
+
+        // Call the User Data Service to findById:
+        $service = new AdminDataService($conn);
+        $result = $service->findJob($param);
+        
+        // Close the PDO Connection
+        $conn = null;
+
+        // if Result has some value, which it should, it should return
+        if ($result)
+        {
+            $this->logger->info("Exit UserBusinessService.search() with true");
+            return $result;
+        }
+        else
+        {
+            $this->logger->info("Exit UserBusinessService.search() with false");
+            return false;
+        }
+    }
+
+    /** -------------------------------- REST Business Methods -------------------------------- **/
+    
+    /**
+     * 
+     * 
+     * @return array|\App\Model\User[]
+     */
+    public function getAllUsers()
+    {
+        $this->logger->info("Enter UserBusinessService.getAllUsers()");
+        
+        // Create the database connection object.
+        $db = new db_connector();
+        $conn = $db->getConnection();
+
+        // Call the User Data Service to findAllUsers:
+        $service = new UserDataService($conn);
+        $users = $service->findAllUsers();
+
+        // Close the PDO Connection
+        $conn = null;
+        
+        $this->logger->info("Exit UserBusinessService.search()");
+        
+        // Return the result
+        return $users;
+    }
+    
+    /**
+     * 
+     * 
+     * @param $id
+     * @return \App\Services\Data\$user|\App\Model\User
+     */
+    public function getUserByID($id)
+    {
+        // Create the database connection object.
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Call the User Data Service to findByUserID:
+        $service = new UserDataService($conn);
+        $users = $service->findByUserID($id);
+        
+        // Close the PDO Connection
+        $conn = null;
+        
+        // Return the result
+        return $users;
+    }
+}

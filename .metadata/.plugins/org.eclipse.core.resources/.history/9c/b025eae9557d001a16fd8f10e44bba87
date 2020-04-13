@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Services\Utility;
+
+use Illuminate\Support\Facades\Log;
+
+class MyLogger4 implements ILoggerService
+{
+    private static function getLogger()
+    {
+        if(self::$logger == null)
+        {
+            self::$logger = new Logger('MyApp');
+            $stream = new StreamHandler('storage/logs/myapp.log', Logger::DEBUG);
+            $stream->setFormatter(new LineFormatter("%datetime% : %level_name% : %message% %context%\n", "g:iA n/j/Y"));
+            self::$logger->pushHandler($stream);
+        }
+        return self::$logger;
+    }
+    
+    public function debug($message, $data=array())
+    {
+        Log::debug($message . (count($data) != 0 ?' with data of ' . print_r($data, true) : ""));
+    }
+    
+    public function info($message, $data=array())
+    {
+        Log::info($message . (count($data) != 0 ?' with data of ' . print_r($data, true) : ""));
+    }
+    
+    public function warning($message, $data=array())
+    {
+        Log::warning($message . (count($data) != 0 ?' with data of ' . print_r($data, true) : ""));
+    }
+    
+    public function error($message, $data=array())
+    {
+        Log::error($message . (count($data) != 0 ?' with data of ' . print_r($data, true) : ""));
+    }
+}

@@ -1,0 +1,310 @@
+<?php
+namespace App\Services\Business;
+
+use App\Model\Education;
+use App\Model\JobHistory;
+use App\Model\Skill;
+use App\Services\Utility\db_connector;
+use App\Services\Data\PortfolioDataService;
+
+/**
+ * 
+ * @author agingdanger
+ *
+ */
+class PortfolioBusinessService
+{
+    /**
+     * 
+     * @param $job
+     * @return boolean
+     */
+    public function postJobExperience($job)
+    {
+        $this->logger->info("Enter PortfolioBusinessService.postJobExperience()");
+        
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        
+        //passes the job into the data service to be created
+        $portfolioData = $portfolioService->createJob($job);
+        
+        //close the connection
+        $conn = null;
+        
+        $this->logger->info("Exit PortfolioBusinessService.postJobExperience()");
+        //passes the returned status of the query from the data service
+        return $portfolioData;
+    }
+    
+    public function postEducationExperience($ed)
+    {
+        $this->logger->info("Enter PortfolioBusinessService.postEducationExperience()");
+        
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        
+        //passes the education into the data service to be created
+        $portfolioData = $portfolioService->createEducation($ed);
+        //close the connection
+        $conn = null;
+        
+        $this->logger->info("Exit PortfolioBusinessService.postEducationExperience()");
+        
+        //passes the returned status of the query from the data service
+        return $portfolioData;
+    }
+    
+    /**
+     * 
+     * @param $skill
+     * @return boolean
+     */
+    public function postSkillExperience($skill)
+    {
+        $this->logger->info("Enter PortfolioBusinessService.postSkillExperience()");
+        
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        //passes the skill into the data service to be created
+        $portfolioData = $portfolioService->createSkill($skill);
+        //close the connection
+        $conn = null;
+        
+        $this->logger->info("Exit PortfolioBusinessService.postSkillExperience()");
+        
+        //passes the returned status of the query from the data service
+        return $portfolioData;
+    }
+    /**
+     * 
+     * @param $userID
+     * @return \App\Services\Data\$result
+     */
+    public function retrieveUserJobs($userID)
+    {
+        $this->logger->info("Enter PortfolioBusinessService.retrieveUserJobs()");
+        
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        //passes the userID into the dataservice to retrieve all jobs
+        $portfolioData = $portfolioService->findAllUserJobs($userID);
+        //close the connection
+        $conn = null;
+        
+        $this->logger->info("Exit PortfolioBusinessService.retrieveUserJobs()");
+        
+        //passes the returned status of the query from the data service
+        return $portfolioData;
+    }
+    
+    /**
+     * 
+     * @param $userID
+     * @return \App\Services\Data\$result
+     */
+    public function retrieveUserSkills($userID)
+    {
+        $this->logger->info("Enter PortfolioBusinessService.retrieveUserSkills()");
+        
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        //passes the userID into the dataservice to retrieve all skills
+        $portfolioData = $portfolioService->findAllUserSkills($userID);
+        //close the connection
+        $conn = null;
+        
+        $this->logger->info("Exit PortfolioBusinessService.retrieveUserSkills()");
+        
+        //passes the returned status of the query from the data service
+        return $portfolioData;
+    }
+    
+    /**
+     * 
+     * @param $userID
+     * @return \App\Services\Data\$result->fetchall()
+     */
+    public function retrieveUserEducation($userID)
+    {
+        $this->logger->info("Enter PortfolioBusinessService.retrieveUserEducation()");
+        
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        //passes the userID into the dataservice to retrieve all education
+        $portfolioData = $portfolioService->findAllUserEducation($userID);
+        //close the connection
+        $conn = null;
+        
+        $this->logger->info("Exit PortfolioBusinessService.retrieveUserEducation()");
+        
+        //passes the returned status of the query from the data service
+        return $portfolioData;
+    }
+    
+    /**
+     * 
+     * @param $id
+     * @return boolean
+     */
+    public function removeUserJob($id)
+    {
+        $this->logger->info("Enter PortfolioBusinessService.removeUserJob()");
+        
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        //passes the ID into the dataservice to delete the job
+        $portfolioData = $portfolioService->deleteJob($id);
+        //close the connection
+        $conn = null;
+        
+        $this->logger->info("Exit PortfolioBusinessService.removeUserJob()");
+        
+        //passes the returned status of the query from the data service
+        return $portfolioData;
+    }
+    
+    /**
+     * 
+     * @param $id
+     * @return boolean
+     */
+    public function removeUserEducation($id)
+    {
+        $this->logger->info("Enter PortfolioBusinessService.removeUserEducation()");
+        
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        //passes the ID into the data service to remove the education
+        $portfolioData = $portfolioService->deleteEducation($id);
+        //close the connection
+        $conn = null;
+        
+        $this->logger->info("Exit PortfolioBusinessService.removeUserEducation()");
+        
+        //passes the returned status of the query from the data service
+        return $portfolioData;
+    }
+    
+    /**
+     * 
+     * @param $id
+     * @return boolean
+     */
+    public function removeUserSkill($id)
+    {
+        $this->logger->info("Enter PortfolioBusinessService.removeUserSkill()");
+        
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        //passes the ID into the data service to remove the skill
+        $portfolioData = $portfolioService->deleteSkill($id);
+        //close the connection
+        $conn = null;
+        
+        $this->logger->info("Exit PortfolioBusinessService.removeUserSkill()");
+        
+        //passes the returned status of the query from the data service
+        return $portfolioData;
+    }
+    
+    /**
+     * 
+     * @param JobHistory $job
+     * @return boolean
+     */
+    public function modifyJobHistory(JobHistory $job)
+    {
+        $this->logger->info("Enter PortfolioBusinessService.modifyJobHistory()");
+        
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        //passes the JobHistory object into the data service to be edited
+        $portfolioData = $portfolioService->updateJobHistory($job);
+        //close the connection
+        $conn = null;
+        //passes the returned status of the query from the data service
+        return $portfolioData;
+    }
+    
+    /**
+     * 
+     * @param Education $ed
+     * @return boolean
+     */
+    public function modifyEducationHistory(Education $ed)
+    {
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        $portfolioData = $portfolioService->updateEducationHistory($ed);
+        
+        $conn = null;
+        
+        return $portfolioData;
+    }
+    
+    /**
+     * 
+     * @param Skill $skill
+     * @return boolean
+     */
+    public function modifySkillHistory(Skill $skill)
+    {
+        //Creates a db_connector object
+        $db = new db_connector();
+        //creates an instance of db
+        $conn = $db->getConnection();
+        //passes the connection to the DataService
+        $portfolioService = new PortfolioDataService($conn);
+        //passes the Skill object into the data service to be edited
+        $portfolioData = $portfolioService->updateSkillHistory($skill);
+        //close the connection
+        $conn = null;
+        //passes the returned status of the query from the data service
+        return $portfolioData;
+    }
+}

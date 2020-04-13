@@ -1,0 +1,50 @@
+<?php
+namespace App\Services\Business;
+
+use App\Model\userCredentials;
+use App\Services\Data\UserDataService;
+use App\Services\Utility\ILoggerService;
+use App\Services\Utility\db_connector;
+
+class SecurityService
+{
+    protected $logger;
+    
+    public function __construct(ILoggerService $logger)
+    {
+        $this->logger = $logger;
+    }
+    
+    /**
+     * Authenticate function to authenticate entered login credentials.
+     *
+     * @param userCredentials $userAttempt
+     * @return boolean
+     */
+    public function authenticate(userCredentials $userAttempt)
+    {
+        $logger->info("Enter SecurityService.authenticate()");
+        
+        // Call the database connection
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Call the DAO to find by UserCredentials
+        $userData = new UserDataService($conn);
+        $result = $userData->findbyUserCredentials($userAttempt);
+
+        // Close the PDO connection
+        $conn = null;
+
+        if (($result))
+        {
+            $logger->info("Exit SecurityService.authenticate() successfully");
+            return $result;
+        }
+        else
+        {
+            $logger->info("Exit SecurityService.authenticate() unsuccessfully");
+            return FALSE;
+        }
+    }
+}
