@@ -37,7 +37,7 @@ class PortfolioDataService
         try
         {
             // Find all the jobs for the user
-            $result = $this->conn->prepare("SELECT * FROM JOB_HISTORY WHERE users_ID = :userid");
+            $result = $this->conn->prepare("SELECT * FROM job_history WHERE users_ID = :userid");
             $result->bindParam('userid', $userID);
             $result->execute();
         
