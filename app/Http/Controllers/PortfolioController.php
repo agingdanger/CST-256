@@ -325,8 +325,8 @@ class PortfolioController extends Controller
     {
         MyLogger2::info("Entered PortfolioController's onPersonalPortfolioRetrieval()");
 
-        try
-        {
+//         try
+//         {
             $userID = Session::get('userID');
 
             $portfolioBusiness = new PortfolioBusinessService();
@@ -342,13 +342,13 @@ class PortfolioController extends Controller
             return view('portfolio.portfolio')->with('jobs', $jobs)
                 ->with('skills', $skills)
                 ->with('education', $education);
-        }
-        catch (Exception $e)
-        {
+        //}
+        //catch (Exception $e)
+        //{
             //MyLogger2::error("Error in PortfolioController's onPersonalPortfolioRetrieval()", $e->getMessage());
 
-            return view('error.commonError');
-        }
+        //   return view('error.commonError');
+        //}
     }
 
     /**
