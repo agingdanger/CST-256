@@ -676,7 +676,7 @@ class PortfolioController extends Controller
 
         // Setup Data Validation Rules for Login Form.
         $rules = [
-            'skillname' => 'Required | Alpha | Between: 4, 150'
+            'skillname' => 'Required | Between: 4, 150'
         ];
 
         // Run Validation Rules:
