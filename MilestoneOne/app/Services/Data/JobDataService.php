@@ -7,10 +7,16 @@ use App\Services\Utility\MyLogger2;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Exception;
+use PDO;
 use PDOException;
 use App\Model\Job;
 use App\User;
 
+/**
+ * Job Service that handles DB transactions
+ * @author Charles  && Reuel
+ *
+ */
 class JobDataService
 {
     // Declare class variables:
@@ -316,5 +322,123 @@ class JobDataService
         }
     }
     
+    /* ----------------------------- REST Data Service Methods -------------------------------- */
     
+    /**
+     * Find all Jobs and return an array of Job objects.
+     *
+     * @throws DatabaseException
+     * @return array|\App\Model\Job
+     */
+    public function findAllJobsREST()
+    {
+        MyLogger2::info("Enter JobDataService.findAllJobsREST()");
+        try
+        {
+            // Build the Query to find the User with the right ID:
+            $result = $this->conn->prepare("SELECT * FROM job");
+            // Execute the Query:
+            $result->execute();
+            
+            if($result->rowCount() == 0)
+            {
+                MyLogger2::info("Exit JobDataService.findAllJobsREST() with 0 rowCount.");
+                return array();
+            }
+            else
+            {
+                // Create an array and store Job objects in the array.
+                $index = 0;
+                $jobs = array();
+                while($row = $result->fetch(PDO::FETCH_ASSOC))
+                {
+                    
+                    // Create a Job object for each iteration to be added into the Jobs Array
+                    $job = new Job($row['ID'], $row['NAME'], $row['DESCRIPTION'], $row['COMPANY'], $row['REQUIREMENTS'], $row['SKILLS']);
+                    //MyLogger2::info("Creating Job Array in JobDataService.findAllJobsREST()" . array("jobinfo" => $job));
+                    $jobs[$index++] = $job;
+                }
+                
+                MyLogger2::info("Exit JobDataService.findAllJobsREST() with jobs:", $jobs);
+                
+                // Return the array of Jobs
+                return $jobs;
+            }
+        }
+        catch(PDOException $e)
+        {
+            MyLogger2::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+        catch (Exception $exc)
+        {
+            MyLogger2::error("Exception: ", array(
+                "message" => $exc->getMessage()
+            ));
+            throw new $exc->getMessage();
+        }
+    }
+    
+    /**
+     * Find all Jobs and return an array of Job objects.
+     *
+     * @throws DatabaseException
+     * @return array|\App\Model\Job
+     */
+    public function findAllJobsBySearchREST($search)
+    {
+        MyLogger2::info("Enter JobDataService.findAllJobsBySearchREST()");
+        try
+        {
+            // Find all matching jobs.
+            $result = $this->conn->prepare
+            ("SELECT *
+                FROM job
+                WHERE concat(job.ID, '', job.NAME, '', job.DESCRIPTION, '', job.COMPANY, '', job.REQUIREMENTS, '', job.SKILLS)
+                LIKE concat('%', :search, '%')");
+            $result->bindParam(':search', $search);
+            $result->execute();
+            
+            MyLogger2::info("Exit JobDataService.findJobsBySearchREST()");
+            
+            if($result->rowCount() == 0)
+            {
+                MyLogger2::info("Exit JobDataService.findAllJobsBySearchREST() with 0 rowCount.");
+                return array();
+            }
+            else
+            {
+                // Create an array and store Jobs objects in the array.
+                $index = 0;
+                $jobs = array();
+                while($row = $result->fetch(PDO::FETCH_ASSOC))
+                {
+                    // Create a Job object for each iteration to be added into the Jobs Array
+                    $job = new Job($row['ID'], $row['NAME'], $row['DESCRIPTION'], $row['COMPANY'], $row['REQUIREMENTS'], $row['SKILLS']);
+                    $jobs[$index++] = $job;
+                }
+                
+                MyLogger2::info("Exit JobDataService.findAllJobsREST() with jobs:", $jobs);
+                
+                // Return the array of Jobs
+                return $jobs;
+            }
+        }
+        catch(PDOException $e)
+        {
+            MyLogger2::error("Exception: ", array(
+                "message" => $e->getMessage()
+            ));
+            throw new DatabaseException("Database Exception: " . $e->getMessage(), 0, $e);
+        }
+        catch (Exception $exc)
+        {
+            MyLogger2::error("Exception: ", array(
+                "message" => $exc->getMessage()
+            ));
+            throw new $exc->getMessage();
+        }
+    }
 }

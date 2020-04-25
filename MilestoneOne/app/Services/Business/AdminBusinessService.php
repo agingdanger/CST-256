@@ -68,6 +68,34 @@ class AdminBusinessService
         return $jobsData;
     }
     
+    /**
+     * Populate jobs to REST service
+     * @return Job() Array
+     */
+    public function populateJobsREST()
+    {
+        MyLogger2::info("Enter AdminBusinessService.populateJobsREST()");
+        
+        /*
+         * Creating a Connection to get the PDO from Utilities
+         * and then, send it do DataService.
+         */
+        $db = new db_connector();
+        $conn = $db->getConnection();
+        
+        // Sending it to Data Service:
+        $adminData = new JobDataService($conn);
+        $jobsData = $adminData->findAllJobsREST();
+        
+        // Close the PDO connection
+        $conn = null;
+        
+        MyLogger2::info("Exit AdminBusinessService.populateJobsREST()");
+        
+        return $jobsData;
+    }
+    
+    
     public function publishJob($job) 
     {
         MyLogger2::info("Enter AdminBusinessService.publishJob()");
