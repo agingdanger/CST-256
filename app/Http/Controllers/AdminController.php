@@ -21,8 +21,6 @@ class AdminController extends Controller
         $this->logger = $logger;
     }
     
-	
-	//Comment Line
     /**
      * onUsersPull's purpose is for the Admin to view the datatable of Users.
      *

@@ -24,7 +24,7 @@ class JobsRestController extends Controller
         {
             // Call Service to get all jobs
             $service = new AdminBusinessService();
-            $jobs = $service->populateJobs();
+            $jobs = $service->populateJobsREST();
 
             // Create a DTO
             $dto = new DTO(0, "OK", $jobs);
@@ -62,7 +62,7 @@ class JobsRestController extends Controller
         try
         {
             $service = new JobBusinessService();
-            $jobs = $service->searchJobs($search);
+            $jobs = $service->searchJobsREST($search);
 
             if ($jobs == null)
                 $dto = new DTO(- 1, "Jobs weren't found", "");

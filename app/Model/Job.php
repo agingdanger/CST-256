@@ -1,9 +1,8 @@
 <?php
 namespace App\Model;
 
-use Illuminate\Queue\Jobs\JobName;
 
-class Job
+class Job implements \JsonSerializable
 {
     private $id;
     private $name;
@@ -21,6 +20,16 @@ class Job
         $this->requirements = $requirements;
         $this->skills = $skills;
     }
+    
+    /**
+     * Serializes JSON
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
+    
     /**
      * @return $id
      */
@@ -30,7 +39,7 @@ class Job
     }
 
     /**
-     * @return JobName
+     * @return $JobName
      */
     public function getName()
     {
