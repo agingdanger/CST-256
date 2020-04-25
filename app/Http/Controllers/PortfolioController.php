@@ -345,7 +345,7 @@ class PortfolioController extends Controller
         }
         catch (Exception $e)
         {
-            MyLogger2::error("Error in PortfolioController's onPersonalPortfolioRetrieval()", $e->getMessage());
+            //MyLogger2::error("Error in PortfolioController's onPersonalPortfolioRetrieval()", $e->getMessage());
 
             return view('error.commonError');
         }
