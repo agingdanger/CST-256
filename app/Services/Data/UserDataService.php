@@ -316,7 +316,7 @@ class UserDataService
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 $user = new User($row['ID'], $row['FIRST_NAME'], $row['LAST_NAME'], $row['USERNAME'], $row['PASSWORD'], $row['EMAIL'], $row['PHONE'], $row['ROLE']);
                 
-                MyLogger2::info("Exit UserDataService.findByUserID() with user: ", $user);
+                MyLogger2::info("Exit UserDataService.findByUserID() with user: ", array("User: " => $user));
                 return $user;
             }
         }
